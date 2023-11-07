@@ -4,35 +4,16 @@
   
   
   <entry>
-    <title>second</title>
-    <link href="/2023/11/05/second/"/>
-    <url>/2023/11/05/second/</url>
+    <title>悬线法dp（洛谷P4147玉蟾宫）</title>
+    <link href="/2023/11/07/%E6%82%AC%E7%BA%BF%E6%B3%95dp/"/>
+    <url>/2023/11/07/%E6%82%AC%E7%BA%BF%E6%B3%95dp/</url>
     
-    <content type="html"><![CDATA[<h1 id="hello"><a href="#hello" class="headerlink" title="hello"></a>hello</h1>]]></content>
-    
-    
-    <categories>
-      
-      <category>cpp</category>
-      
-    </categories>
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>mycpp</title>
-    <link href="/2023/11/05/mycpp/"/>
-    <url>/2023/11/05/mycpp/</url>
-    
-    <content type="html"><![CDATA[<p>java</p>]]></content>
+    <content type="html"><![CDATA[<p><a href="https://www.luogu.com.cn/problem/P4147">洛谷P4147玉蟾宫</a></p><h1 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h1><p>给一个矩阵，一些点有障碍物，求最大子矩阵</p><h1 id="做法"><a href="#做法" class="headerlink" title="做法"></a>做法</h1><p><code>悬线法dp</code>，第一次听说。</p><h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><p>（1）结论：答案一定是一个矩形（废话。。。）<br>（2）最大矩形一定是：由其中<code>某个点</code>，<code>先</code>向上扩展到最大，<code>然后</code>再分别向左、向右走到最远。<br>（3）由于（2）的结论对所有点这样操作，一定可以找到最大矩形</p><p>具体代码：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N=<span class="hljs-number">1e3</span>+<span class="hljs-number">5</span>;<br><span class="hljs-type">char</span> a[N][N];<br><span class="hljs-type">int</span> n,m;<br><span class="hljs-type">int</span> h[N][N];<span class="hljs-comment">//每个点往上延申的最大长度</span><br><span class="hljs-type">int</span> L[N][N];<span class="hljs-comment">//在h保证的情况下，每个点往左走最远到哪</span><br><span class="hljs-type">int</span> R[N][N];<span class="hljs-comment">//在h保证的情况下，每个点往右走最远到哪</span><br><br><span class="hljs-type">int</span> ans=<span class="hljs-number">0</span>; <br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>cin&gt;&gt;n&gt;&gt;m;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=m;j++)&#123;<br>cin&gt;&gt;a[i][j];<br><span class="hljs-keyword">if</span>(a[i][j]==<span class="hljs-string">&#x27;F&#x27;</span>)h[i][j]=<span class="hljs-number">1</span>;<span class="hljs-comment">//自己</span><br>L[i][j]=R[i][j]=j;<span class="hljs-comment">//自己 </span><br>&#125;<br>&#125;<br><br><span class="hljs-comment">//在h=1的情况下处理L和R </span><br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br><span class="hljs-comment">//处理L </span><br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=m;j++)&#123;<br><span class="hljs-keyword">if</span>(a[i][j]==<span class="hljs-string">&#x27;F&#x27;</span>&amp;&amp;a[i][j<span class="hljs-number">-1</span>]==<span class="hljs-string">&#x27;F&#x27;</span>)&#123;<br>L[i][j]=L[i][j<span class="hljs-number">-1</span>];<br>&#125; <br>&#125; <br><span class="hljs-comment">//处理R </span><br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=m;j&gt;=<span class="hljs-number">1</span>;j--)&#123;<br><span class="hljs-keyword">if</span>(a[i][j]==<span class="hljs-string">&#x27;F&#x27;</span>&amp;&amp;a[i][j+<span class="hljs-number">1</span>]==<span class="hljs-string">&#x27;F&#x27;</span>)&#123;<br>R[i][j]=R[i][j+<span class="hljs-number">1</span>];<br>&#125; <br>&#125;<br>&#125;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=m;j++)&#123;<br><span class="hljs-keyword">if</span>(a[i][j]==<span class="hljs-string">&#x27;F&#x27;</span>&amp;&amp;a[i<span class="hljs-number">-1</span>][j]==<span class="hljs-string">&#x27;F&#x27;</span>)&#123;<br>h[i][j]=h[i<span class="hljs-number">-1</span>][j]+<span class="hljs-number">1</span>;<span class="hljs-comment">//h数组扩展 </span><br><br><span class="hljs-comment">//L、R向内收缩 </span><br>L[i][j]=<span class="hljs-built_in">max</span>(L[i][j],L[i<span class="hljs-number">-1</span>][j]);<br>R[i][j]=<span class="hljs-built_in">min</span>(R[i][j],R[i<span class="hljs-number">-1</span>][j]); <br>&#125;<br><br><span class="hljs-keyword">if</span>(a[i][j]==<span class="hljs-string">&#x27;F&#x27;</span>)&#123;<br>ans=<span class="hljs-built_in">max</span>(ans,h[i][j]*(R[i][j]-L[i][j]+<span class="hljs-number">1</span>));<br>&#125;<br>&#125;<br>&#125; <br>cout&lt;&lt;ans*<span class="hljs-number">3</span>&lt;&lt;endl;<br><span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125; <br></code></pre></td></tr></table></figure>]]></content>
     
     
     <categories>
       
-      <category>java</category>
+      <category>dp</category>
       
     </categories>
     
