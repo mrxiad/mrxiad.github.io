@@ -391,6 +391,51 @@ void server::handle_accept(session* new_session, const boost::system::error_code
 
 
 
+## (e)bind绑定回调函数的参数问题
+
+>### Boost Asio 异步操作的回调函数
+>
+>Boost Asio 的异步操作，如 `async_read`、`async_write` 等，通常要求你提供一个回调函数。这个回调函数通常接受两个参数：
+>
+>**Error Code** (`boost::system::error_code`)：表明异步操作成功或失败的错误码。
+>
+>**Bytes Transferred** (`size_t`)：传输的字节数。
+
+
+
+
+
+1. **绑定所有参数**
+
+	```cpp
+	std::bind(&YourClass::YourCallbackFunction, this, placeholders::_1, placeholders::_2)
+	```
+
+	
+
+2. **绑定部分参数**
+
+	```cpp
+	std::bind(&YourClass::YourCallbackFunction, this, placeholders::_1)
+	//只有错误码会被传递给回调函数。
+	```
+
+	
+
+3. **不绑定任何参数**
+
+	```cpp
+	std::bind(&YourClass::YourCallbackFunction, this)
+	```
+
+	------
+
+
+
+
+
+
+
 ## 对异步的理解
 
 - ### 异步操作的特点
@@ -402,15 +447,15 @@ void server::handle_accept(session* new_session, const boost::system::error_code
 	3. **回调函数**：
 		- 当相应的事件发生（例如，数据到达用于读取的套接字），异步操作完成，并触发定义好的回调函数。
 		- 回调函数通常用于处理事件结果，如读取数据或发送响应。
-
+	
 	### 异步读取和写入的循环
-
+	
 	- 当 `async_read_some` 或类似函数被调用时，它开始监听数据到达事件。如果没有数据到达，这个函数不会执行其回调。
 	- 在异步读取的回调函数中启动异步写入是一种常见的模式。这确保了服务器在处理完一个请求后立即准备发送响应。
 	- 完成异步写入后，通常会再次启动异步读取操作，维持与客户端的持续通信。
-
+	
 	### 异步接受连接
-
+	
 	- `async_accept` 类似地监听新的连接请求。如果没有新的连接尝试，它会保持在监听状态，直到有新的连接请求到达。
 	- 一旦接受到新的连接，将调用 `async_accept` 指定的回调函数来处理这个新连接。
 
