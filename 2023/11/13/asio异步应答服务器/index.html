@@ -18,20 +18,20 @@
   
     <meta name="description" content="本文主要实现一个异步应答服务器   分文两个类 session：session类主要是处理客户端消息收发的会话类，属于服务端 server：server类为服务器接收连接的管理类，用于管理多个session，属于服务端  session类成员 123456789101112131415161718 class Session&#123;public:    Session(boost::asio">
 <meta property="og:type" content="article">
-<meta property="og:title" content="asio异步应答服务器">
+<meta property="og:title" content="asio普通的异步服务器">
 <meta property="og:url" content="http://example.com/2023/11/13/asio%E5%BC%82%E6%AD%A5%E5%BA%94%E7%AD%94%E6%9C%8D%E5%8A%A1%E5%99%A8/index.html">
 <meta property="og:site_name" content="Mrxiad">
 <meta property="og:description" content="本文主要实现一个异步应答服务器   分文两个类 session：session类主要是处理客户端消息收发的会话类，属于服务端 server：server类为服务器接收连接的管理类，用于管理多个session，属于服务端  session类成员 123456789101112131415161718 class Session&#123;public:    Session(boost::asio">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-11-13T07:52:00.000Z">
-<meta property="article:modified_time" content="2023-11-13T11:53:59.594Z">
+<meta property="article:modified_time" content="2023-11-14T13:04:25.199Z">
 <meta property="article:author" content="Mrxiad">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>asio异步应答服务器 - Mrxiad</title>
+  <title>asio普通的异步服务器 - Mrxiad</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -209,7 +209,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="asio异步应答服务器"></span>
+            <span id="subtitle" data-typed-text="asio普通的异步服务器"></span>
           
         </div>
 
@@ -280,7 +280,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">asio异步应答服务器</h1>
+            <h1 id="seo-header">asio普通的异步服务器</h1>
             
             
               <div class="markdown-body">
@@ -393,7 +393,7 @@
 <li>buffer需要数组首地址，以及读取的<strong>最大长度</strong>(并不是读完max_lengtg才会回调！！)</li>
 <li>回调函数需要两个参数error和bytes_transferred，因为不能保证数据一次性发完</li>
 </ul>
-<h3 id="c-异步写async-write"><a href="#c-异步写async-write" class="headerlink" title="(c)异步写async_write"></a><strong>(c)异步写async_write</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">session::handle_read</span><span class="hljs-params">(<span class="hljs-type">const</span> boost::system::error_code&amp; error, <span class="hljs-type">size_t</span> bytes_transferred)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!error) &#123;<br>        cout &lt;&lt; <span class="hljs-string">&quot;server receive data is &quot;</span> &lt;&lt; _data &lt;&lt; endl;<br>        <span class="hljs-comment">//异步发送数据给客户端，发送完回调</span><br>        boost::asio::<span class="hljs-built_in">async_write</span>(_socket, boost::asio::<span class="hljs-built_in">buffer</span>(_data, bytes_transferred),<br>                                 <span class="hljs-comment">//回调，开启异步读</span><br>            std::<span class="hljs-built_in">bind</span>(&amp;session::handle_write, <span class="hljs-keyword">this</span>, placeholders::_1));<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">session::handle_write</span><span class="hljs-params">(<span class="hljs-type">const</span> boost::system::error_code&amp; error)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!error) &#123;<br>        <span class="hljs-built_in">memset</span>(_data, <span class="hljs-number">0</span>, max_length);<br>        <span class="hljs-comment">//异步读</span><br>        _socket.<span class="hljs-built_in">async_read_some</span>(boost::asio::<span class="hljs-built_in">buffer</span>(_data, max_length),<br>            std::<span class="hljs-built_in">bind</span>(&amp;session::handle_read, <span class="hljs-keyword">this</span>, placeholders::_1, placeholders::_2));<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="c-异步写async-write"><a href="#c-异步写async-write" class="headerlink" title="(c)异步写async_write"></a><strong>(c)异步写async_write</strong></h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">session::handle_read</span><span class="hljs-params">(<span class="hljs-type">const</span> boost::system::error_code&amp; error, <span class="hljs-type">size_t</span> bytes_transferred)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!error) &#123;<br>        cout &lt;&lt; <span class="hljs-string">&quot;server receive data is &quot;</span> &lt;&lt; _data &lt;&lt; endl;<br>        <span class="hljs-comment">//异步发送数据给客户端，发送完回调</span><br>        boost::asio::<span class="hljs-built_in">async_write</span>(_socket, boost::asio::<span class="hljs-built_in">buffer</span>(_data, bytes_transferred),<br>                                 <span class="hljs-comment">//回调，开启异步读</span><br>            std::<span class="hljs-built_in">bind</span>(&amp;session::handle_write, <span class="hljs-keyword">this</span>, placeholders::_1));<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">session::handle_write</span><span class="hljs-params">(<span class="hljs-type">const</span> boost::system::error_code&amp; error)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (!error) &#123;<br>        <span class="hljs-built_in">memset</span>(_data, <span class="hljs-number">0</span>, max_length);<br>        <span class="hljs-comment">//异步读</span><br>        _socket.<span class="hljs-built_in">async_read_some</span>(boost::asio::<span class="hljs-built_in">buffer</span>(_data, max_length),<br>            std::<span class="hljs-built_in">bind</span>(&amp;session::handle_read, <span class="hljs-keyword">this</span>, placeholders::_1, placeholders::_2));<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>异步写函数在异步读的回调函数中</li>
@@ -501,7 +501,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>asio异步应答服务器</div>
+      <div>asio普通的异步服务器</div>
       <div>http://example.com/2023/11/13/asio异步应答服务器/</div>
     </div>
     <div class="license-meta">
@@ -546,9 +546,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/11/13/asio%E5%BB%B6%E9%95%BFsession%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" title="asio延长session生命周期">
+                      <a href="/2023/11/13/asio%E5%BB%B6%E9%95%BFsession%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" title="asio健壮的异步服务器">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">asio延长session生命周期</span>
+                        <span class="hidden-mobile">asio健壮的异步服务器</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
