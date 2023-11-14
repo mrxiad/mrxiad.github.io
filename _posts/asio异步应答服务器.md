@@ -1,5 +1,5 @@
 ---
-title: asio异步应答服务器
+title: asio普通的异步服务器
 date: 2023-11-13 15:52:00
 tags: c++
 categories: 网络编程
@@ -332,7 +332,6 @@ void session::handle_read(const boost::system::error_code& error, size_t bytes_t
 ### **(c)异步写async_write**
 
 ```cpp
-
 void session::handle_read(const boost::system::error_code& error, size_t bytes_transferred) {
     if (!error) {
         cout << "server receive data is " << _data << endl;
