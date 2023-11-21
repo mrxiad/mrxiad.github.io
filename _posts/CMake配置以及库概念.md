@@ -44,33 +44,17 @@ cmake -version
 ## 标准项目结构
 
 ```makefile
-YourProject/
-│
-├── CMakeLists.txt       # 顶层 CMake 配置文件
-│
-├── src/                 # 源代码目录
-│   ├── CMakeLists.txt   # 源代码目录的 CMake 配置文件
-│   ├── main.cpp         # 主源文件
-│   └── ...              # 其他源文件和头文件
-│
-├── include/             # 头文件目录
-│   └── ...              # 公共头文件
-│
-├── libs/                # 第三方库或子项目
-│   ├── lib1/            # 第三方库1
-│   └── lib2/            # 第三方库2
-│
-├── tests/               # 测试代码
-│   ├── CMakeLists.txt   # 测试代码的 CMake 配置文件
-│   └── ...              # 测试源文件
-│
-├── doc/                 # 文档
-│   └── ...
-│
-├── build/               # 构建目录（通常在 .gitignore 中排除）
-│
-└── bin/                 # 可执行文件目录（如果需要）
-
+/my_project
+|-- bin         # 二进制文件目录：存放编译后的可执行文件。
+|-- build       # 构建目录：用于临时存放编译过程中生成的文件。
+|-- doc         # 文档目录：包含项目文档，如设计文档、用户手册等。
+|-- lib         # 库文件目录：存放编译后生成的库文件（.a 或 .so）。
+|-- include     # 头文件目录：包含所有的头文件 (.h 或 .hpp)。
+|-- src         # 源代码目录：包含项目的源代码文件 (.c, .cpp)。
+|-- tests       # 测试目录：包含测试代码和测试脚本。
+|-- Makefile    # Makefile文件：定义了编译和构建项目的规则。
+|-- README.md   # README文件：项目的简介，安装和使用指南。
+|-- .gitignore  
 ```
 
 
@@ -92,7 +76,7 @@ add_executable(main main.c)
 
 
 
-## （1）单目录源文件
+## （1）单目录(源文件)
 
 ### 方法1
 
