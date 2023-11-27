@@ -236,6 +236,67 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2023/11/27/%E5%85%8B%E9%B2%81%E6%96%AF%E5%8D%A1%E5%B0%94%E9%87%8D%E6%9E%84%E6%A0%91/" target="_self">
+          kruskal重构树
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/11/27/%E5%85%8B%E9%B2%81%E6%96%AF%E5%8D%A1%E5%B0%94%E9%87%8D%E6%9E%84%E6%A0%91/" target="_self">
+        <div>
+          克鲁斯卡尔重构树应用 区间点可相互到达时考虑 连通块题目考虑 用到的边是“连通块内的最小生成树”时考虑  性质 所有原节点都为叶子节点 有2*n-1个节点，叶子是点权，非叶子是边权 任何两个叶子节点可以相互到达，一定是通过了他们的LCA所代表的那条边到达的。 重构树一定是小根堆或者大根堆（针对于点的id，针对于点的“边权”） 选出一些点可以互相到达，且最大边权不可以超过x，则答案是非叶节点中点权大
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-11-27 23:13" pubdate>
+              2023-11-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/" class="category-chain-item">最小生成树</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2023/11/21/%E5%90%8E%E7%BC%80dp/" target="_self">
           后缀dp
         </a>
@@ -359,14 +420,14 @@
       <h2 class="index-header">
         
         <a href="/2023/11/21/c++%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" target="_self">
-          c++单例模式（待完成）
+          c++单例模式和CRTP
         </a>
       </h2>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/11/21/c++%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" target="_self">
         <div>
-          本文介绍c++的单例模式以及注意事项
+          本文介绍c++的单例模式以及注意事项简单的单例模式实现步骤 私有化构造函数：确保不能从类外部直接构造对象。 静态成员函数：提供一个全局访问点，用于获取这个唯一的实例。 静态成员变量：存储类的唯一实例。 删除复制构造函数和赋值操作符：防止复制和赋值实例。 可选的私有析构函数：如果类管理资源，明确声明析构函数有助于资源的正确释放。  实例12345678910111213141516171819202
         </div>
       </a>
 
@@ -742,67 +803,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2023-11-13 15:52" pubdate>
               2023-11-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" class="category-chain-item">网络编程</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/c/">#c++</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/11/12/asio%E5%BC%82%E6%AD%A5%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" target="_self">
-          asio异步读写操作及注意事项
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/11/12/asio%E5%BC%82%E6%AD%A5%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C%E5%8F%8A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" target="_self">
-        <div>
-          简介本文介绍异步读写操作。 定义个session类，这个session类表示服务器处理客户端连接的管理类 其中有socket对象。 1234567class Session &#123;public:    Session(std::shared_ptr&lt;asio::ip::tcp::socket&gt; socket);//构造函数    void Connect(const asio::
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-11-12 22:22" pubdate>
-              2023-11-12
             </time>
           </div>
         
