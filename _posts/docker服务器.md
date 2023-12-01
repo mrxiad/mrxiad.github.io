@@ -2,8 +2,9 @@
 title: 配置docker服务器
 date: 2023-11-07 21:05:30
 tags: 技术
-categories: docker
-
+categories: 
+- 工程
+- docker
 ---
 
 

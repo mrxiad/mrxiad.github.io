@@ -2,7 +2,9 @@
 title: c++单例模式和CRTP
 date: 2023-11-21 14:20:56
 tags: c++
-categories: 设计模式
+categories: 
+- 工程
+- 设计模式
 ---
 
 

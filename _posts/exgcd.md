@@ -2,7 +2,9 @@
 title: exgcd
 date: 2023-11-30 22:34:50
 tags: 算法
-categories: 数论
+categories: 
+- 算法
+- 数论
 ---
 
 
