@@ -4,6 +4,33 @@
   
   
   <entry>
+    <title>扫描线</title>
+    <link href="/2023/12/01/%E6%89%AB%E6%8F%8F%E7%BA%BF/"/>
+    <url>/2023/12/01/%E6%89%AB%E6%8F%8F%E7%BA%BF/</url>
+    
+    <content type="html"><![CDATA[<p>本文介绍扫描线的几个题目</p><h1 id="二维偏序"><a href="#二维偏序" class="headerlink" title="二维偏序"></a>二维偏序</h1><h2 id="E-World-of-Darkraft-Battle-for-Azathoth"><a href="#E-World-of-Darkraft-Battle-for-Azathoth" class="headerlink" title="E. World of Darkraft: Battle for Azathoth"></a><a href="https://codeforces.com/problemset/problem/1321/E">E. World of Darkraft: Battle for Azathoth</a></h2><h3 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h3><p>给定一些武器和防具，每个武器有<strong>攻击力</strong>，<strong>花费</strong>,每个防具有<strong>防御力</strong>和<strong>花费</strong></p><p>给定一些怪物，每个怪物有<strong>攻击力</strong>，<strong>防御力</strong>，<strong>价值</strong></p><p>你只可以选择一个武器和一个防具，可以获得攻击力小于武器并且防御力小于防具的所有怪物的价值，求最大收益</p><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol><li>将武器和怪物按照攻击力排序，防具自己排序，并且按照防具的防御力防具顺序（id）建立<strong>下标线段树</strong></li><li><strong>双指针</strong>i指向武器，j指向怪物，当i指针向右边移动1个，j指针只会向右边移动，且以后的i一定可以选到当前的怪物j，所以当前的j造成的贡献会一直保留。所以将j的贡献加到线段树中即可</li><li>对于每一个武器i算最大价值，详细见代码</li></ol><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> ll;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N=<span class="hljs-number">1e6</span>+<span class="hljs-number">5</span>;<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">A</span>&#123;<br>ll g;<br>ll c;<br><span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>&lt;(<span class="hljs-type">const</span> A&amp;a)<span class="hljs-type">const</span>&#123;<br><span class="hljs-keyword">return</span> g&lt;a.g;<br>&#125;<br>&#125;a[N];<span class="hljs-comment">//gong</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">B</span>&#123;<br>ll f;<br>ll c;<br><span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>&lt;(<span class="hljs-type">const</span> B&amp;b)<span class="hljs-type">const</span>&#123;<br><span class="hljs-keyword">return</span> f&lt;b.f;<br>&#125;<br>&#125;b[N];<span class="hljs-comment">//fang</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">C</span>&#123;<br>ll g,f;<br>ll c;<br><span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>&lt;(<span class="hljs-type">const</span> C&amp;c)<span class="hljs-type">const</span>&#123;<br><span class="hljs-keyword">return</span> g&lt;c.g;<br>&#125;<br>&#125;c[N];<span class="hljs-comment">//monster</span><br><br>ll maxn[N&lt;&lt;<span class="hljs-number">2</span>];<br>ll tag[N&lt;&lt;<span class="hljs-number">2</span>];<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">pushup</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span></span>&#123;<br>ll lx=u&lt;&lt;<span class="hljs-number">1</span>;<br>ll rx=u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>;<br>maxn[u]=<span class="hljs-built_in">max</span>(maxn[lx],maxn[rx]);<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">pushdown</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span></span>&#123;<br>ll lx=u&lt;&lt;<span class="hljs-number">1</span>;<br>ll rx=u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>;<br><span class="hljs-keyword">if</span>(tag[u])&#123;<br>maxn[lx]+=tag[u];<br>maxn[rx]+=tag[u];<br>tag[lx]+=tag[u];<br>tag[rx]+=tag[u];<br>&#125;<br>tag[u]=<span class="hljs-number">0</span>;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">build</span><span class="hljs-params">(<span class="hljs-type">int</span> u,<span class="hljs-type">int</span> l,<span class="hljs-type">int</span> r)</span></span>&#123;<br><span class="hljs-keyword">if</span>(l==r)&#123;<br>maxn[u]=-b[l].c;<br><span class="hljs-keyword">return</span>;<br>&#125;<br>ll mid=l+r&gt;&gt;<span class="hljs-number">1</span>;<br><span class="hljs-built_in">build</span>(u&lt;&lt;<span class="hljs-number">1</span>,l,mid);<br><span class="hljs-built_in">build</span>(u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,mid+<span class="hljs-number">1</span>,r);<br><span class="hljs-built_in">pushup</span>(u);<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> u,<span class="hljs-type">int</span> l,<span class="hljs-type">int</span> r,<span class="hljs-type">int</span> L,<span class="hljs-type">int</span> R,ll x)</span></span>&#123;<br><span class="hljs-keyword">if</span>(L&lt;=l&amp;&amp;R&gt;=r)&#123;<br>maxn[u]+=x;<br>tag[u]+=x;<br><span class="hljs-keyword">return</span>;<br>&#125;<br><span class="hljs-built_in">pushdown</span>(u);<br>ll mid=l+r&gt;&gt;<span class="hljs-number">1</span>;<br><span class="hljs-keyword">if</span>(L&lt;=mid)&#123;<br><span class="hljs-built_in">add</span>(u&lt;&lt;<span class="hljs-number">1</span>,l,mid,L,R,x);<br>&#125;<br><span class="hljs-keyword">if</span>(R&gt;mid)&#123;<br><span class="hljs-built_in">add</span>(u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,mid+<span class="hljs-number">1</span>,r,L,R,x);<br>&#125;<br><span class="hljs-built_in">pushup</span>(u);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>std::ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);<br>std::cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);<br>std::cout.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);<br><span class="hljs-type">int</span> n,m,p;<br>cin&gt;&gt;n&gt;&gt;m&gt;&gt;p;<br>    <span class="hljs-comment">//输入武器属性</span><br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br>cin&gt;&gt;a[i].g&gt;&gt;a[i].c;<br>&#125;<br>    <span class="hljs-comment">//输入防具属性</span><br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=m;i++)&#123;<br>cin&gt;&gt;b[i].f&gt;&gt;b[i].c;<br>&#125;<br>    <span class="hljs-comment">//输入怪物属性</span><br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=p;i++)&#123;<br>cin&gt;&gt;c[i].g&gt;&gt;c[i].f&gt;&gt;c[i].c;<br>&#125;<br>    <span class="hljs-comment">//排序</span><br><span class="hljs-built_in">sort</span>(a+<span class="hljs-number">1</span>,a+<span class="hljs-number">1</span>+n);<br><span class="hljs-built_in">sort</span>(b+<span class="hljs-number">1</span>,b+<span class="hljs-number">1</span>+m);<br><span class="hljs-built_in">sort</span>(c+<span class="hljs-number">1</span>,c+<span class="hljs-number">1</span>+p);<br><span class="hljs-built_in">build</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,m);<br>    <br><span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;<br>ll ans=<span class="hljs-number">-1e18</span>;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br>        <span class="hljs-comment">//暴力加入怪物的价值</span><br><span class="hljs-keyword">while</span>(j&lt;=p&amp;&amp;c[j].g&lt;a[i].g)&#123;<br><span class="hljs-type">int</span> l=<span class="hljs-number">1</span>,r=m;<br><span class="hljs-type">int</span> pos=m+<span class="hljs-number">1</span>;<br><span class="hljs-keyword">while</span>(l&lt;=r)&#123;<br><span class="hljs-type">int</span> mid=l+r&gt;&gt;<span class="hljs-number">1</span>;<br><span class="hljs-keyword">if</span>(b[mid].f&gt;c[j].f)&#123;<br>pos=mid;<br>r=mid<span class="hljs-number">-1</span>;<br>&#125;<br><span class="hljs-keyword">else</span>&#123;<br>l=mid+<span class="hljs-number">1</span>;<br>&#125;<br>&#125;<br>            <span class="hljs-comment">//[pos,m]下标中所有防具需要加上c价值</span><br><span class="hljs-keyword">if</span>(pos&lt;=m)&#123;<span class="hljs-comment">//update</span><br><span class="hljs-built_in">add</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,m,pos,m,c[j].c);<br>&#125;<br>++j;<br>&#125;<br>        <span class="hljs-comment">//计算选择当前武器的答案</span><br>ans=<span class="hljs-built_in">max</span>(ans,maxn[<span class="hljs-number">1</span>]-a[i].c);<br>&#125;<br>cout&lt;&lt;ans&lt;&lt;endl;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure><h2 id="E-Number-of-Groups"><a href="#E-Number-of-Groups" class="headerlink" title="E. Number of Groups"></a><a href="https://codeforces.com/contest/1691/problem/E">E. Number of Groups</a></h2><h3 id="题意-1"><a href="#题意-1" class="headerlink" title="题意"></a>题意</h3><p>给一些线段[x,y]，每个线段有一个颜色（0或者1），如果两个不同颜色的线段有交集，那他们在同一组，问有多少不同的组</p><h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h3><ol><li>将一个线段的x，y看成时间（time），将插入和删除看成时间（event），显然，一个线段的x是插入，y是删除，这是典型的扫描线想法</li><li>按照(time,event)排序，对于插入操作，我们需要知道可以和哪些线段合并，同时自己要记录自己在那个集合中</li><li>显然并查集</li></ol><h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol><li>开两个集合，存每种颜色的线段<strong>右端点</strong>即可</li><li>按照（time，event）排序后，遍历所有点对，如果是插入操作，查询谁跟他一组，暴力合并，如果是删除操作，删除这个点对即可。但是此时会超时，因为每个线段都可以被合并很多次，复杂度不可以保证。</li><li>考虑贪心，若两个0颜色线段在同一个集合中，此时他们肯定都没有删除，此时遍历到第i个<strong>点对</strong>，那么，如果是插入操作，此时只需要和最后一个合并即可（如果可以的话），因为合并的前提是当前点对的time，也就是<code>另一个线段的左端点&lt;=一个线段的左端点要&lt;=另一个线段的右端点</code>，所以贪心即可，边合并边删除即可，具体看代码</li></ol><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> ll;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N=<span class="hljs-number">1e6</span>+<span class="hljs-number">5</span>;<br>ll n;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">A</span>&#123;<br><span class="hljs-type">int</span> col;<br><span class="hljs-type">int</span> l,r;<br>&#125;a[N];<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">B</span>&#123;<br><span class="hljs-type">int</span> pos;<br><span class="hljs-type">bool</span> in;<span class="hljs-comment">//是否需要插入</span><br><span class="hljs-type">int</span> id;<br><span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>&lt;(<span class="hljs-type">const</span> B&amp;b)<span class="hljs-type">const</span>&#123;<br><span class="hljs-keyword">if</span>(pos!=b.pos)<span class="hljs-keyword">return</span> pos&lt;b.pos;<br><span class="hljs-keyword">if</span>(in!=b.in)<span class="hljs-keyword">return</span> in&gt;b.in;<br><span class="hljs-keyword">return</span> id&lt;b.id;<br>&#125;<br>&#125;;<br><span class="hljs-type">int</span> f[N];<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>&#123;<br><span class="hljs-keyword">if</span>(x==f[x])<span class="hljs-keyword">return</span> x;<br><span class="hljs-keyword">return</span> f[x]=<span class="hljs-built_in">find</span>(f[x]);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">solve</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br><br>vector&lt;B&gt;v;<br>cin&gt;&gt;n;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br>f[i]=i;<br>&#125;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br>cin&gt;&gt;a[i].col&gt;&gt;a[i].l&gt;&gt;a[i].r;<br>v.<span class="hljs-built_in">push_back</span>(&#123;a[i].l,<span class="hljs-number">1</span>,i&#125;);<br>v.<span class="hljs-built_in">push_back</span>(&#123;a[i].r,<span class="hljs-number">0</span>,i&#125;);<br>&#125;<br><span class="hljs-built_in">sort</span>(v.<span class="hljs-built_in">begin</span>(),v.<span class="hljs-built_in">end</span>());<br>set&lt;pair&lt;<span class="hljs-type">int</span>,<span class="hljs-type">int</span>&gt;&gt;p[<span class="hljs-number">2</span>];<span class="hljs-comment">//0表示第一个集合，1表示第二个集合</span><br><span class="hljs-comment">//pos,id</span><br><span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> qq:v)&#123;<br><span class="hljs-type">int</span> id=qq.id;<span class="hljs-comment">//id</span><br><span class="hljs-type">bool</span> in=qq.in;<span class="hljs-comment">//in</span><br><span class="hljs-type">int</span> pos=qq.pos;<span class="hljs-comment">//pos</span><br><span class="hljs-type">int</span> col=a[id].col;<span class="hljs-comment">//col</span><br><span class="hljs-keyword">if</span>(in)&#123;<br><span class="hljs-comment">//插入到本集合中</span><br>p[col].<span class="hljs-built_in">insert</span>(<span class="hljs-built_in">make_pair</span>(a[id].r,id));<br><span class="hljs-comment">//匹配另外一个集合的元素，并且保留最后一个</span><br><span class="hljs-keyword">while</span>(p[col^<span class="hljs-number">1</span>].<span class="hljs-built_in">size</span>()&gt;<span class="hljs-number">1</span>)&#123;<br>f[<span class="hljs-built_in">find</span>(id)]=<span class="hljs-built_in">find</span>(p[col^<span class="hljs-number">1</span>].<span class="hljs-built_in">begin</span>()-&gt;second);<br>p[col^<span class="hljs-number">1</span>].<span class="hljs-built_in">erase</span>(p[col^<span class="hljs-number">1</span>].<span class="hljs-built_in">begin</span>());<br>&#125;<br>            <span class="hljs-comment">//最后一个还没验证是否可以合并呢</span><br><span class="hljs-keyword">if</span>(p[col^<span class="hljs-number">1</span>].<span class="hljs-built_in">size</span>()==<span class="hljs-number">1</span>)&#123;<br>f[<span class="hljs-built_in">find</span>(id)]=<span class="hljs-built_in">find</span>(p[col^<span class="hljs-number">1</span>].<span class="hljs-built_in">begin</span>()-&gt;second);<br>&#125;<br>&#125;<br><span class="hljs-keyword">else</span>&#123;<br>p[col].<span class="hljs-built_in">erase</span>(<span class="hljs-built_in">make_pair</span>(a[id].r,id));<br>&#125;<br>&#125;<br><span class="hljs-type">int</span> ans=<span class="hljs-number">0</span>;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br><span class="hljs-keyword">if</span>(<span class="hljs-built_in">find</span>(i)==i)ans++;<br>&#125;<br>cout&lt;&lt;ans&lt;&lt;endl;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br><span class="hljs-type">int</span> t;<br>cin&gt;&gt;t;<br><span class="hljs-keyword">while</span>(t--)&#123;<br><span class="hljs-built_in">solve</span>();<br>&#125;<br><span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>算法</category>
+      
+      <category>扫描线</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>算法</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>容斥原理</title>
     <link href="/2023/11/30/%E5%AE%B9%E6%96%A5%E5%8E%9F%E7%90%86/"/>
     <url>/2023/11/30/%E5%AE%B9%E6%96%A5%E5%8E%9F%E7%90%86/</url>
@@ -12,6 +39,8 @@
     
     
     <categories>
+      
+      <category>算法</category>
       
       <category>数论</category>
       
@@ -29,19 +58,6 @@
   
   
   <entry>
-    <title></title>
-    <link href="/2023/11/30/%E6%89%AB%E6%8F%8F%E7%BA%BF/"/>
-    <url>/2023/11/30/%E6%89%AB%E6%8F%8F%E7%BA%BF/</url>
-    
-    <content type="html"><![CDATA[<p>本文介绍扫描线的几个题目</p><h1 id="二维偏序"><a href="#二维偏序" class="headerlink" title="二维偏序"></a>二维偏序</h1><h2 id="E-World-of-Darkraft-Battle-for-Azathoth"><a href="#E-World-of-Darkraft-Battle-for-Azathoth" class="headerlink" title="E. World of Darkraft: Battle for Azathoth"></a><a href="https://codeforces.com/problemset/problem/1321/E">E. World of Darkraft: Battle for Azathoth</a></h2><h3 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h3><p>给定一些武器和防具，每个武器有<strong>攻击力</strong>，<strong>花费</strong>,每个防具有<strong>防御力</strong>和<strong>花费</strong></p><p>给定一些怪物，每个怪物有<strong>攻击力</strong>，<strong>防御力</strong>，<strong>价值</strong></p><p>你只可以选择一个武器和一个防具，可以获得攻击力小于武器并且防御力小于防具的所有怪物的价值，求最大收益</p><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><ol><li>将武器和怪物按照攻击力排序，防具自己排序，并且按照防具的防御力防具顺序（id）建立<strong>下标线段树</strong></li><li><strong>双指针</strong>i指向武器，j指向怪物，当i指针向右边移动1个，j指针只会向右边移动，且以后的i一定可以选到当前的怪物j，所以当前的j造成的贡献会一直保留。所以将j的贡献加到线段树中即可</li><li>对于每一个武器i算最大价值，详细见代码</li></ol><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> ll;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N=<span class="hljs-number">1e6</span>+<span class="hljs-number">5</span>;<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">A</span>&#123;<br>ll g;<br>ll c;<br><span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>&lt;(<span class="hljs-type">const</span> A&amp;a)<span class="hljs-type">const</span>&#123;<br><span class="hljs-keyword">return</span> g&lt;a.g;<br>&#125;<br>&#125;a[N];<span class="hljs-comment">//gong</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">B</span>&#123;<br>ll f;<br>ll c;<br><span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>&lt;(<span class="hljs-type">const</span> B&amp;b)<span class="hljs-type">const</span>&#123;<br><span class="hljs-keyword">return</span> f&lt;b.f;<br>&#125;<br>&#125;b[N];<span class="hljs-comment">//fang</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">C</span>&#123;<br>ll g,f;<br>ll c;<br><span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>&lt;(<span class="hljs-type">const</span> C&amp;c)<span class="hljs-type">const</span>&#123;<br><span class="hljs-keyword">return</span> g&lt;c.g;<br>&#125;<br>&#125;c[N];<span class="hljs-comment">//monster</span><br><br>ll maxn[N&lt;&lt;<span class="hljs-number">2</span>];<br>ll tag[N&lt;&lt;<span class="hljs-number">2</span>];<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">pushup</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span></span>&#123;<br>ll lx=u&lt;&lt;<span class="hljs-number">1</span>;<br>ll rx=u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>;<br>maxn[u]=<span class="hljs-built_in">max</span>(maxn[lx],maxn[rx]);<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">pushdown</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span></span>&#123;<br>ll lx=u&lt;&lt;<span class="hljs-number">1</span>;<br>ll rx=u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>;<br><span class="hljs-keyword">if</span>(tag[u])&#123;<br>maxn[lx]+=tag[u];<br>maxn[rx]+=tag[u];<br>tag[lx]+=tag[u];<br>tag[rx]+=tag[u];<br>&#125;<br>tag[u]=<span class="hljs-number">0</span>;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">build</span><span class="hljs-params">(<span class="hljs-type">int</span> u,<span class="hljs-type">int</span> l,<span class="hljs-type">int</span> r)</span></span>&#123;<br><span class="hljs-keyword">if</span>(l==r)&#123;<br>maxn[u]=-b[l].c;<br><span class="hljs-keyword">return</span>;<br>&#125;<br>ll mid=l+r&gt;&gt;<span class="hljs-number">1</span>;<br><span class="hljs-built_in">build</span>(u&lt;&lt;<span class="hljs-number">1</span>,l,mid);<br><span class="hljs-built_in">build</span>(u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,mid+<span class="hljs-number">1</span>,r);<br><span class="hljs-built_in">pushup</span>(u);<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> u,<span class="hljs-type">int</span> l,<span class="hljs-type">int</span> r,<span class="hljs-type">int</span> L,<span class="hljs-type">int</span> R,ll x)</span></span>&#123;<br><span class="hljs-keyword">if</span>(L&lt;=l&amp;&amp;R&gt;=r)&#123;<br>maxn[u]+=x;<br>tag[u]+=x;<br><span class="hljs-keyword">return</span>;<br>&#125;<br><span class="hljs-built_in">pushdown</span>(u);<br>ll mid=l+r&gt;&gt;<span class="hljs-number">1</span>;<br><span class="hljs-keyword">if</span>(L&lt;=mid)&#123;<br><span class="hljs-built_in">add</span>(u&lt;&lt;<span class="hljs-number">1</span>,l,mid,L,R,x);<br>&#125;<br><span class="hljs-keyword">if</span>(R&gt;mid)&#123;<br><span class="hljs-built_in">add</span>(u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,mid+<span class="hljs-number">1</span>,r,L,R,x);<br>&#125;<br><span class="hljs-built_in">pushup</span>(u);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>std::ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);<br>std::cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);<br>std::cout.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);<br><span class="hljs-type">int</span> n,m,p;<br>cin&gt;&gt;n&gt;&gt;m&gt;&gt;p;<br>    <span class="hljs-comment">//输入武器属性</span><br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br>cin&gt;&gt;a[i].g&gt;&gt;a[i].c;<br>&#125;<br>    <span class="hljs-comment">//输入防具属性</span><br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=m;i++)&#123;<br>cin&gt;&gt;b[i].f&gt;&gt;b[i].c;<br>&#125;<br>    <span class="hljs-comment">//输入怪物属性</span><br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=p;i++)&#123;<br>cin&gt;&gt;c[i].g&gt;&gt;c[i].f&gt;&gt;c[i].c;<br>&#125;<br>    <span class="hljs-comment">//排序</span><br><span class="hljs-built_in">sort</span>(a+<span class="hljs-number">1</span>,a+<span class="hljs-number">1</span>+n);<br><span class="hljs-built_in">sort</span>(b+<span class="hljs-number">1</span>,b+<span class="hljs-number">1</span>+m);<br><span class="hljs-built_in">sort</span>(c+<span class="hljs-number">1</span>,c+<span class="hljs-number">1</span>+p);<br><span class="hljs-built_in">build</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,m);<br>    <br><span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;<br>ll ans=<span class="hljs-number">-1e18</span>;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br>        <span class="hljs-comment">//暴力加入怪物的价值</span><br><span class="hljs-keyword">while</span>(j&lt;=p&amp;&amp;c[j].g&lt;a[i].g)&#123;<br><span class="hljs-type">int</span> l=<span class="hljs-number">1</span>,r=m;<br><span class="hljs-type">int</span> pos=m+<span class="hljs-number">1</span>;<br><span class="hljs-keyword">while</span>(l&lt;=r)&#123;<br><span class="hljs-type">int</span> mid=l+r&gt;&gt;<span class="hljs-number">1</span>;<br><span class="hljs-keyword">if</span>(b[mid].f&gt;c[j].f)&#123;<br>pos=mid;<br>r=mid<span class="hljs-number">-1</span>;<br>&#125;<br><span class="hljs-keyword">else</span>&#123;<br>l=mid+<span class="hljs-number">1</span>;<br>&#125;<br>&#125;<br>            <span class="hljs-comment">//[pos,m]下标中所有防具需要加上c价值</span><br><span class="hljs-keyword">if</span>(pos&lt;=m)&#123;<span class="hljs-comment">//update</span><br><span class="hljs-built_in">add</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,m,pos,m,c[j].c);<br>&#125;<br>++j;<br>&#125;<br>        <span class="hljs-comment">//计算选择当前武器的答案</span><br>ans=<span class="hljs-built_in">max</span>(ans,maxn[<span class="hljs-number">1</span>]-a[i].c);<br>&#125;<br>cout&lt;&lt;ans&lt;&lt;endl;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure><h2 id="E-Number-of-Groups"><a href="#E-Number-of-Groups" class="headerlink" title="E. Number of Groups"></a><a href="https://codeforces.com/contest/1691/problem/E">E. Number of Groups</a></h2><h3 id="题意-1"><a href="#题意-1" class="headerlink" title="题意"></a>题意</h3><p>给一些线段[x,y]，每个线段有一个颜色（0或者1），如果两个不同颜色的线段有交集，那他们在同一组，问有多少不同的组</p><h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h3><ol><li>将一个线段的x，y看成时间（time），将插入和删除看成时间（event），显然，一个线段的x是插入，y是删除，这是典型的扫描线想法</li><li>按照(time,event)排序，对于插入操作，我们需要知道可以和哪些线段合并，同时自己要记录自己在那个集合中</li><li>显然并查集</li></ol><h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol><li>开两个集合，存每种颜色的线段<strong>右端点</strong>即可</li><li>按照（time，event）排序后，遍历所有点对，如果是插入操作，查询谁跟他一组，暴力合并，如果是删除操作，删除这个点对即可。但是此时会超时，因为每个线段都可以被合并很多次，复杂度不可以保证。</li><li>考虑贪心，若两个0颜色线段在同一个集合中，此时他们肯定都没有删除，此时遍历到第i个<strong>点对</strong>，那么，如果是插入操作，此时只需要和最后一个合并即可（如果可以的话），因为合并的前提是当前点对的time，也就是<code>另一个线段的左端点&lt;=一个线段的左端点要&lt;=另一个线段的右端点</code>，所以贪心即可，边合并边删除即可，具体看代码</li></ol><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> ll;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N=<span class="hljs-number">1e6</span>+<span class="hljs-number">5</span>;<br>ll n;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">A</span>&#123;<br><span class="hljs-type">int</span> col;<br><span class="hljs-type">int</span> l,r;<br>&#125;a[N];<br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">B</span>&#123;<br><span class="hljs-type">int</span> pos;<br><span class="hljs-type">bool</span> in;<span class="hljs-comment">//是否需要插入</span><br><span class="hljs-type">int</span> id;<br><span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>&lt;(<span class="hljs-type">const</span> B&amp;b)<span class="hljs-type">const</span>&#123;<br><span class="hljs-keyword">if</span>(pos!=b.pos)<span class="hljs-keyword">return</span> pos&lt;b.pos;<br><span class="hljs-keyword">if</span>(in!=b.in)<span class="hljs-keyword">return</span> in&gt;b.in;<br><span class="hljs-keyword">return</span> id&lt;b.id;<br>&#125;<br>&#125;;<br><span class="hljs-type">int</span> f[N];<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>&#123;<br><span class="hljs-keyword">if</span>(x==f[x])<span class="hljs-keyword">return</span> x;<br><span class="hljs-keyword">return</span> f[x]=<span class="hljs-built_in">find</span>(f[x]);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">solve</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br><br>vector&lt;B&gt;v;<br>cin&gt;&gt;n;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br>f[i]=i;<br>&#125;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br>cin&gt;&gt;a[i].col&gt;&gt;a[i].l&gt;&gt;a[i].r;<br>v.<span class="hljs-built_in">push_back</span>(&#123;a[i].l,<span class="hljs-number">1</span>,i&#125;);<br>v.<span class="hljs-built_in">push_back</span>(&#123;a[i].r,<span class="hljs-number">0</span>,i&#125;);<br>&#125;<br><span class="hljs-built_in">sort</span>(v.<span class="hljs-built_in">begin</span>(),v.<span class="hljs-built_in">end</span>());<br>set&lt;pair&lt;<span class="hljs-type">int</span>,<span class="hljs-type">int</span>&gt;&gt;p[<span class="hljs-number">2</span>];<span class="hljs-comment">//0表示第一个集合，1表示第二个集合</span><br><span class="hljs-comment">//pos,id</span><br><span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span> qq:v)&#123;<br><span class="hljs-type">int</span> id=qq.id;<span class="hljs-comment">//id</span><br><span class="hljs-type">bool</span> in=qq.in;<span class="hljs-comment">//in</span><br><span class="hljs-type">int</span> pos=qq.pos;<span class="hljs-comment">//pos</span><br><span class="hljs-type">int</span> col=a[id].col;<span class="hljs-comment">//col</span><br><span class="hljs-keyword">if</span>(in)&#123;<br><span class="hljs-comment">//插入到本集合中</span><br>p[col].<span class="hljs-built_in">insert</span>(<span class="hljs-built_in">make_pair</span>(a[id].r,id));<br><span class="hljs-comment">//匹配另外一个集合的元素，并且保留最后一个</span><br><span class="hljs-keyword">while</span>(p[col^<span class="hljs-number">1</span>].<span class="hljs-built_in">size</span>()&gt;<span class="hljs-number">1</span>)&#123;<br>f[<span class="hljs-built_in">find</span>(id)]=<span class="hljs-built_in">find</span>(p[col^<span class="hljs-number">1</span>].<span class="hljs-built_in">begin</span>()-&gt;second);<br>p[col^<span class="hljs-number">1</span>].<span class="hljs-built_in">erase</span>(p[col^<span class="hljs-number">1</span>].<span class="hljs-built_in">begin</span>());<br>&#125;<br>            <span class="hljs-comment">//最后一个还没验证是否可以合并呢</span><br><span class="hljs-keyword">if</span>(p[col^<span class="hljs-number">1</span>].<span class="hljs-built_in">size</span>()==<span class="hljs-number">1</span>)&#123;<br>f[<span class="hljs-built_in">find</span>(id)]=<span class="hljs-built_in">find</span>(p[col^<span class="hljs-number">1</span>].<span class="hljs-built_in">begin</span>()-&gt;second);<br>&#125;<br>&#125;<br><span class="hljs-keyword">else</span>&#123;<br>p[col].<span class="hljs-built_in">erase</span>(<span class="hljs-built_in">make_pair</span>(a[id].r,id));<br>&#125;<br>&#125;<br><span class="hljs-type">int</span> ans=<span class="hljs-number">0</span>;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br><span class="hljs-keyword">if</span>(<span class="hljs-built_in">find</span>(i)==i)ans++;<br>&#125;<br>cout&lt;&lt;ans&lt;&lt;endl;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br><span class="hljs-type">int</span> t;<br>cin&gt;&gt;t;<br><span class="hljs-keyword">while</span>(t--)&#123;<br><span class="hljs-built_in">solve</span>();<br>&#125;<br><span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>]]></content>
-    
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>exgcd</title>
     <link href="/2023/11/30/exgcd/"/>
     <url>/2023/11/30/exgcd/</url>
@@ -50,6 +66,8 @@
     
     
     <categories>
+      
+      <category>算法</category>
       
       <category>数论</category>
       
@@ -76,6 +94,8 @@
     
     <categories>
       
+      <category>算法</category>
+      
       <category>dp</category>
       
     </categories>
@@ -101,7 +121,9 @@
     
     <categories>
       
-      <category>最小生成树</category>
+      <category>算法</category>
+      
+      <category>重构树</category>
       
     </categories>
     
@@ -125,6 +147,8 @@
     
     
     <categories>
+      
+      <category>算法</category>
       
       <category>dp</category>
       
@@ -151,7 +175,9 @@
     
     <categories>
       
-      <category>CMake</category>
+      <category>工程</category>
+      
+      <category>Cmake</category>
       
     </categories>
     
@@ -175,6 +201,8 @@
     
     
     <categories>
+      
+      <category>工程</category>
       
       <category>设计模式</category>
       
@@ -201,6 +229,8 @@
     
     <categories>
       
+      <category>后端</category>
+      
       <category>网络编程</category>
       
     </categories>
@@ -225,6 +255,8 @@
     
     
     <categories>
+      
+      <category>算法</category>
       
       <category>二分</category>
       
@@ -251,6 +283,8 @@
     
     <categories>
       
+      <category>后端</category>
+      
       <category>网络编程</category>
       
     </categories>
@@ -275,6 +309,8 @@
     
     
     <categories>
+      
+      <category>后端</category>
       
       <category>网络编程</category>
       
@@ -301,6 +337,8 @@
     
     <categories>
       
+      <category>后端</category>
+      
       <category>网络编程</category>
       
     </categories>
@@ -325,6 +363,8 @@
     
     
     <categories>
+      
+      <category>后端</category>
       
       <category>网络编程</category>
       
@@ -351,6 +391,8 @@
     
     <categories>
       
+      <category>后端</category>
+      
       <category>网络编程</category>
       
     </categories>
@@ -375,6 +417,8 @@
     
     
     <categories>
+      
+      <category>后端</category>
       
       <category>网络编程</category>
       
@@ -401,6 +445,8 @@
     
     <categories>
       
+      <category>算法</category>
+      
       <category>dp</category>
       
     </categories>
@@ -425,6 +471,8 @@
     
     
     <categories>
+      
+      <category>算法</category>
       
       <category>dp</category>
       
@@ -451,6 +499,8 @@
     
     <categories>
       
+      <category>后端</category>
+      
       <category>网络编程</category>
       
     </categories>
@@ -475,6 +525,8 @@
     
     
     <categories>
+      
+      <category>工程</category>
       
       <category>docker</category>
       
@@ -501,6 +553,8 @@
     
     <categories>
       
+      <category>算法</category>
+      
       <category>字典树</category>
       
     </categories>
@@ -525,6 +579,8 @@
     
     
     <categories>
+      
+      <category>算法</category>
       
       <category>dp</category>
       
