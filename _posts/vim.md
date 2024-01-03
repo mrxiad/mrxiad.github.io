@@ -4,7 +4,6 @@ date: 2023-12-10 00:22:30
 tags: 技术
 categories: 
 - linux
-- vim
 ---
 
 
