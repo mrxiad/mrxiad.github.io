@@ -1,5 +1,5 @@
 ---
-title: CMake配置+库概念(待完成)
+title: CMake配置
 date: 2024-01-03 22:22:30
 tags: 技术
 categories:
@@ -278,6 +278,131 @@ MyProject/
   ```
 
 8. ### file命令
+
+	### 文件操作
+
+	1. **file(READ)**
+
+		用于将文件内容读取到变量中。
+
+		```cmake
+		file(READ <filename> <variable> [OFFSET <offset>] [LIMIT <max-in>] [HEX])
+		```
+
+	2. **file(WRITE)**
+
+		用于将内容写入文件。
+
+		```cmake
+		file(WRITE <filename> "<content>")
+		```
+
+	3. **file(APPEND)**
+
+		用于向文件中追加内容。
+
+		```cmake
+		file(APPEND <filename> "<content>")
+		```
+
+	4. **file(TOUCH)**
+
+		用于创建空文件或者更新文件的时间戳。
+
+		```cmake
+		file(TOUCH <filename>)
+		```
+
+	### 文件夹操作
+
+	1. **file(GLOB)**
+
+		用于匹配规则在指定的目录内匹配到所需要的文件。
+
+		```cmake
+		file(GLOB <variable> [LIST_DIRECTORIES true[false]] [RELATIVE <path>] [CONFIGURE_DEPENDS] [<globbing-expression> ...])
+		```
+
+	2. **file(GLOB_RECURSE)**
+
+		用于递归匹配文件，包括子目录中的文件。
+
+		
+
+	3. **file(RENAME)**
+
+		用于重命名文件。
+
+		```cmake
+		file(RENAME <old-name> <new-name>)
+		```
+
+		
+
+	4. **file(REMOVE)**
+
+		```cmake
+		file(REMOVE <filename>)
+		```
+
+		
+
+	5. **file(MAKE_DIRECTORY)**
+
+		用于创建目录。
+
+		```cmake
+		file(MAKE_DIRECTORY <directory>)
+		```
+
+		
+
+	6. **file(COPY)**
+
+		```cmake
+		file(COPY <files>... DESTINATION <dir> [...])
+		```
+
+		
+
+	7. **file(INSTALL)**
+
+		用于将文件安装到指定目录中。
+
+		```cmake
+		file(INSTALL <files>... DESTINATION <dir> [...])
+		```
+
+		
+
+	### 路径转换
+
+	1. **file(RELATIVE_PATH)**
+
+		用于获取相对路径。
+
+		```
+		cmakeCopy code
+		file(RELATIVE_PATH <variable> <directory> <file>)
+		```
+
+	2. **file(TO_CMAKE_PATH)**
+
+		用于将路径转换为CMake风格的路径。
+
+		```
+		cmakeCopy code
+		file(TO_CMAKE_PATH <path> <variable>)
+		```
+
+	3. **file(TO_NATIVE_PATH)**
+
+		用于将路径转换为本地操作系统风格的路径。
+
+		```
+		cmakeCopy code
+		file(TO_NATIVE_PATH <path> <variable>)
+		```
 
 	
 
