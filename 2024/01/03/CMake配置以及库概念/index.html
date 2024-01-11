@@ -18,20 +18,20 @@
   
     <meta name="description" content="本文介绍CMake的常用命令以及库的相关概念 项目地址：cmake教程 安装Cmake在ubuntu18.04下安装cmake 1sudo apt install cmake  安装后查看版本 1cmake -version      CMake编写【C++】Cmake使用教程（看这一篇就够了）_隐居的遮天恶鬼的博客-CSDN博客 【C++】静态库和动态库文件的生成和使用_c++ 生成静态库和动态">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CMake配置+库概念(待完成)">
+<meta property="og:title" content="CMake配置">
 <meta property="og:url" content="http://example.com/2024/01/03/CMake%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E5%BA%93%E6%A6%82%E5%BF%B5/index.html">
 <meta property="og:site_name" content="Mrxiad">
 <meta property="og:description" content="本文介绍CMake的常用命令以及库的相关概念 项目地址：cmake教程 安装Cmake在ubuntu18.04下安装cmake 1sudo apt install cmake  安装后查看版本 1cmake -version      CMake编写【C++】Cmake使用教程（看这一篇就够了）_隐居的遮天恶鬼的博客-CSDN博客 【C++】静态库和动态库文件的生成和使用_c++ 生成静态库和动态">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-01-03T14:22:30.000Z">
-<meta property="article:modified_time" content="2024-01-11T14:02:15.978Z">
+<meta property="article:modified_time" content="2024-01-11T14:39:10.312Z">
 <meta property="article:author" content="Mrxiad">
 <meta property="article:tag" content="技术">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>CMake配置+库概念(待完成) - Mrxiad</title>
+  <title>CMake配置 - Mrxiad</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -209,7 +209,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="CMake配置+库概念(待完成)"></span>
+            <span id="subtitle" data-typed-text="CMake配置"></span>
           
         </div>
 
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7k 字
+          8.2k 字
         
       </span>
     
@@ -243,7 +243,7 @@
         
         
         
-          59 分钟
+          69 分钟
         
       </span>
     
@@ -280,7 +280,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">CMake配置+库概念(待完成)</h1>
+            <h1 id="seo-header">CMake配置</h1>
             
             
               <div class="markdown-body">
@@ -376,7 +376,67 @@
   <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">target_link_libraries</span>(myApp PRIVATE libA libB libExternal)<br><span class="hljs-comment">#myqpp是可执行文件（也可以是库文件）</span><br><span class="hljs-comment">#libA，libB，libExternal是库文件</span><br></code></pre></td></tr></table></figure>
 
 <ol start="8">
-<li><h3 id="file命令"><a href="#file命令" class="headerlink" title="file命令"></a>file命令</h3></li>
+<li><h3 id="file命令"><a href="#file命令" class="headerlink" title="file命令"></a>file命令</h3><h3 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h3><ol>
+<li><p><strong>file(READ)</strong></p>
+<p> 用于将文件内容读取到变量中。</p>
+ <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">file</span>(READ &lt;filename&gt; &lt;variable&gt; [OFFSET &lt;offset&gt;] [LIMIT &lt;max-in&gt;] [HEX])<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>file(WRITE)</strong></p>
+<p> 用于将内容写入文件。</p>
+ <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">file</span>(WRITE &lt;filename&gt; <span class="hljs-string">&quot;&lt;content&gt;&quot;</span>)<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>file(APPEND)</strong></p>
+<p> 用于向文件中追加内容。</p>
+ <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">file</span>(APPEND &lt;filename&gt; <span class="hljs-string">&quot;&lt;content&gt;&quot;</span>)<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>file(TOUCH)</strong></p>
+<p> 用于创建空文件或者更新文件的时间戳。</p>
+ <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">file</span>(TOUCH &lt;filename&gt;)<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="文件夹操作"><a href="#文件夹操作" class="headerlink" title="文件夹操作"></a>文件夹操作</h3><ol>
+<li><p><strong>file(GLOB)</strong></p>
+<p> 用于匹配规则在指定的目录内匹配到所需要的文件。</p>
+ <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">file</span>(GLOB &lt;variable&gt; [LIST_DIRECTORIES <span class="hljs-keyword">true</span>[<span class="hljs-keyword">false</span>]] [RELATIVE &lt;path&gt;] [CONFIGURE_DEPENDS] [&lt;globbing-expression&gt; ...])<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>file(GLOB_RECURSE)</strong></p>
+<p> 用于递归匹配文件，包括子目录中的文件。</p>
+</li>
+<li><p><strong>file(RENAME)</strong></p>
+<p> 用于重命名文件。</p>
+ <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">file</span>(RENAME &lt;old-name&gt; &lt;new-name&gt;)<br></code></pre></td></tr></table></figure>
+
+</li>
+<li><p><strong>file(REMOVE)</strong></p>
+ <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">file</span>(<span class="hljs-keyword">REMOVE</span> &lt;filename&gt;)<br></code></pre></td></tr></table></figure>
+
+</li>
+<li><p><strong>file(MAKE_DIRECTORY)</strong></p>
+<p> 用于创建目录。</p>
+ <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">file</span>(<span class="hljs-keyword">MAKE_DIRECTORY</span> &lt;directory&gt;)<br></code></pre></td></tr></table></figure>
+
+</li>
+<li><p><strong>file(COPY)</strong></p>
+ <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">file</span>(COPY &lt;files&gt;... DESTINATION &lt;dir&gt; [...])<br></code></pre></td></tr></table></figure>
+
+</li>
+<li><p><strong>file(INSTALL)</strong></p>
+<p> 用于将文件安装到指定目录中。</p>
+ <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">file</span>(<span class="hljs-keyword">INSTALL</span> &lt;files&gt;... DESTINATION &lt;dir&gt; [...])<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="路径转换"><a href="#路径转换" class="headerlink" title="路径转换"></a>路径转换</h3><ol>
+<li><p><strong>file(RELATIVE_PATH)</strong></p>
+<p> 用于获取相对路径。</p>
+ <figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">cmakeCopy code<br><span class="hljs-built_in">file</span>(RELATIVE_PATH &lt;<span class="hljs-built_in">variable</span>&gt; &lt;<span class="hljs-built_in">directory</span>&gt; &lt;<span class="hljs-built_in">file</span>&gt;)<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>file(TO_CMAKE_PATH)</strong></p>
+<p> 用于将路径转换为CMake风格的路径。</p>
+ <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">cmakeCopy <span class="hljs-selector-tag">code</span><br><span class="hljs-function"><span class="hljs-title">file</span><span class="hljs-params">(TO_CMAKE_PATH &lt;path&gt; &lt;variable&gt;)</span></span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>file(TO_NATIVE_PATH)</strong></p>
+<p> 用于将路径转换为本地操作系统风格的路径。</p>
+ <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">cmakeCopy <span class="hljs-selector-tag">code</span><br><span class="hljs-function"><span class="hljs-title">file</span><span class="hljs-params">(TO_NATIVE_PATH &lt;path&gt; &lt;variable&gt;)</span></span><br></code></pre></td></tr></table></figure></li>
+</ol>
+</li>
 <li></li>
 </ol>
 <h1 id="添加外部库实战"><a href="#添加外部库实战" class="headerlink" title="添加外部库实战"></a>添加外部库实战</h1><h2 id="boost库"><a href="#boost库" class="headerlink" title="boost库"></a>boost库</h2><ol>
@@ -443,7 +503,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>CMake配置+库概念(待完成)</div>
+      <div>CMake配置</div>
       <div>http://example.com/2024/01/03/CMake配置以及库概念/</div>
     </div>
     <div class="license-meta">
