@@ -139,7 +139,7 @@ MyProject/
 	# 获取当前处理的CMakeLists.txt的目录的路径
 	set(CURRENT_LIST_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 	
-	# 获取最近通过project()命令定义的项目的源目录(根cmake目录)
+	# 获取最近通过project()命令定义的子项目的源目录(cmake目录)
 	set(LAST_PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR})
 	
 	# 获取包含当前正在处理的列表文件的目录
@@ -156,13 +156,13 @@ MyProject/
 	set(CURRENT_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
 	
 	# 设置可执行文件的输出目录
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 	
 	# 设置库文件（动态）的输出目录
-	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 	
 	# 设置静态库的输出目录
-	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/archive)
+	set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/archive)
 	```
 
 3. ### 系统和平台相关
@@ -191,7 +191,7 @@ MyProject/
 
 > 注意：
 > CMAKE_BINARY_DIR是执行cmake命令的目录，外部构建的时候是build目录
-> PROJECT_SOURCE_DIR是项目的根CMakeLists.txt所在目录
+> CMAKE_SOURCE_DIR是项目的根CMakeLists.txt所在目录
 > CMAKE_CURRENT_SOURCE_DIR是当前CMakeLists.txt所在目录
 
 ### 区分预定义变量和自定义变量
@@ -234,8 +234,8 @@ MyProject/
 
 	```cmake
 	# 设置可执行文件和库文件的输出目录
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
-	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/libs)
+	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+	set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/libs)
 	```
 
 3. ### 添加子目录
@@ -258,16 +258,30 @@ MyProject/
 5. ### 为目标添加头文件搜索路径
 
 	```cmake
-	target_include_directories(libA PUBLIC ${PROJECT_SOURCE_DIR}/include/libA)
+	target_include_directories(libA PUBLIC ${CMAKE_SOURCE_DIR}/include/libA)
 	```
 
-6. ### 为目标链接库
+6. ### 为目标添加库文件搜索路径
 
 	```cmake
-	target_link_libraries(myApp PRIVATE libA libB libExternal)
-	#myqpp是可执行文件（也可以是库文件）
-	#libA，libB，libExternal是库文件
+	target_include_directories(libA PRIVATE ${CMAKE_SOURCE_DIR}/lib)
 	```
+	
+	
+	
+7. ### 为目标链接库
+
+  ```cmake
+  target_link_libraries(myApp PRIVATE libA libB libExternal)
+  #myqpp是可执行文件（也可以是库文件）
+  #libA，libB，libExternal是库文件
+  ```
+
+8. ### file命令
+
+	
+
+9. 
 
 
 
@@ -350,4 +364,62 @@ MyProject/
 ## Json库
 
 
+
+
+
+# 根CMakeLists.txt文件
+
+```cmake
+# 设置CMake的最低版本要求
+cmake_minimum_required(VERSION 3.15)
+
+# 设置项目名称和版本
+project(MyComplexProject VERSION 1.0)
+
+# 设置全局 C++ 标准
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# 如果没有指定构建类型，则默认设置为 Debug
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+message(STATUS "构建类型: ${CMAKE_BUILD_TYPE}")
+
+# 设置可执行文件和库的输出目录
+message(STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
+message(STATUS "可执行文件输出目录: ${CMAKE_SOURCE_DIR}/bin")
+message(STATUS "动态库输出目录: ${CMAKE_SOURCE_DIR}/lib")
+message(STATUS "静态库输出目录: ${CMAKE_SOURCE_DIR}/archive")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)  # 可执行文件
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)  # 动态库
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/archive)  # 静态库
+
+# 设置 CMake 以查找 Boost 的动态库
+set(Boost_USE_STATIC_LIBS OFF)        # 只使用 Boost 的动态库
+set(Boost_USE_MULTITHREADED ON)       # 使用多线程版本的 Boost
+set(Boost_USE_STATIC_RUNTIME OFF)     # 不使用 Boost 静态运行时库
+
+# 查找 Boost 库
+find_package(Boost 1.65 REQUIRED COMPONENTS system filesystem)
+
+# 如果找到了 Boost，则包含 Boost 的头文件目录
+if(Boost_FOUND)
+    message(STATUS "找到了 Boost 库 ${Boost_VERSION_MAJOR}.${Boost_VERSION_MINOR}.${Boost_VERSION_PATCH} 在 ${Boost_INCLUDE_DIRS}")
+    include_directories(${Boost_INCLUDE_DIRS})
+endif()
+
+
+# 添加源代码子目录
+add_subdirectory(server)
+add_subdirectory(src)
+
+# 根据构建类型添加编译器标志
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_options(-g -O0 -Wall -Wextra -Werror)  # Debug模式的编译器标志
+else()
+    add_compile_options(-O2)  # 非Debug模式的优化选项
+endif()
+```
 
