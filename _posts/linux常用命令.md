@@ -1,6 +1,6 @@
 ---
 title: linux常用指令
-date: 2024-01-17 23:28:00
+date: 2024-1-17 23:28:00
 tags: 技术
 categories: 
 - linux
