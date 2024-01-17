@@ -16,15 +16,15 @@
   <meta name="author" content="Mrxiad">
   <meta name="keywords" content="">
   
-    <meta name="description" content="进程相关 ps aux：查看所有进程 ps aux | grep nginx : 查看nginx进程 kill -9 pid：杀死pid进程">
+    <meta name="description" content="已知进程杀死进程 ps aux：查看所有进程 ps aux | grep nginx : 查看nginx进程 kill -9 pid：杀死pid进程  已知端口杀死进程方案一 查看哪些端口被占用（tcp，udp）   1netstat -tuln  杀死端口进程   1sudo fuser -k 8080  方案二 查看端口的进程   12345lsof -i :8080#输出COMMAND">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux常用指令">
 <meta property="og:url" content="http://example.com/2023/12/10/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="Mrxiad">
-<meta property="og:description" content="进程相关 ps aux：查看所有进程 ps aux | grep nginx : 查看nginx进程 kill -9 pid：杀死pid进程">
+<meta property="og:description" content="已知进程杀死进程 ps aux：查看所有进程 ps aux | grep nginx : 查看nginx进程 kill -9 pid：杀死pid进程  已知端口杀死进程方案一 查看哪些端口被占用（tcp，udp）   1netstat -tuln  杀死端口进程   1sudo fuser -k 8080  方案二 查看端口的进程   12345lsof -i :8080#输出COMMAND">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-12-09T16:31:32.000Z">
-<meta property="article:modified_time" content="2023-12-09T16:57:45.674Z">
+<meta property="article:modified_time" content="2024-01-17T15:22:48.135Z">
 <meta property="article:author" content="Mrxiad">
 <meta property="article:tag" content="技术">
 <meta name="twitter:card" content="summary_large_image">
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          58 字
+          273 字
         
       </span>
     
@@ -243,7 +243,7 @@
         
         
         
-          1 分钟
+          3 分钟
         
       </span>
     
@@ -285,10 +285,24 @@
             
               <div class="markdown-body">
                 
-                <h1 id="进程相关"><a href="#进程相关" class="headerlink" title="进程相关"></a>进程相关</h1><ul>
+                <h1 id="已知进程杀死进程"><a href="#已知进程杀死进程" class="headerlink" title="已知进程杀死进程"></a>已知进程杀死进程</h1><ul>
 <li>ps aux：查看所有进程</li>
 <li>ps aux | grep nginx : 查看nginx进程</li>
 <li>kill -9 pid：杀死pid进程</li>
+</ul>
+<h1 id="已知端口杀死进程"><a href="#已知端口杀死进程" class="headerlink" title="已知端口杀死进程"></a>已知端口杀死进程</h1><h2 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h2><ul>
+<li><p>查看哪些端口被占用（tcp，udp）</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">netstat -tuln<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>杀死端口进程</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo fuser -k 8080<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h2><ul>
+<li><p>查看端口的进程</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">lsof -i :8080<br><br><span class="hljs-comment">#输出</span><br>COMMAND     PID    USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME<br>httpServe 24009 xiadong    3u  IPv4 1496040      0t0  TCP *:http-alt (LISTEN)<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>杀死这个进程</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">kill</span> -9 24009<br></code></pre></td></tr></table></figure></li>
 </ul>
 
                 
