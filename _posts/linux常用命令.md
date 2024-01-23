@@ -33,7 +33,7 @@ categories:
 - 查看哪些端口被占用（tcp，udp）
 
 	```bash
-	netstat -tuln
+	netstat -tulnp
 	```
 
 - 杀死端口进程
