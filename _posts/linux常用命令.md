@@ -39,9 +39,12 @@ categories:
 - 杀死端口进程
 
 	```bash
+	sudo fuser -k [端口]
+	
+#例如
 	sudo fuser -k 8080
 	```
-
+	
 	
 
 
@@ -50,18 +53,25 @@ categories:
 
 - 查看端口的进程
 
-	```bash
-	lsof -i :8080
-	
-	#输出
-	COMMAND     PID    USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME
-	httpServe 24009 xiadong    3u  IPv4 1496040      0t0  TCP *:http-alt (LISTEN)
-	```
+  ```bash
+  lsof -i :[端口]
+  
+  #例如
+  lsof -i :8080
+  
+  #输出
+  COMMAND     PID    USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME
+  httpServe 24009 xiadong    3u  IPv4 1496040      0t0  TCP *:http-alt (LISTEN)
+  ```
 
 - 杀死这个进程
 
 	```bash
+	kill -9 [pid]
+	
+#例如
 	kill -9 24009
 	```
-
 	
+	
+
