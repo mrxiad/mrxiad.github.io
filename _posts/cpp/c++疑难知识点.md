@@ -1,6 +1,6 @@
 ---
 title: c++恶心知识点
-date: 2023-12-5 22:23:12
+date: 2024-2-21 15:19:12
 tags: 技术
 categories:
 - c++
@@ -9,51 +9,6 @@ categories:
 
 
 # 本文介绍c++常用知识点
-
-
-
-## lambda
-
-```cpp
-#include<bits/stdc++.h>
-using namespace std;
-
-void call(function<void(int x)>f){
-    f(12);
-}
-
-int main()
-{
-    int x=10;
-    auto f=[&x](int y){
-       x=y;
-    };
-    call(f);
-    cout<<x<<endl;//x=12
-}
-```
-
-```cpp
-#include<bits/stdc++.h>
-using namespace std;
-
-int main()
-{
-    vector<int>v(10,0);
-    for(int i=0;i<10;i++){
-        v[i]=i;
-    }
-    sort(v.begin(),v.end(),[](int a,int b){
-        return a>b;
-    });
-    for(auto i:v){
-        cout<<i<<" ";//9 8 7 6 5 4 3 2 1 0
-    }
-    return 0;
-}
-```
-
-
 
 
 
@@ -253,3 +208,197 @@ int main()
 ```
 
 > 最终输出yes
+
+
+
+
+
+## 函数指针
+
+### 基本函数指针语法
+
+假设我们有一个简单的函数，如下所示：
+
+```cpp
+void myFunction(int a) {
+    std::cout << "Value: " << a << std::endl;
+}
+```
+
+为了声明一个指向这个函数的指针，你可以使用以下语法：
+
+```cpp
+void (*functionPtr)(int);
+```
+
+这里，`functionPtr`是一个指针，指向一个接受`int`参数并返回`void`的函数。你可以这样赋值给它：
+
+```cpp
+functionPtr = myFunction;
+```
+
+然后，你可以通过解引用指针来调用函数，如下：
+
+```cpp
+(*functionPtr)(10); 
+// 或者 functionPtr(10); 两者在这里是等价的
+```
+
+### 使用typedef简化函数指针
+
+使用`typedef`可以使函数指针的声明更简单、更易读。继续使用上面的例子，我们可以这样定义一个类型别名：
+
+```cpp
+typedef void (*FunctionPointerType)(int);
+```
+
+然后使用这个别名来声明指针：
+
+```cpp
+FunctionPointerType myPtr = myFunction;
+myPtr(10); // 调用函数
+```
+
+### 函数指针指向类成员函数
+
+当你想要指针指向类的成员函数时，语法会稍有不同，因为你需要处理`this`指针。这里是一个例子：
+
+```cpp
+class MyClass {
+public:
+    void memberFunction(int a) {
+        std::cout << "Class Value: " << a << std::endl;
+    }
+};
+```
+
+为了声明一个指向这个成员函数的指针，你需要这样做：
+
+```cpp
+void (MyClass::*ptr)(int) = &MyClass::memberFunction;
+```
+
+使用`typedef`简化：
+
+```cpp
+typedef void (MyClass::*MyClassFunctionPointer)(int);
+MyClassFunctionPointer ptr = &MyClass::memberFunction;
+```
+
+调用这个成员函数指针时，你需要一个类的实例，并且使用`->*`或`.*`运算符，如下：
+
+```cpp
+MyClass obj;
+(obj.*ptr)(10); // 如果ptr是一个成员函数指针
+
+MyClass *objPtr = &obj;
+(objPtr->*ptr)(10); // 如果ptr是一个成员函数指针并且你有一个指向对象的指针
+```
+
+
+
+
+
+
+
+## 虚函数表
+
+### 1.类的静态函数和构造函数不可以定义为虚函数
+
+
+
+### 2.将析构函数定义为虚函数的作用
+
+> 类的构造函数不能定义为虚函数，析构函数可以定义为虚函数，这样当我们delete一个指向子类对象的基类指针时可以达到调用子类析构函数的作用，从而动态释放内存。
+
+
+
+### 3.要点
+
+- 一个类对象其内存分布的基本结构为**虚函数表地址+非静态成员变量**，类的成员函数**不占**用类对象的空间，他们分布在一片属于类的共有区域。
+- 类的静态成员函数喝成员变量不占用类对象的空间，他们分配在静态区。
+- 虚函数表的地址存储在类对象的起始位置。所以我们利用这个原理，通过寻址的方式访问虚函数表里的函数
+
+
+
+## 4.代码演示
+
+```cpp
+#include<bits/stdc++.h>
+
+using namespace std;
+
+
+class Baseclass
+{
+
+public:
+    Baseclass() : a(1024) {}
+    virtual void f() { cout << "Base::f" << endl; }
+    virtual void g() { cout << "Base::g" << endl; }
+    virtual void h() { cout << "Base::h" << endl; }
+    int a;
+};
+
+// 0 1 2 3   4 5 6 7(虚函数表空间)    8 9 10 11 12 13 14 15(存储的是a)
+
+class DeriveClass : public Baseclass
+{
+public:
+    virtual void f() { cout << "Derive::f" << endl; }
+    virtual void g2() { cout << "Derive::g2" << endl; }
+    virtual void h3() { cout << "Derive::h3" << endl; }
+};
+
+void uesVitualTable()
+{
+    typedef void (*Func)(void);
+    Baseclass b;
+    b.a=1024;
+    cout<<"sizeof(b):"<<sizeof(b)<<endl;
+
+    int *p=(int*)&b;    //取出虚函数表的地址
+    cout<<"虚函数表地址的地址："<<p<<endl;
+    cout<<"b的地址:"<<&b<<endl;
+
+    cout<<"b.a的地址:"<<p+2<<endl;//这一步涉及到内存对齐
+    cout<<"b.a的值:"<<*(p+2)<<endl;
+
+    cout<<"虚函数表的地址:"<<(int*)(*p)<<endl;
+
+    cout << "int大小:" << sizeof(int) << endl;
+    cout << "p大小:" << sizeof(p) << " int*大小" << sizeof(int *) << endl;
+
+    Func pFunc = (Func)(*(int*)(*p));
+    pFunc();
+
+    pFunc = (Func)(*p+1);
+    pFunc();
+
+    pFunc = (Func)(*p+2);
+    pFunc();
+}
+
+int main()
+{
+    uesVitualTable();
+}
+
+/*
+
+
+*/
+```
+
+
+
+### 5.多继承
+
+> 会含有多个虚函数表
+
+
+
+## 对齐和补齐规则
+
+对齐：类(结构体)对象每个成员分配内存的起始地址为其所占空间的整数倍。
+补齐：类(结构体)对象所占用的总大小为其内部最大成员所占空间的整数倍。

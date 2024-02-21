@@ -41,8 +41,6 @@ categories:
 	```bash
 	sudo fuser -k [端口]
 	
-	```
-
 #例如
 	sudo fuser -k 8080
 	```
@@ -71,8 +69,6 @@ categories:
 	```bash
 	kill -9 [pid]
 	
-	```
-
 #例如
 	kill -9 24009
 	```
