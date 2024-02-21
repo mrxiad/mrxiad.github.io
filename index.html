@@ -236,6 +236,67 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/02/21/linux/github%E9%85%8D%E7%BD%AEssh%E5%85%AC%E9%92%A5/" target="_self">
+          github的ssh配置
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/21/linux/github%E9%85%8D%E7%BD%AEssh%E5%85%AC%E9%92%A5/" target="_self">
+        <div>
+          本文介绍linux服务器如何配置github的SSH keys步骤 查看本机是否有已经生成公钥： 123456789ls -al ~/.ssh#输出如下：total 20drwx------  2 xiadong xiadong 4096 Feb 21 15:08 .drwxr-xr-x 24 xiadong xiadong 4096 Feb 21 15:06 ..-rw-------  1 xi
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-02-21 15:14" pubdate>
+              2024-02-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%8A%80%E6%9C%AF/">#技术</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/01/17/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
           linux常用指令
         </a>
@@ -244,7 +305,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2024/01/17/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
         <div>
-          已知进程杀死进程 ps aux：查看所有进程 ps aux | grep nginx : 查看nginx进程 kill -9 pid：杀死pid进程  已知端口杀死进程方案一 查看哪些端口被占用（tcp，udp）   1netstat -tulnp  杀死端口进程   1sudo fuser -k 8080  方案二 查看端口的进程   12345lsof -i :8080#输出COMMAND
+          已知进程杀死进程 ps aux：查看所有进程 ps aux | grep nginx : 查看nginx进程 kill -9 pid：杀死pid进程  已知端口杀死进程方案一 查看哪些端口被占用（tcp，udp）   1netstat -tulnp  杀死端口进程   1234	sudo fuser -k [端口]	#例如	sudo fuser -k 8080  方案二 查看端口的进程 12345
         </div>
       </a>
 
@@ -797,74 +858,6 @@
     <span>></span>
     
   <a href="/categories/%E7%AE%97%E6%B3%95/dp/" class="category-chain-item">dp</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/11/27/%E5%85%8B%E9%B2%81%E6%96%AF%E5%8D%A1%E5%B0%94%E9%87%8D%E6%9E%84%E6%A0%91/" target="_self">
-          kruskal重构树
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/11/27/%E5%85%8B%E9%B2%81%E6%96%AF%E5%8D%A1%E5%B0%94%E9%87%8D%E6%9E%84%E6%A0%91/" target="_self">
-        <div>
-          克鲁斯卡尔重构树应用 区间点可相互到达时考虑 连通块题目考虑 用到的边是“连通块内的最小生成树”时考虑  性质 所有原节点都为叶子节点 有2*n-1个节点，叶子是点权，非叶子是边权 任何两个叶子节点可以相互到达，一定是通过了他们的LCA所代表的那条边到达的。 重构树一定是小根堆或者大根堆（针对于点的id，针对于点的“边权”） 选出一些点可以互相到达，且最大边权不可以超过x，则答案是非叶节点中点权大
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-11-27 23:13" pubdate>
-              2023-11-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%AE%97%E6%B3%95/" class="category-chain-item">算法</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E7%AE%97%E6%B3%95/%E9%87%8D%E6%9E%84%E6%A0%91/" class="category-chain-item">重构树</a>
   
   
 

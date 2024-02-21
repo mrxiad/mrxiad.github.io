@@ -4,11 +4,36 @@
   
   
   <entry>
+    <title>github的ssh配置</title>
+    <link href="/2024/02/21/linux/github%E9%85%8D%E7%BD%AEssh%E5%85%AC%E9%92%A5/"/>
+    <url>/2024/02/21/linux/github%E9%85%8D%E7%BD%AEssh%E5%85%AC%E9%92%A5/</url>
+    
+    <content type="html"><![CDATA[<h1 id="本文介绍linux服务器如何配置github的SSH-keys"><a href="#本文介绍linux服务器如何配置github的SSH-keys" class="headerlink" title="本文介绍linux服务器如何配置github的SSH keys"></a>本文介绍linux服务器如何配置github的SSH keys</h1><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol><li><h3 id="查看本机是否有已经生成公钥："><a href="#查看本机是否有已经生成公钥：" class="headerlink" title="查看本机是否有已经生成公钥："></a>查看本机是否有已经生成公钥：</h3> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ls</span> -al ~/.ssh<br><br><span class="hljs-comment">#输出如下：</span><br>total 20<br>drwx------  2 xiadong xiadong 4096 Feb 21 15:08 .<br>drwxr-xr-x 24 xiadong xiadong 4096 Feb 21 15:06 ..<br>-rw-------  1 xiadong xiadong 3239 Feb 21 15:08 id_rsa      <br>-rw-r--r--  1 xiadong xiadong  743 Feb 21 15:08 id_rsa.pub<br>-rw-r--r--  1 xiadong xiadong  666 Jan 27 19:50 known_hosts<br></code></pre></td></tr></table></figure></li><li><h2 id="如果没有id-rsa和id-rsa-pub，则生成公钥"><a href="#如果没有id-rsa和id-rsa-pub，则生成公钥" class="headerlink" title="如果没有id_rsa和id_rsa.pub，则生成公钥"></a>如果没有<code>id_rsa</code>和<code>id_rsa.pub</code>，则生成公钥</h2> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh-keygen -t rsa -b 4096 -C <span class="hljs-string">&quot;123@qq.com&quot;</span><br></code></pre></td></tr></table></figure><p> <strong>一路回车即可</strong></p></li><li><h3 id="查看公钥内容"><a href="#查看公钥内容" class="headerlink" title="查看公钥内容"></a>查看公钥内容</h3> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> ~/.ssh/id_rsa.pub<br></code></pre></td></tr></table></figure></li><li><h3 id="复制公钥内容到github上即可"><a href="#复制公钥内容到github上即可" class="headerlink" title="复制公钥内容到github上即可"></a>复制公钥内容到github上即可</h3></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>linux</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>技术</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>linux常用指令</title>
     <link href="/2024/01/17/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"/>
     <url>/2024/01/17/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
     
-    <content type="html"><![CDATA[<h1 id="已知进程杀死进程"><a href="#已知进程杀死进程" class="headerlink" title="已知进程杀死进程"></a>已知进程杀死进程</h1><ul><li>ps aux：查看所有进程</li><li>ps aux | grep nginx : 查看nginx进程</li><li>kill -9 pid：杀死pid进程</li></ul><h1 id="已知端口杀死进程"><a href="#已知端口杀死进程" class="headerlink" title="已知端口杀死进程"></a>已知端口杀死进程</h1><h2 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h2><ul><li><p>查看哪些端口被占用（tcp，udp）</p>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">netstat -tulnp<br></code></pre></td></tr></table></figure></li><li><p>杀死端口进程</p>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo fuser -k 8080<br></code></pre></td></tr></table></figure></li></ul><h2 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h2><ul><li><p>查看端口的进程</p>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">lsof -i :8080<br><br><span class="hljs-comment">#输出</span><br>COMMAND     PID    USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME<br>httpServe 24009 xiadong    3u  IPv4 1496040      0t0  TCP *:http-alt (LISTEN)<br></code></pre></td></tr></table></figure></li><li><p>杀死这个进程</p>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">kill</span> -9 24009<br></code></pre></td></tr></table></figure></li></ul>]]></content>
+    <content type="html"><![CDATA[<h1 id="已知进程杀死进程"><a href="#已知进程杀死进程" class="headerlink" title="已知进程杀死进程"></a>已知进程杀死进程</h1><ul><li>ps aux：查看所有进程</li><li>ps aux | grep nginx : 查看nginx进程</li><li>kill -9 pid：杀死pid进程</li></ul><h1 id="已知端口杀死进程"><a href="#已知端口杀死进程" class="headerlink" title="已知端口杀死进程"></a>已知端口杀死进程</h1><h2 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h2><ul><li><p>查看哪些端口被占用（tcp，udp）</p>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">netstat -tulnp<br></code></pre></td></tr></table></figure></li><li><p>杀死端口进程</p>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo fuser -k [端口]<br><br><span class="hljs-comment">#例如</span><br>sudo fuser -k 8080<br></code></pre></td></tr></table></figure></li></ul><h2 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h2><ul><li><p>查看端口的进程</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">lsof -i :[端口]<br><br><span class="hljs-comment">#例如</span><br>lsof -i :8080<br><br><span class="hljs-comment">#输出</span><br>COMMAND     PID    USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME<br>httpServe 24009 xiadong    3u  IPv4 1496040      0t0  TCP *:http-alt (LISTEN)<br></code></pre></td></tr></table></figure></li><li><p>杀死这个进程</p>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">kill</span> -9 [pid]<br><br><span class="hljs-comment">#例如</span><br><span class="hljs-built_in">kill</span> -9 24009<br></code></pre></td></tr></table></figure></li></ul>]]></content>
     
     
     <categories>
