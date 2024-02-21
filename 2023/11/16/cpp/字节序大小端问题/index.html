@@ -1,0 +1,705 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Mrxiad">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="字节序的问题字节序问题，通常被称为大小端问题（Endianess），涉及到数据在计算机内存中的存储方式，尤其是多字节值（如整数、浮点数）的存储顺序。这个问题在不同架构的计算机系统中尤为重要，因为它会影响数据的解释和处理。主要有两种类型的字节序：  大端序（Big Endian）：在这种方式下，多字节值的最高有效字节（MSB）存储在最低的内存地址，随后是次高有效字节，以此类推。例如，数值 0x123">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字节序大小端问题">
+<meta property="og:url" content="http://example.com/2023/11/16/cpp/%E5%AD%97%E8%8A%82%E5%BA%8F%E5%A4%A7%E5%B0%8F%E7%AB%AF%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Mrxiad">
+<meta property="og:description" content="字节序的问题字节序问题，通常被称为大小端问题（Endianess），涉及到数据在计算机内存中的存储方式，尤其是多字节值（如整数、浮点数）的存储顺序。这个问题在不同架构的计算机系统中尤为重要，因为它会影响数据的解释和处理。主要有两种类型的字节序：  大端序（Big Endian）：在这种方式下，多字节值的最高有效字节（MSB）存储在最低的内存地址，随后是次高有效字节，以此类推。例如，数值 0x123">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-16T13:15:22.000Z">
+<meta property="article:modified_time" content="2023-12-01T13:47:43.719Z">
+<meta property="article:author" content="Mrxiad">
+<meta property="article:tag" content="c++">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>字节序大小端问题 - Mrxiad</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Mrxiad</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="字节序大小端问题"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-16 21:15" pubdate>
+          2023年11月16日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">字节序大小端问题</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="字节序的问题"><a href="#字节序的问题" class="headerlink" title="字节序的问题"></a>字节序的问题</h1><p>字节序问题，通常被称为大小端问题（Endianess），涉及到数据在计算机内存中的存储方式，尤其是多字节值（如整数、浮点数）的存储顺序。这个问题在不同架构的计算机系统中尤为重要，因为它会影响数据的解释和处理。主要有两种类型的字节序：</p>
+<ol>
+<li><strong>大端序（Big Endian）</strong>：在这种方式下，多字节值的最高有效字节（MSB）存储在最低的内存地址，随后是次高有效字节，以此类推。例如，数值 <code>0x12345678</code> 在内存中会被存储为 <code>12 34 56 78</code>（地址由低到高排列）。</li>
+<li><strong>小端序（Little Endian）</strong>：与大端序相反，小端序将多字节值的最低有效字节（LSB）存储在最低的内存地址。同样的数值 <code>0x12345678</code> 在小端序系统中将被存储为 <code>78 56 34 12</code>。</li>
+</ol>
+<p>字节序问题在跨平台数据交换时尤为重要。如果两个交流数据的系统采用不同的字节序，没有适当的转换，数据可能会被错误地解释，导致问题。例如，在网络编程中，通常采用大端序（网络字节序），因此在数据发送和接收时，可能需要在小端序和大端序之间进行转换。</p>
+<p><strong>产生问题的原因</strong>：</p>
+<p>在网络通信中，如果数字（如整数或浮点数）的字节序没有从<code>发送方</code>的主机序转换为统一的网络字节序（大端序），那么<code>接收方</code>可能无法正确解释接收到的数据。这是因为<strong>不同的计算机架构可能采用不同的字节序</strong>，导致相同的数字在不同系统上的内存表示不同</p>
+<h1 id="如何区分本机字节序"><a href="#如何区分本机字节序" class="headerlink" title="如何区分本机字节序"></a>如何区分本机字节序</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-comment">// 判断当前系统的字节序是大端序还是小端序</span><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">is_big_endian</span><span class="hljs-params">()</span> </span>&#123;<br>	<span class="hljs-type">int</span> num = <span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">if</span> (*(<span class="hljs-type">char</span>*)&amp;num == <span class="hljs-number">1</span>) &#123;<br>		<span class="hljs-comment">// 当前系统为小端序</span><br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		<span class="hljs-comment">// 当前系统为大端序</span><br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>	&#125;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>	<span class="hljs-type">int</span> num = <span class="hljs-number">0x12345678</span>;<br>	<span class="hljs-type">char</span>* p = (<span class="hljs-type">char</span>*)&amp;num;<br>	cout &lt;&lt; <span class="hljs-string">&quot;原始数据：&quot;</span> &lt;&lt; hex &lt;&lt; num &lt;&lt; endl;<br>	<span class="hljs-keyword">if</span> (<span class="hljs-built_in">is_big_endian</span>()) &#123;<br>		cout &lt;&lt; <span class="hljs-string">&quot;当前系统为大端序&quot;</span> &lt;&lt; endl;<br>		cout &lt;&lt; <span class="hljs-string">&quot;字节序为：&quot;</span>;<br>		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">sizeof</span>(num); i++) &#123;<br>			cout &lt;&lt; hex &lt;&lt; (<span class="hljs-type">int</span>)*(p + i) &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;<br>		&#125;<br>		cout &lt;&lt; endl;<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		cout &lt;&lt; <span class="hljs-string">&quot;当前系统为小端序&quot;</span> &lt;&lt; endl;<br>		cout &lt;&lt; <span class="hljs-string">&quot;字节序为：&quot;</span>;<br>		<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-built_in">sizeof</span>(num) - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) &#123;<br>			cout &lt;&lt; hex &lt;&lt; (<span class="hljs-type">int</span>)*(p + i) &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;<br>		&#125;<br>		cout &lt;&lt; endl;<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="服务器使用网络字节序"><a href="#服务器使用网络字节序" class="headerlink" title="服务器使用网络字节序"></a>服务器使用网络字节序</h1><p>为保证字节序一致性，网络传输使用网络字节序，也就是大端模式。</p>
+<p>可以使用<br><code> boost::asio::detail::socket_ops::host_to_network_long()</code> 和 <code>boost::asio::detail::socket_ops::host_to_network_short()</code> 函数</p>
+<p><strong>将主机字节序转换为网络字节序</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/asio.hpp&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">uint32_t</span> host_long_value = <span class="hljs-number">0x12345678</span>;<br>    <span class="hljs-type">uint16_t</span> host_short_value = <span class="hljs-number">0x5678</span>;<br>    <span class="hljs-type">uint32_t</span> network_long_value = boost::asio::detail::socket_ops::<span class="hljs-built_in">host_to_network_long</span>(host_long_value);<br>    <span class="hljs-type">uint16_t</span> network_short_value = boost::asio::detail::socket_ops::<span class="hljs-built_in">host_to_network_short</span>(host_short_value);<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Host long value: 0x&quot;</span> &lt;&lt; std::hex &lt;&lt; host_long_value &lt;&lt; std::endl;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Network long value: 0x&quot;</span> &lt;&lt; std::hex &lt;&lt; network_long_value &lt;&lt; std::endl;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Host short value: 0x&quot;</span> &lt;&lt; std::hex &lt;&lt; host_short_value &lt;&lt; std::endl;<br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Network short value: 0x&quot;</span> &lt;&lt; std::hex &lt;&lt; network_short_value &lt;&lt; std::endl;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>输出结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">Host long value: 0x12345678<br>Network long value: 0x78563412<br>Host short value: 0x5678<br>Network short value: 0x7856<br></code></pre></td></tr></table></figure>
+
+<hr>
+<blockquote>
+<p>注意：在使用这些函数时，应该确保输入参数和返回结果都是无符号整数类型，否则可能会出现错误。</p>
+</blockquote>
+<p>服务器<code>发送数据</code>时，将数据长度转化为<code>网络字节序</code>，<br>在<code>接收数据</code>时，将长度转为<code>本机字节序</code>。</p>
+<p><strong>将网络字节序转换为主机字节序</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-type">short</span> data_len = <span class="hljs-number">0</span>;<br><span class="hljs-built_in">memcpy</span>(&amp;data_len, _recv_head_node-&gt;_data, HEAD_LENGTH);<br><span class="hljs-comment">//网络字节序转化为本地字节序</span><br>data_len=boost::asio::detail::socket_ops::<span class="hljs-built_in">network_to_host_short</span>(data_len);<br>cout &lt;&lt; <span class="hljs-string">&quot;data_len is &quot;</span> &lt;&lt; data_len &lt;&lt; endl;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="消息队列控制"><a href="#消息队列控制" class="headerlink" title="消息队列控制"></a>消息队列控制</h1><p>发送时我们会将发送的消息放入队列里以保证发送的时序性，每个session都有一个发送队列，因为有的时候发送的频率过高会导致队列增大，所以要对队列的大小做限制，当队列大于指定数量的长度时，就丢弃要发送的数据包，以保证消息的快速收发。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">CSession::Send</span><span class="hljs-params">(<span class="hljs-type">char</span>* msg, <span class="hljs-type">int</span> max_length)</span> </span>&#123;<br>    <span class="hljs-function">std::lock_guard&lt;std::mutex&gt; <span class="hljs-title">lock</span><span class="hljs-params">(_send_lock)</span></span>;<br>    <span class="hljs-type">int</span> send_que_size = _send_que.<span class="hljs-built_in">size</span>();<br>    <br>    <span class="hljs-comment">//如果大于&quot;队列size允许的容量&quot;,则不允许发送</span><br>    <span class="hljs-keyword">if</span> (send_que_size &gt; MAX_SENDQUE) &#123;<br>        cout &lt;&lt; <span class="hljs-string">&quot;session: &quot;</span> &lt;&lt; _uuid &lt;&lt; <span class="hljs-string">&quot; send que fulled, size is &quot;</span> &lt;&lt; MAX_SENDQUE &lt;&lt; endl;<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    _send_que.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">make_shared</span>&lt;MsgNode&gt;(msg, max_length));<br>    <span class="hljs-keyword">if</span> (send_que_size&gt;<span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br>    <span class="hljs-keyword">auto</span>&amp; msgnode = _send_que.<span class="hljs-built_in">front</span>();<br>    boost::asio::<span class="hljs-built_in">async_write</span>(_socket, boost::asio::<span class="hljs-built_in">buffer</span>(msgnode-&gt;_data, msgnode-&gt;_total_len), <br>        std::<span class="hljs-built_in">bind</span>(&amp;CSession::HandleWrite, <span class="hljs-keyword">this</span>, std::placeholders::_1, <span class="hljs-built_in">SharedSelf</span>()));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>字节序问题的解决需要程序员显示的调用函数，asio不会自动帮我们实现</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%90%8E%E7%AB%AF/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" class="category-chain-item">网络编程</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/c/" class="print-no-link">#c++</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>字节序大小端问题</div>
+      <div>http://example.com/2023/11/16/cpp/字节序大小端问题/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Mrxiad</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年11月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/11/19/%E7%AE%97%E6%B3%95/%E4%B8%AD%E4%BD%8D%E6%95%B0%E7%AC%ACk%E5%A4%A7%E4%BA%8C%E5%88%86%E6%B3%95/" title="中位数第k大二分法">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">中位数第k大二分法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/11/15/cpp/%E5%A4%84%E7%90%86%E7%BD%91%E7%BB%9C%E7%B2%98%E5%8C%85%E9%97%AE%E9%A2%98/" title="处理网络粘包问题">
+                        <span class="hidden-mobile">处理网络粘包问题</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

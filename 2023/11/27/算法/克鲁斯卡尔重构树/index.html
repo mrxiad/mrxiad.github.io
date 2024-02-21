@@ -1,0 +1,710 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Mrxiad">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="克鲁斯卡尔重构树应用 区间点可相互到达时考虑 连通块题目考虑 用到的边是“连通块内的最小生成树”时考虑  性质 所有原节点都为叶子节点 有2*n-1个节点，叶子是点权，非叶子是边权 任何两个叶子节点可以相互到达，一定是通过了他们的LCA所代表的那条边到达的。 重构树一定是小根堆或者大根堆（针对于点的id，针对于点的“边权”） 选出一些点可以互相到达，且最大边权不可以超过x，则答案是非叶节点中点权大">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kruskal重构树">
+<meta property="og:url" content="http://example.com/2023/11/27/%E7%AE%97%E6%B3%95/%E5%85%8B%E9%B2%81%E6%96%AF%E5%8D%A1%E5%B0%94%E9%87%8D%E6%9E%84%E6%A0%91/index.html">
+<meta property="og:site_name" content="Mrxiad">
+<meta property="og:description" content="克鲁斯卡尔重构树应用 区间点可相互到达时考虑 连通块题目考虑 用到的边是“连通块内的最小生成树”时考虑  性质 所有原节点都为叶子节点 有2*n-1个节点，叶子是点权，非叶子是边权 任何两个叶子节点可以相互到达，一定是通过了他们的LCA所代表的那条边到达的。 重构树一定是小根堆或者大根堆（针对于点的id，针对于点的“边权”） 选出一些点可以互相到达，且最大边权不可以超过x，则答案是非叶节点中点权大">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-27T15:13:45.000Z">
+<meta property="article:modified_time" content="2023-12-01T14:41:38.137Z">
+<meta property="article:author" content="Mrxiad">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>kruskal重构树 - Mrxiad</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Mrxiad</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="kruskal重构树"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-27 23:13" pubdate>
+          2023年11月27日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          45 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">kruskal重构树</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="克鲁斯卡尔重构树"><a href="#克鲁斯卡尔重构树" class="headerlink" title="克鲁斯卡尔重构树"></a>克鲁斯卡尔重构树</h1><h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><ol>
+<li>区间点可相互到达时考虑</li>
+<li>连通块题目考虑</li>
+<li>用到的边是“连通块内的最小生成树”时考虑</li>
+</ol>
+<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><ol>
+<li>所有原节点都为叶子节点</li>
+<li>有<code>2*n-1</code>个节点，<code>叶</code>子是<code>点</code>权，<code>非</code>叶子是<code>边</code>权</li>
+<li>任何两个叶子节点可以相互到达，<code>一定</code>是通过了他们的LCA所代表的那条<code>边</code>到达的。</li>
+<li>重构树一定是小根堆或者大根堆（针对于点的id，针对于点的“边权”）</li>
+<li>选出一些点可以互相到达，且最大边权不可以超过x，则答案是<code>非叶节点</code>中点权<code>大于等于x</code>的所有子树中的点</li>
+</ol>
+<h2 id="注意（性质）"><a href="#注意（性质）" class="headerlink" title="注意（性质）"></a>注意（性质）</h2><ol>
+<li>重构树中的 <code>非叶子</code> 点权不一定都不相同，但是<code>根</code>的点权一定最大</li>
+<li>重构树一定是<code>堆</code></li>
+<li>在重构树上若到达某个<code>非叶</code>子节点 x，则x子树的所有<code>叶子</code>节点，都可以相互到达。</li>
+<li>重构树中，若一个区间的点可以相互到达，求需要经过的边权的<code>最小值</code>？答案为<code>max&#123;LCA(L,L+1),LCA(L+1,L+2),…,LCA(R-2,R-1)&#125;</code>，此时可以用<code>线段树维护区间最大值</code>解决多组询问</li>
+</ol>
+<p><strong>对于4的证明</strong>：</p>
+<p>设4中求出的答案为t，则L和L+1可以相互到达，L+1和L+2可以相互到达…，所以任意两个点都可以相互到达。</p>
+<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h1 id="E-Qpwoeirut-and-Vertices"><a href="#E-Qpwoeirut-and-Vertices" class="headerlink" title="E. Qpwoeirut and Vertices"></a><a target="_blank" rel="noopener" href="https://codeforces.com/contest/1706/problem/E">E. Qpwoeirut and Vertices</a></h1><h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><p>给我们一个无向无权图（n个点，m条边，边有编号），若干个询问（q组），每次询问给我们一个区间<code>[ l , r ] </code>，问我们只经过前k条边使得该<strong>区间</strong>内任意两点可以互相到达的k的<strong>最小值</strong>。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ol>
+<li>将边的id看成边权，建立重构树</li>
+<li>预处理lca数组</li>
+<li>对于区间[l,r]内，若这个区间的点可以相互到达，只需要求出LCA(l,l+1,…r-1)的点权即可</li>
+</ol>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> ll;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N=<span class="hljs-number">1e6</span>+<span class="hljs-number">5</span>;<br><br>ll n,m,qq;<br>ll f[N],a[N];<br><span class="hljs-type">int</span> h[N],e[N],ne[N],idx;<br><br><span class="hljs-type">int</span> ans[N];<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> u,<span class="hljs-type">int</span> v)</span></span>&#123;<br>	e[++idx]=v;<br>	ne[idx]=h[u];<span class="hljs-comment">//clear</span><br>	h[u]=idx;<br>&#125;<br><br><span class="hljs-comment">//find</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>&#123;<br>	<span class="hljs-keyword">if</span>(x==f[x])<span class="hljs-keyword">return</span> x;<br>	<span class="hljs-keyword">return</span> f[x]=<span class="hljs-built_in">find</span>(f[x]);<br>&#125;<br><br><span class="hljs-comment">//LCA</span><br>ll fa[N][<span class="hljs-number">21</span>],deep[N];<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	idx=<span class="hljs-number">0</span>;<br>	<span class="hljs-type">int</span> maxn=<span class="hljs-number">2</span>*n;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=maxn;i++)&#123;<br>		deep[i]=a[i]=h[i]=<span class="hljs-number">0</span>;<br>		f[i]=i;<br>		<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">0</span>;j&lt;=<span class="hljs-number">20</span>;j++)&#123;<br>			fa[i][j]=<span class="hljs-number">0</span>;<br>		&#125;<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span></span>&#123;<br>	<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=h[u];i;i=ne[i])&#123;<br>		<span class="hljs-type">int</span> j=e[i];<br>		<br>		deep[j]=deep[u]+<span class="hljs-number">1</span>;<br>		fa[j][<span class="hljs-number">0</span>]=u;<br>		<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> k=<span class="hljs-number">1</span>;k&lt;=<span class="hljs-number">20</span>;k++)&#123;<br>			<span class="hljs-type">int</span> anc=fa[j][k<span class="hljs-number">-1</span>];<br>			fa[j][k]=fa[anc][k<span class="hljs-number">-1</span>];<br>		&#125;<br>		<br>		<span class="hljs-built_in">dfs</span>(j);<br>	&#125;<br>&#125;<br><br><br><span class="hljs-comment">//lca返回的是点的id</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">lca</span><span class="hljs-params">(<span class="hljs-type">int</span> u,<span class="hljs-type">int</span> v)</span></span>&#123;  <br>	<span class="hljs-keyword">if</span>(deep[u]&lt;deep[v])<span class="hljs-built_in">swap</span>(u,v);<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> k=<span class="hljs-number">20</span>;k&gt;=<span class="hljs-number">0</span>;k--)&#123;<br>		<span class="hljs-type">int</span> anc=fa[u][k];<br>		<span class="hljs-keyword">if</span>(deep[anc]&gt;=deep[v])&#123;<br>			u=anc;<br>		&#125;<br>	&#125;<br>	<br>	<span class="hljs-keyword">if</span>(u==v)<span class="hljs-keyword">return</span> u;<br>	<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> k=<span class="hljs-number">20</span>;k&gt;=<span class="hljs-number">0</span>;k--)&#123;<br>		<span class="hljs-type">int</span> anc1=fa[u][k];<br>		<span class="hljs-type">int</span> anc2=fa[v][k];<br>		<span class="hljs-keyword">if</span>(anc1!=anc2)&#123;<br>			u=anc1;<br>			v=anc2;<br>		&#125;<br>	&#125;<br>	<br>	<span class="hljs-keyword">return</span> fa[u][<span class="hljs-number">0</span>];<br>&#125;<br><br><br>ll maxn[N];<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">pushup</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span></span>&#123;<br>	maxn[u]=<span class="hljs-built_in">max</span>(maxn[u&lt;&lt;<span class="hljs-number">1</span>],maxn[u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>]);<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">build</span><span class="hljs-params">(<span class="hljs-type">int</span> u,<span class="hljs-type">int</span> l,<span class="hljs-type">int</span> r)</span></span>&#123;<br>	<span class="hljs-keyword">if</span>(l==r)&#123;<br>		maxn[u]=ans[l];<br>		<span class="hljs-keyword">return</span>;<br>	&#125;<br>	<span class="hljs-type">int</span> mid=l+r&gt;&gt;<span class="hljs-number">1</span>;<br>	<span class="hljs-built_in">build</span>(u&lt;&lt;<span class="hljs-number">1</span>,l,mid);<br>	<span class="hljs-built_in">build</span>(u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,mid+<span class="hljs-number">1</span>,r);<br>	<span class="hljs-built_in">pushup</span>(u);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">ask</span><span class="hljs-params">(<span class="hljs-type">int</span> u,<span class="hljs-type">int</span> l,<span class="hljs-type">int</span> r,<span class="hljs-type">int</span> L,<span class="hljs-type">int</span> R)</span></span>&#123;<br>	<span class="hljs-keyword">if</span>(L&lt;=l&amp;&amp;R&gt;=r)&#123;<br>		<span class="hljs-keyword">return</span> maxn[u];<br>	&#125;<br>	<span class="hljs-type">int</span> ans=<span class="hljs-number">0</span>;<br>	<span class="hljs-type">int</span> mid=l+r&gt;&gt;<span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">if</span>(L&lt;=mid)&#123;<br>		ans=<span class="hljs-built_in">max</span>(ans,<span class="hljs-built_in">ask</span>(u&lt;&lt;<span class="hljs-number">1</span>,l,mid,L,R));<br>	&#125;<br>	<span class="hljs-keyword">if</span>(R&gt;mid)&#123;<br>		ans=<span class="hljs-built_in">max</span>(ans,<span class="hljs-built_in">ask</span>(u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,mid+<span class="hljs-number">1</span>,r,L,R));<br>	&#125;<br>	<span class="hljs-keyword">return</span> ans;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">solve</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	cin&gt;&gt;n&gt;&gt;m&gt;&gt;qq;<br>	<span class="hljs-built_in">init</span>();<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=m;i++)&#123;<br>		<span class="hljs-type">int</span> u,v;<br>		cin&gt;&gt;u&gt;&gt;v;<br>		u=<span class="hljs-built_in">find</span>(u),v=<span class="hljs-built_in">find</span>(v);<br>        <br>        <span class="hljs-comment">//注意这句</span><br>		<span class="hljs-keyword">if</span>(u==v)<span class="hljs-keyword">continue</span>;<br>		a[++n]=i;<span class="hljs-comment">//val</span><br>		f[u]=n,f[v]=n;<br>		<span class="hljs-built_in">add</span>(n,u),<span class="hljs-built_in">add</span>(n,v);<br>	&#125;<br>	<br>	deep[n]=<span class="hljs-number">1</span>;<br>	<span class="hljs-built_in">dfs</span>(n);<br>	<br>    <br>    <span class="hljs-comment">//注意此时叶子节点的编号为[1,n/2+1]，但是最后一个点不参与答案</span><br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n/<span class="hljs-number">2</span>;i++)&#123;<br>		<span class="hljs-type">int</span> zu=<span class="hljs-built_in">lca</span>(i,i+<span class="hljs-number">1</span>);<br>		ans[i]=a[zu];<br>	&#125;<br><br>    <span class="hljs-comment">//注意区间右端点</span><br>	<span class="hljs-built_in">build</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,n/<span class="hljs-number">2</span>);<br>	<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=qq;i++)&#123;<br>		<span class="hljs-type">int</span> l,r;<br>		cin&gt;&gt;l&gt;&gt;r;<br>		<span class="hljs-keyword">if</span>(l==r)&#123;<br>			cout&lt;&lt;<span class="hljs-number">0</span>&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;<br>			<span class="hljs-keyword">continue</span>;<br>		&#125;<br>        <br>        <span class="hljs-comment">//注意区间右端点</span><br>		cout&lt;&lt;<span class="hljs-built_in">ask</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,n/<span class="hljs-number">2</span>,l,r<span class="hljs-number">-1</span>)&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;<br>	&#125;<br>	cout&lt;&lt;endl;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-type">int</span> t;<br>	cin&gt;&gt;t;<br>	<span class="hljs-keyword">while</span>(t--)&#123;<br>		<span class="hljs-built_in">solve</span>();<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>注意区间右端点</p>
+</blockquote>
+<h1 id="2021ICPC上海站Life-is-a-Game"><a href="#2021ICPC上海站Life-is-a-Game" class="headerlink" title="2021ICPC上海站Life is a Game"></a><a target="_blank" rel="noopener" href="https://ac.nowcoder.com/acm/problem/231127">2021ICPC上海站Life is a Game</a></h1><h2 id="题意-1"><a href="#题意-1" class="headerlink" title="题意"></a>题意</h2><p>​	给我们一个无向有权图。<br>​	点有点权，边有边权。。我们可以在图上来回走，走到一个点后会获得该点的价值，能够重复到达一个点但是不能重复获得该点的价值。但是，从一个点走到另一个点需要满足当前带有的价值要大于边权。<br>​	若干次询问，每次询问给一个起点和一个价值，问最多可以获得多少价值。</p>
+<h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><ol>
+<li>考虑到可以在一个连通块内随意走，而且走的边一定是这个连通块的“最小生成树边”，所以正好符合重构树</li>
+<li>建立重构树之后，如果可以到达某个<code>非叶子</code>节点x，那么x的子树的<code>叶子节点的权值</code>都可以被收集到</li>
+<li>考虑假设到达了某<code>非叶子</code>节点x，是否可以向上走，只需要此时的价值&gt;父亲节点的点权即可</li>
+</ol>
+<h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> ll;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N=<span class="hljs-number">1e6</span>+<span class="hljs-number">5</span>;<br>ll n,m,q;<br>ll a[N];<br><span class="hljs-comment">//kruskal</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">A</span>&#123;<br>	<span class="hljs-type">int</span> u,v;<br>	ll w;<br>	<span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span>&lt;(<span class="hljs-type">const</span> A&amp;b)<span class="hljs-type">const</span>&#123;<br>		<span class="hljs-keyword">return</span> w&lt;b.w;<br>	&#125;<br>&#125;edge[N];<br>ll f[N];<br><span class="hljs-function">ll <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>&#123;<br>	<span class="hljs-keyword">if</span>(x==f[x])<span class="hljs-keyword">return</span> x;<br>	<span class="hljs-keyword">return</span> f[x]=<span class="hljs-built_in">find</span>(f[x]);<br>&#125;<br><br><span class="hljs-comment">//graph</span><br><span class="hljs-type">int</span> h[N],e[N],ne[N],idx;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a,<span class="hljs-type">int</span> b)</span></span>&#123;<br>	e[++idx]=b;<br>	ne[idx]=h[a];<br>	h[a]=idx;<br>&#125;<br><br><br><span class="hljs-comment">//lca</span><br>ll fa[N][<span class="hljs-number">21</span>],deep[N];<br>ll dd[N][<span class="hljs-number">21</span>];<span class="hljs-comment">//在i节点跳到i+2^j，至少还需要多少</span><br>ll sum[N];<span class="hljs-comment">//子树中所有叶子的权值和</span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs1</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span></span>&#123;<br>	<span class="hljs-keyword">if</span>(u&lt;=n/<span class="hljs-number">2</span>+<span class="hljs-number">1</span>)&#123;<br>		sum[u]=a[u];<br>	&#125;<br>	<span class="hljs-keyword">else</span>&#123;<br>		<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=h[u];i;i=ne[i])&#123;<br>			<span class="hljs-type">int</span> j=e[i];<br>			<span class="hljs-built_in">dfs1</span>(j);<br>			sum[u]+=sum[j];<br>		&#125;<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs2</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span></span>&#123;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=h[u];i;i=ne[i])&#123;<br>		<span class="hljs-type">int</span> j=e[i];<span class="hljs-comment">//son</span><br>		<br>		dd[j][<span class="hljs-number">0</span>]=a[u]-sum[j];<br>		deep[j]=deep[u]+<span class="hljs-number">1</span>;<br>		fa[j][<span class="hljs-number">0</span>]=u;<br>		<br>		<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> k=<span class="hljs-number">1</span>;k&lt;=<span class="hljs-number">20</span>;k++)&#123;<br>			ll anc=fa[j][k<span class="hljs-number">-1</span>];<br>			fa[j][k]=fa[anc][k<span class="hljs-number">-1</span>];<br>			dd[j][k]=<span class="hljs-built_in">max</span>(dd[j][k<span class="hljs-number">-1</span>],dd[anc][k<span class="hljs-number">-1</span>]);<br>		&#125;<br>		<br>		<span class="hljs-built_in">dfs2</span>(j);<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">solve</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	cin&gt;&gt;n&gt;&gt;m&gt;&gt;q;<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)&#123;<br>		cin&gt;&gt;a[i];<br>	&#125;<br>	<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;=n*<span class="hljs-number">2</span>+<span class="hljs-number">1</span>;i++)f[i]=i;<br>	<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=m;i++)&#123;<br>		<span class="hljs-type">int</span> u,v,w;<br>		cin&gt;&gt;u&gt;&gt;v&gt;&gt;w;<br>		edge[i]=&#123;u,v,w&#125;;<br>	&#125;<br>	<span class="hljs-built_in">sort</span>(edge+<span class="hljs-number">1</span>,edge+m+<span class="hljs-number">1</span>);<br>	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=m;i++)&#123;<br>		<span class="hljs-type">int</span> u=edge[i].u,v=edge[i].v;<br>		ll w=edge[i].w;<br>		u=<span class="hljs-built_in">find</span>(u),v=<span class="hljs-built_in">find</span>(v);<br>		<span class="hljs-keyword">if</span>(u==v)<span class="hljs-keyword">continue</span>;<br>		a[++n]=w;<br>		f[u]=f[v]=n;<br>		<span class="hljs-built_in">add</span>(n,u),<span class="hljs-built_in">add</span>(n,v);<br>	&#125;<br>	<br>	<span class="hljs-built_in">dfs1</span>(n);<span class="hljs-comment">//cal sum</span><br>	<br>	deep[n]=<span class="hljs-number">1</span>;<br>	<span class="hljs-built_in">dfs2</span>(n);<span class="hljs-comment">//cal fa&amp;dd&amp;deep</span><br>	<br>	<span class="hljs-keyword">while</span>(q--)&#123;<br>		ll x,k;<br>		cin&gt;&gt;x&gt;&gt;k;<br>		<span class="hljs-comment">//pos:x,val:k</span><br>		<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> jmp=<span class="hljs-number">20</span>;jmp&gt;=<span class="hljs-number">0</span>;jmp--)&#123;<br>            <span class="hljs-keyword">if</span>(fa[x][jmp]==<span class="hljs-number">0</span>)<span class="hljs-keyword">continue</span>;<span class="hljs-comment">//不可以跳出去</span><br>			<span class="hljs-keyword">if</span>(dd[x][jmp]&lt;=k)&#123;<br>				x=fa[x][jmp];<br>			&#125;<br>		&#125;<br>        cout&lt;&lt;sum[x]+k&lt;&lt;endl;<br>	&#125;<br>	<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-type">int</span> t=<span class="hljs-number">1</span>;<br>	<span class="hljs-keyword">while</span>(t--)&#123;<br>		<span class="hljs-built_in">solve</span>();<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>注意：dd数组表示至少需要k才可以跳，那么如果最开始在x位置额外拥有k，无论跳到哪里，都额外拥有k，k不会变化</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95/" class="category-chain-item">算法</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%AE%97%E6%B3%95/%E9%87%8D%E6%9E%84%E6%A0%91/" class="category-chain-item">重构树</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%AE%97%E6%B3%95/" class="print-no-link">#算法</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>kruskal重构树</div>
+      <div>http://example.com/2023/11/27/算法/克鲁斯卡尔重构树/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Mrxiad</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年11月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/11/29/%E7%AE%97%E6%B3%95/%E6%A0%91%E5%BD%A2dp/" title="树形dp">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">树形dp</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/11/21/%E7%AE%97%E6%B3%95/%E5%90%8E%E7%BC%80dp/" title="后缀dp">
+                        <span class="hidden-mobile">后缀dp</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

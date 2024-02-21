@@ -1,0 +1,889 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Mrxiad">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="基础知识TCP和IP协议 TCP（传输控制协议）：TCP是一种网络通信协议，它在互联网协议套件（TCP&#x2F;IP）中负责确保数据的可靠传输。TCP提供了一种可靠的、面向连接的通信方式。这意味着在数据开始传输之前，两个网络设备（比如计算机）之间必须首先建立一个连接。TCP还负责确保数据的完整性和顺序正确。 IP协议（互联网协议）：IP协议是另一种关键的网络通信协议，负责在网络上路由和传输数据包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="asio socket的创建和连接">
+<meta property="og:url" content="http://example.com/2023/11/11/cpp/asio%20socket%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E8%BF%9E%E6%8E%A5/index.html">
+<meta property="og:site_name" content="Mrxiad">
+<meta property="og:description" content="基础知识TCP和IP协议 TCP（传输控制协议）：TCP是一种网络通信协议，它在互联网协议套件（TCP&#x2F;IP）中负责确保数据的可靠传输。TCP提供了一种可靠的、面向连接的通信方式。这意味着在数据开始传输之前，两个网络设备（比如计算机）之间必须首先建立一个连接。TCP还负责确保数据的完整性和顺序正确。 IP协议（互联网协议）：IP协议是另一种关键的网络通信协议，负责在网络上路由和传输数据包">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-11T07:52:40.000Z">
+<meta property="article:modified_time" content="2023-12-01T13:47:25.104Z">
+<meta property="article:author" content="Mrxiad">
+<meta property="article:tag" content="c++">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>asio socket的创建和连接 - Mrxiad</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Mrxiad</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="asio socket的创建和连接"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-11 15:52" pubdate>
+          2023年11月11日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          14k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          118 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">asio socket的创建和连接</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><h3 id="TCP和IP协议"><a href="#TCP和IP协议" class="headerlink" title="TCP和IP协议"></a>TCP和IP协议</h3><ol>
+<li><strong>TCP（传输控制协议）</strong>：TCP是一种网络通信协议，它在互联网协议套件（TCP&#x2F;IP）中负责确保数据的可靠传输。TCP提供了一种可靠的、面向连接的通信方式。这意味着在数据开始传输之前，两个网络设备（比如计算机）之间必须首先建立一个连接。TCP还负责确保数据的完整性和顺序正确。</li>
+<li><strong>IP协议（互联网协议）</strong>：IP协议是另一种关键的网络通信协议，负责在网络上路由和传输数据包。IP有两个主要版本：IPv4和IPv6。IPv4是目前最广泛使用的版本，但由于地址空间限制，IPv6正在逐渐被采用。</li>
+</ol>
+<h3 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h3><ul>
+<li><strong>Socket是什么</strong>：Socket是网络通信的端点。您可以将其想象为电话插座，它是网络上两个程序（运行在不同计算机上或同一计算机上的不同进程）进行数据交换的接口。</li>
+<li><strong>Socket的用途</strong>：Socket使得程序可以读写网络上的数据。在创建Socket时，您需要指定使用的协议（如TCP）。一旦建立了Socket连接，数据就可以通过这个连接在网络上进行传输。</li>
+</ul>
+<h3 id="TCP连接和IP协议的关系"><a href="#TCP连接和IP协议的关系" class="headerlink" title="TCP连接和IP协议的关系"></a>TCP连接和IP协议的关系</h3><ul>
+<li>在进行TCP网络通信时，通常会使用IP协议（无论是IPv4还是IPv6）。这是因为TCP负责在两个端点之间建立一个稳定的连接，并确保数据可靠地传输，而IP协议负责将数据包路由到正确的目的地。</li>
+<li>当您在编程中创建一个TCP Socket时，您需要指定使用的IP协议版本。例如，在Boost.Asio中，您可以创建一个使用IPv4的TCP Socket（<code>asio::ip::tcp::socket</code>），这意味着它将使用IPv4协议来路由数据。</li>
+</ul>
+<h1 id="网络编程基本流程"><a href="#网络编程基本流程" class="headerlink" title="网络编程基本流程"></a>网络编程基本流程</h1><h2 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h2><p>1）socket——创建socket对象。</p>
+<p>2）bind——绑定本机ip+port。</p>
+<p>3）listen——监听来电，若在监听到来电，则建立起连接。</p>
+<p>4）accept——再创建一个socket对象给其收发消息。原因是现实中服务端都是面对多个客户端，那么为了区分各个客户端，则每个客户端都需再分配一个socket对象进行收发消息。</p>
+<p>5）read、write——就是收发消息了。</p>
+<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><p>1）socket——创建socket对象。</p>
+<p>2）connect——根据服务端ip+port，发起连接请求。</p>
+<p>3）write、read——建立连接后，就可发收消息了。</p>
+<h1 id="终端节点的创建"><a href="#终端节点的创建" class="headerlink" title="终端节点的创建"></a>终端节点的创建</h1><h2 id="客户端-1"><a href="#客户端-1" class="headerlink" title="客户端"></a>客户端</h2><p><code>客户端</code>可以通过对端的ip和端口构造一个endpoint，用这个endpoint和<code>服务端</code>通信。</p>
+<p>步骤如下：</p>
+<ol>
+<li>设置服务器<code>IP地址</code>（string）和 <code>PORT</code>（unsigned short）</li>
+<li>定义<code> boost::system::error_code</code>状态码，用于存储解析<code> IP</code>时候可能发生的错误</li>
+<li>解析IP地址,获取<code>asio::ip::address</code>对象</li>
+<li>如果解析失败，反悔错误码</li>
+<li>解析成功，根据<code>ip::address</code>和<code>PORT</code>建立TCP连接，获取<code>asio::ip::tcp::endpoint</code>对象</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;endpoint.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/asio.hpp&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/system/error_code.hpp&gt;</span></span><br><br><span class="hljs-comment">// 使用命名空间别名，简化Boost.Asio的使用</span><br><span class="hljs-keyword">namespace</span> asio = boost::asio;<br><br><span class="hljs-comment">// 定义client_end_point函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">client_end_point</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// Step 1: 设置服务器IP地址和端口号</span><br>    <span class="hljs-comment">// 使用本地回环地址127.0.0.1进行测试</span><br>    std::string raw_ip_address = <span class="hljs-string">&quot;127.0.0.1&quot;</span>; <br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> port_num = <span class="hljs-number">3333</span>;           <br><br>    <span class="hljs-comment">// Step 2: 用于存储解析IP地址时可能发生的错误的变量</span><br>    boost::system::error_code ec;<br><br>    <span class="hljs-comment">// Step 3: 解析IP地址</span><br>    asio::ip::address ip_address = asio::ip::address::<span class="hljs-built_in">from_string</span>(raw_ip_address, ec);<br><br>    <span class="hljs-comment">// Step 4: 检查IP地址是否正确解析</span><br>    <span class="hljs-keyword">if</span> (ec.<span class="hljs-built_in">value</span>() != <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-comment">// 如果解析出错，输出错误信息并返回错误码</span><br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Failed to parse the IP address. Error code = &quot;</span><br>                  &lt;&lt; ec.<span class="hljs-built_in">value</span>() &lt;&lt; <span class="hljs-string">&quot;. Message: &quot;</span> &lt;&lt; ec.<span class="hljs-built_in">message</span>();<br>        <span class="hljs-keyword">return</span> ec.<span class="hljs-built_in">value</span>();<br>    &#125;<br><br>    <span class="hljs-comment">// Step 5: 使用解析好的IP地址和端口号创建TCP端点</span><br>    asio::ip::<span class="hljs-function">tcp::endpoint <span class="hljs-title">ep</span><span class="hljs-params">(ip_address, port_num)</span></span>;<br><br>    <span class="hljs-comment">// Step 6: 输出端点信息，验证创建是否成功</span><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Endpoint created: IP Address = &quot;</span> &lt;&lt; ep.<span class="hljs-built_in">address</span>() <br>              &lt;&lt; <span class="hljs-string">&quot;, Port = &quot;</span> &lt;&lt; ep.<span class="hljs-built_in">port</span>() &lt;&lt; std::endl;<br><br>    <span class="hljs-comment">// 如果一切正常，返回0</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">// 主函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// 调用client_end_point函数并处理返回结果</span><br>    <span class="hljs-type">int</span> result = <span class="hljs-built_in">client_end_point</span>();<br><br>    <span class="hljs-comment">// 检查client_end_point函数的返回值，确定是否出错</span><br>    <span class="hljs-keyword">if</span> (result != <span class="hljs-number">0</span>) &#123;<br>        std::cerr &lt;&lt; <span class="hljs-string">&quot;Error occurred during endpoint creation. Error code: &quot;</span> &lt;&lt; result &lt;&lt; std::endl;<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br><br>    <span class="hljs-comment">// 端点创建成功</span><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Endpoint creation successful.&quot;</span> &lt;&lt; std::endl;<br><br>    <span class="hljs-comment">// 正常结束程序</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="服务端-1"><a href="#服务端-1" class="headerlink" title="服务端"></a>服务端</h2><p>步骤如下：</p>
+<ol>
+<li>定义端口号（unsigned short）</li>
+<li>根据本机IPv6<code>asio::ip::address_v6::any()</code>协议创建<code>asio::ip::address</code>对象</li>
+<li>根据<code>ip::address</code>和<code>Port</code>创建<code>asio::ip::tcp::endpoint</code>对象</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;endpoint.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/asio.hpp&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/system/error_code.hpp&gt;</span></span><br><br><span class="hljs-comment">// 使用命名空间别名，简化Boost.Asio的使用</span><br><span class="hljs-keyword">namespace</span> asio = boost::asio;<br><br><span class="hljs-comment">// 定义server_end_point函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">server_end_point</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// Step 1: 获取协议端口号</span><br>    <span class="hljs-comment">// 这里我们假设服务器应用程序已经获取了端口号</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> port_num = <span class="hljs-number">3333</span>;<br><br>    <span class="hljs-comment">// Step 2: 创建一个特殊的asio::ip::address对象</span><br>    <span class="hljs-comment">// 它指定了主机上所有可用的IP地址</span><br>    <span class="hljs-comment">// 注意，这里我们假设服务器工作在IPv6协议上</span><br>    asio::ip::address ip_address = asio::ip::address_v6::<span class="hljs-built_in">any</span>();<br><br>    <span class="hljs-comment">// Step 3: 使用指定的IP地址和端口号创建TCP端点</span><br>    asio::ip::<span class="hljs-function">tcp::endpoint <span class="hljs-title">ep</span><span class="hljs-params">(ip_address, port_num)</span></span>;<br><br>    <span class="hljs-comment">// Step 4: 端点创建完成，可以用来指定服务器应用程序希望监听传入连接的IP地址和端口号</span><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Server endpoint created: IP Address = &quot;</span> &lt;&lt; ep.<span class="hljs-built_in">address</span>() <br>              &lt;&lt; <span class="hljs-string">&quot;, Port = &quot;</span> &lt;&lt; ep.<span class="hljs-built_in">port</span>() &lt;&lt; std::endl;<br><br>    <span class="hljs-comment">// 如果一切正常，返回0</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">// 主函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// 调用server_end_point函数并处理返回结果</span><br>    <span class="hljs-type">int</span> result = <span class="hljs-built_in">server_end_point</span>();<br><br>    <span class="hljs-comment">// 检查server_end_point函数的返回值，确定是否出错</span><br>    <span class="hljs-keyword">if</span> (result != <span class="hljs-number">0</span>) &#123;<br>        std::cerr &lt;&lt; <span class="hljs-string">&quot;Error occurred during server endpoint creation. Error code: &quot;</span> &lt;&lt; result &lt;&lt; std::endl;<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br><br>    <span class="hljs-comment">// 服务器端点创建成功</span><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Server endpoint creation successful.&quot;</span> &lt;&lt; std::endl;<br><br>    <span class="hljs-comment">// 正常结束程序</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="Socket-1"><a href="#Socket-1" class="headerlink" title="Socket"></a>Socket</h1><h2 id="客户端-2"><a href="#客户端-2" class="headerlink" title="客户端"></a>客户端</h2><p>步骤：</p>
+<ol>
+<li>创建<code>asio::io_context</code>对象</li>
+<li>创建一个代表TCP协议的<code>asio::ip::tcp</code>对象protocol</li>
+<li>创建TCP套接字对象<code>asio::ip::tcp::socket</code>,将它与<code>asio::io_context</code>对象关联</li>
+<li>定义一个<code>boost::system::error_code</code>变量</li>
+<li>打开套接字（使用TCP协议protocol，错误码error_code)</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/asio.hpp&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/system/error_code.hpp&gt;</span></span><br><br><span class="hljs-comment">// 使用命名空间别名，简化Boost.Asio的使用</span><br><span class="hljs-keyword">namespace</span> asio = boost::asio;<br><br><span class="hljs-comment">// 定义create_tcp_socket函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">create_tcp_socket</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// Step 1: 创建asio::io_context对象</span><br>    <span class="hljs-comment">// io_service（或io_context）是Boost.Asio中的核心类，用于处理所有I/O操作</span><br>    asio::io_context ios;<br><br>    <span class="hljs-comment">// Step 2: 创建一个代表TCP协议的asio::ip::tcp对象</span><br>    <span class="hljs-comment">// 这里我们使用IPv4作为底层协议</span><br>    asio::ip::tcp protocol = asio::ip::tcp::<span class="hljs-built_in">v4</span>();<br><br>    <span class="hljs-comment">// Step 3: 实例化一个活动的TCP套接字对象</span><br>    <span class="hljs-comment">// 套接字用于网络通信，这里我们将它与io_service对象关联</span><br>    asio::ip::<span class="hljs-function">tcp::socket <span class="hljs-title">sock</span><span class="hljs-params">(ios)</span></span>;<br><br>    <span class="hljs-comment">// Step 4: 定义一个error_code变量，用于存储打开套接字时可能发生的错误</span><br>    boost::system::error_code ec;<br><br>    <span class="hljs-comment">// Step 5: 打开套接字</span><br>    <span class="hljs-comment">// 使用之前定义的TCP协议（IPv4）打开套接字</span><br>    sock.<span class="hljs-built_in">open</span>(protocol, ec);<br><br>    <span class="hljs-comment">// Step 6: 检查套接字是否成功打开</span><br>    <span class="hljs-keyword">if</span> (ec.<span class="hljs-built_in">value</span>() != <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-comment">// 如果打开失败，输出错误信息并返回错误码</span><br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Failed to open the socket! Error code = &quot;</span><br>                  &lt;&lt; ec.<span class="hljs-built_in">value</span>() &lt;&lt; <span class="hljs-string">&quot;. Message: &quot;</span> &lt;&lt; ec.<span class="hljs-built_in">message</span>();<br>        <span class="hljs-keyword">return</span> ec.<span class="hljs-built_in">value</span>();<br>    &#125;<br><br>    <span class="hljs-comment">// 如果一切正常，返回0</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">// 主函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// 调用create_tcp_socket函数并处理返回结果</span><br>    <span class="hljs-type">int</span> result = <span class="hljs-built_in">create_tcp_socket</span>();<br><br>    <span class="hljs-comment">// 检查create_tcp_socket函数的返回值，确定是否出错</span><br>    <span class="hljs-keyword">if</span> (result != <span class="hljs-number">0</span>) &#123;<br>        std::cerr &lt;&lt; <span class="hljs-string">&quot;Error occurred during socket creation. Error code: &quot;</span> &lt;&lt; result &lt;&lt; std::endl;<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br><br>    <span class="hljs-comment">// 套接字创建成功</span><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Socket creation successful.&quot;</span> &lt;&lt; std::endl;<br><br>    <span class="hljs-comment">// 正常结束程序</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="服务端-2"><a href="#服务端-2" class="headerlink" title="服务端"></a>服务端</h2><p>需要生成一个acceptor的socket，用来接收新的连接。</p>
+<p>步骤：</p>
+<ol>
+<li>创建<code>asio::io_context</code>对象</li>
+<li>创建一个代表TCP协议的<code>asio::ip::tcp</code>对象protocol</li>
+<li>实例化一个接收器（Acceptor） 套接字对象<code>asio::ip::tcp::acceptor</code>,参数是ios</li>
+<li>定义一个<code>boost::system::error_code</code>变量</li>
+<li>打开套接字（使用TCP协议protocol，错误码error_code)</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/asio.hpp&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/system/error_code.hpp&gt;</span></span><br><br><span class="hljs-comment">// 使用命名空间别名，简化Boost.Asio的使用</span><br><span class="hljs-keyword">namespace</span> asio = boost::asio;<br><br><span class="hljs-comment">// 定义create_acceptor_socket函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">create_acceptor_socket</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// Step 1: 创建asio::io_context对象</span><br>    <span class="hljs-comment">// io_service（或io_context）是Boost.Asio中的核心类，用于处理所有I/O操作</span><br>    asio::io_context ios;<br><br>    <span class="hljs-comment">// Step 2: 创建一个代表TCP协议的asio::ip::tcp对象</span><br>    <span class="hljs-comment">// 这里我们使用IPv6作为底层协议</span><br>    asio::ip::tcp protocol = asio::ip::tcp::<span class="hljs-built_in">v6</span>();<br><br>    <span class="hljs-comment">// Step 3: 实例化一个接收器（Acceptor）套接字对象</span><br>    <span class="hljs-comment">// 接收器套接字用于监听和接受传入的TCP连接</span><br>    asio::ip::<span class="hljs-function">tcp::acceptor <span class="hljs-title">acceptor</span><span class="hljs-params">(ios)</span></span>;<br><br>    <span class="hljs-comment">// Step 4: 定义一个error_code变量，用于存储打开接收器套接字时可能发生的错误</span><br>    boost::system::error_code ec;<br><br>    <span class="hljs-comment">// Step 5: 打开接收器套接字</span><br>    <span class="hljs-comment">// 使用之前定义的TCP协议（IPv6）打开接收器</span><br>    acceptor.<span class="hljs-built_in">open</span>(protocol, ec);<br><br>    <span class="hljs-comment">// Step 6: 检查接收器套接字是否成功打开</span><br>    <span class="hljs-keyword">if</span> (ec.<span class="hljs-built_in">value</span>() != <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-comment">// 如果打开失败，输出错误信息并返回错误码</span><br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Failed to open the acceptor socket! Error code = &quot;</span><br>                  &lt;&lt; ec.<span class="hljs-built_in">value</span>() &lt;&lt; <span class="hljs-string">&quot;. Message: &quot;</span> &lt;&lt; ec.<span class="hljs-built_in">message</span>();<br>        <span class="hljs-keyword">return</span> ec.<span class="hljs-built_in">value</span>();<br>    &#125;<br><br>    <span class="hljs-comment">// 如果一切正常，返回0</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">// 主函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// 调用create_acceptor_socket函数并处理返回结果</span><br>    <span class="hljs-type">int</span> result = <span class="hljs-built_in">create_acceptor_socket</span>();<br><br>    <span class="hljs-comment">// 检查create_acceptor_socket函数的返回值，确定是否出错</span><br>    <span class="hljs-keyword">if</span> (result != <span class="hljs-number">0</span>) &#123;<br>        std::cerr &lt;&lt; <span class="hljs-string">&quot;Error occurred during acceptor socket creation. Error code: &quot;</span> &lt;&lt; result &lt;&lt; std::endl;<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br><br>    <span class="hljs-comment">// 接收器套接字创建成功</span><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Acceptor socket creation successful.&quot;</span> &lt;&lt; std::endl;<br><br>    <span class="hljs-comment">// 正常结束程序</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h1 id="绑定acceptor"><a href="#绑定acceptor" class="headerlink" title="绑定acceptor"></a>绑定acceptor</h1><p>acceptor类型的socket，服务器要将其绑定到指定的端点,所有连接这个端点的连接都可以被接收到</p>
+<p>步骤：</p>
+<ol>
+<li>设置端口号port</li>
+<li>创建一个端点 <code>asio::ip::tcp::endpoint</code>,利用IP，prot</li>
+<li>创建并打开一个接收器套接字<code>asio::ip::tcp::acceptor</code>，根据<code>ios</code>和<code>协议</code></li>
+<li>定义一个error_code变量</li>
+<li>将接收器套接字（accecptor）绑定到端点（endpoint）， <code>acceptor.bind(ep, ec)</code></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/asio.hpp&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/system/error_code.hpp&gt;</span></span><br><br><span class="hljs-comment">// 使用命名空间别名，简化Boost.Asio的使用</span><br><span class="hljs-keyword">namespace</span> asio = boost::asio;<br><br><span class="hljs-comment">// 定义bind_acceptor_socket函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">bind_acceptor_socket</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// Step 1: 获取协议端口号</span><br>    <span class="hljs-comment">// 这里我们假设服务器应用程序已经获取了端口号</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> port_num = <span class="hljs-number">3333</span>;<br><br>    <span class="hljs-comment">// Step 2: 创建一个端点</span><br>    <span class="hljs-comment">// 使用asio::ip::address_v4::any()表示服务器将接受发送到本机任何IPv4地址的连接</span><br>    asio::ip::<span class="hljs-function">tcp::endpoint <span class="hljs-title">ep</span><span class="hljs-params">(asio::ip::address_v4::any(), port_num)</span></span>;<br><br>    <span class="hljs-comment">// Step 3: 创建并打开一个接收器套接字</span><br>    asio::io_context ios;<br>    asio::ip::<span class="hljs-function">tcp::acceptor <span class="hljs-title">acceptor</span><span class="hljs-params">(ios, ep.protocol())</span></span>;<br><br>    <span class="hljs-comment">// Step 4: 定义一个error_code变量，用于存储绑定操作过程中可能发生的错误</span><br>    boost::system::error_code ec;<br><br>    <span class="hljs-comment">// Step 5: 将接收器套接字绑定到端点</span><br>    acceptor.<span class="hljs-built_in">bind</span>(ep, ec);<br><br>    <span class="hljs-comment">// Step 6: 检查接收器套接字是否成功绑定</span><br>    <span class="hljs-keyword">if</span> (ec.<span class="hljs-built_in">value</span>() != <span class="hljs-number">0</span>) &#123;<br>        <span class="hljs-comment">// 如果绑定失败，输出错误信息并返回错误码</span><br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Failed to bind the acceptor socket. Error code = &quot;</span><br>                  &lt;&lt; ec.<span class="hljs-built_in">value</span>() &lt;&lt; <span class="hljs-string">&quot;. Message: &quot;</span> &lt;&lt; ec.<span class="hljs-built_in">message</span>();<br>        <span class="hljs-keyword">return</span> ec.<span class="hljs-built_in">value</span>();<br>    &#125;<br><br>    <span class="hljs-comment">// 如果一切正常，返回0</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">// 主函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// 调用bind_acceptor_socket函数并处理返回结果</span><br>    <span class="hljs-type">int</span> result = <span class="hljs-built_in">bind_acceptor_socket</span>();<br><br>    <span class="hljs-comment">// 检查bind_acceptor_socket函数的返回值，确定是否出错</span><br>    <span class="hljs-keyword">if</span> (result != <span class="hljs-number">0</span>) &#123;<br>        std::cerr &lt;&lt; <span class="hljs-string">&quot;Error occurred during acceptor socket binding. Error code: &quot;</span> &lt;&lt; result &lt;&lt; std::endl;<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br><br>    <span class="hljs-comment">// 接收器套接字绑定成功</span><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Acceptor socket binding successful.&quot;</span> &lt;&lt; std::endl;<br><br>    <span class="hljs-comment">// 正常结束程序</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h1 id="客户端连接到指定的端点"><a href="#客户端连接到指定的端点" class="headerlink" title="客户端连接到指定的端点"></a>客户端连接到指定的端点</h1><p>步骤：</p>
+<ol>
+<li>获取目标服务器的IP地址和端口号</li>
+<li>创建一个指向目标应用程序的端点endpoint，需要ip和端口号</li>
+<li>创建并打开一个套接字socket，需要ios和IP协议</li>
+<li>socket连接endpoint</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/asio.hpp&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/system/error_code.hpp&gt;</span></span><br><br><span class="hljs-comment">// 使用命名空间别名，简化Boost.Asio的使用</span><br><span class="hljs-keyword">namespace</span> asio = boost::asio;<br><br><span class="hljs-comment">// 定义connect_to_end函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">connect_to_end</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// Step 1: 获取目标服务器的IP地址和端口号</span><br>    std::string raw_ip_address = <span class="hljs-string">&quot;127.0.0.1&quot;</span>;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> port_num = <span class="hljs-number">3333</span>;<br><br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-comment">// Step 2: 创建一个指向目标服务器应用程序的端点</span><br>        asio::ip::<span class="hljs-function">tcp::endpoint <span class="hljs-title">ep</span><span class="hljs-params">(asio::ip::address::from_string(raw_ip_address), port_num)</span></span>;<br><br>        asio::io_context ios;<br><br>        <span class="hljs-comment">// Step 3: 创建并打开一个套接字</span><br>        asio::ip::<span class="hljs-function">tcp::socket <span class="hljs-title">sock</span><span class="hljs-params">(ios, ep.protocol())</span></span>;<br><br>        <span class="hljs-comment">// Step 4: 连接套接字</span><br>        sock.<span class="hljs-built_in">connect</span>(ep);<br><br>        <span class="hljs-comment">// 连接成功，套接字现在可以用于发送和接收数据</span><br>    &#125;<br>    <span class="hljs-built_in">catch</span> (boost::system::system_error&amp; e) &#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Error occurred! Error code = &quot;</span> &lt;&lt; e.<span class="hljs-built_in">code</span>()<br>                  &lt;&lt; <span class="hljs-string">&quot;. Message: &quot;</span> &lt;&lt; e.<span class="hljs-built_in">what</span>();<br>        <span class="hljs-keyword">return</span> e.<span class="hljs-built_in">code</span>().<span class="hljs-built_in">value</span>();<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">// 主函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// 调用connect_to_end函数并处理返回结果</span><br>    <span class="hljs-type">int</span> result = <span class="hljs-built_in">connect_to_end</span>();<br><br>    <span class="hljs-comment">// 检查connect_to_end函数的返回值，确定是否出错</span><br>    <span class="hljs-keyword">if</span> (result != <span class="hljs-number">0</span>) &#123;<br>        std::cerr &lt;&lt; <span class="hljs-string">&quot;Error occurred during connection. Error code: &quot;</span> &lt;&lt; result &lt;&lt; std::endl;<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br><br>    <span class="hljs-comment">// 连接成功</span><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Connection successful.&quot;</span> &lt;&lt; std::endl;<br><br>    <span class="hljs-comment">// 正常结束程序</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="服务端接收连接"><a href="#服务端接收连接" class="headerlink" title="服务端接收连接"></a>服务端接收连接</h1><p>步骤：</p>
+<ol>
+<li>设置端口号</li>
+<li>创建端点endpoint，需要IP地址和Port</li>
+<li>创建<code>接收器套接字</code>，需要ios和IP协议</li>
+<li>接收器套接字<code>accecptor</code>绑定指定<code>endpoint</code></li>
+<li>开始监听传入的连接请求 <code>acceptor.listen(BACKLOG_SIZE)</code></li>
+<li>创建一个活动套接字sock,需要ios</li>
+<li>接收连接请求，将活动套接字连接到客户端<code>acceptor.accept(sock)</code></li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/asio.hpp&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;boost/system/error_code.hpp&gt;</span></span><br><br><span class="hljs-comment">// 使用命名空间别名，简化Boost.Asio的使用</span><br><span class="hljs-keyword">namespace</span> asio = boost::asio;<br><br><span class="hljs-comment">// 定义accept_new_connection函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">accept_new_connection</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-type">const</span> <span class="hljs-type">int</span> BACKLOG_SIZE = <span class="hljs-number">30</span>; <span class="hljs-comment">// 等待连接请求的队列大小</span><br><br>    <span class="hljs-comment">// Step 1: 获取协议端口号</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> port_num = <span class="hljs-number">3333</span>;<br><br>    <span class="hljs-comment">// Step 2: 创建一个服务器端点</span><br>    asio::ip::<span class="hljs-function">tcp::endpoint <span class="hljs-title">ep</span><span class="hljs-params">(asio::ip::address_v4::any(), port_num)</span></span>;<br><br>    asio::io_context ios;<br><br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-comment">// Step 3: 实例化并打开一个接收器套接字</span><br>        asio::ip::<span class="hljs-function">tcp::acceptor <span class="hljs-title">acceptor</span><span class="hljs-params">(ios, ep.protocol())</span></span>;<br><br>        <span class="hljs-comment">// Step 4: 将接收器套接字绑定到服务器端点</span><br>        acceptor.<span class="hljs-built_in">bind</span>(ep);<br><br>        <span class="hljs-comment">// Step 5: 开始监听传入的连接请求</span><br>        acceptor.<span class="hljs-built_in">listen</span>(BACKLOG_SIZE);<br><br>        <span class="hljs-comment">// Step 6: 创建一个活动套接字</span><br>        asio::ip::<span class="hljs-function">tcp::socket <span class="hljs-title">sock</span><span class="hljs-params">(ios)</span></span>;<br><br>        <span class="hljs-comment">// Step 7: 接收连接请求，将活动套接字连接到客户端</span><br>        acceptor.<span class="hljs-built_in">accept</span>(sock);<br><br>        <span class="hljs-comment">// 连接成功，套接字现在可以用于与客户端进行数据交换</span><br>    &#125;<br>    <span class="hljs-built_in">catch</span> (boost::system::system_error&amp; e) &#123;<br>        std::cout &lt;&lt; <span class="hljs-string">&quot;Error occurred! Error code = &quot;</span> &lt;&lt; e.<span class="hljs-built_in">code</span>()<br>                  &lt;&lt; <span class="hljs-string">&quot;. Message: &quot;</span> &lt;&lt; e.<span class="hljs-built_in">what</span>();<br>        <span class="hljs-keyword">return</span> e.<span class="hljs-built_in">code</span>().<span class="hljs-built_in">value</span>();<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">// 主函数</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-comment">// 调用accept_new_connection函数并处理返回结果</span><br>    <span class="hljs-type">int</span> result = <span class="hljs-built_in">accept_new_connection</span>();<br><br>    <span class="hljs-comment">// 检查accept_new_connection函数的返回值，确定是否出错</span><br>    <span class="hljs-keyword">if</span> (result != <span class="hljs-number">0</span>) &#123;<br>        std::cerr &lt;&lt; <span class="hljs-string">&quot;Error occurred during accepting connection. Error code: &quot;</span> &lt;&lt; result &lt;&lt; std::endl;<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br><br>    <span class="hljs-comment">// 接收连接成功</span><br>    std::cout &lt;&lt; <span class="hljs-string">&quot;Accepting connection successful.&quot;</span> &lt;&lt; std::endl;<br><br>    <span class="hljs-comment">// 正常结束程序</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="概念和疑问"><a href="#概念和疑问" class="headerlink" title="概念和疑问"></a>概念和疑问</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><ul>
+<li><p><input disabled="" type="checkbox"> 
+端点，套接字，接收器套接字对于客户端和服务端的作用</p>
+</li>
+<li><p><strong>客户端端点创建</strong> (<code>client_end_point</code>):</p>
+<ul>
+<li>设置目标服务器的IP和端口，创建客户端端点以连接服务器。</li>
+</ul>
+</li>
+<li><p><strong>服务器端点创建</strong> (<code>server_end_point</code>):</p>
+<ul>
+<li>设置端口号，创建服务器端点以便监听来自客户端的连接。</li>
+</ul>
+</li>
+<li><p><strong>创建TCP套接字</strong> (<code>create_tcp_socket</code>):</p>
+<ul>
+<li>创建套接字，用于客户端的连接或服务器的通信。</li>
+</ul>
+</li>
+<li><p><strong>创建接收器套接字</strong> (<code>create_acceptor_socket</code>):</p>
+<ul>
+<li>创建接收器套接字，用于服务器端接受客户端的连接请求。</li>
+</ul>
+</li>
+<li><p><strong>绑定接收器套接字</strong> (<code>bind_acceptor_socket</code>):</p>
+<ul>
+<li>将接收器套接字绑定到一个特定的端点，用于监听来自该端点的连接请求。</li>
+</ul>
+</li>
+<li><p><strong>连接到端点</strong> (<code>connect_to_end</code>):</p>
+<ul>
+<li>客户端使用套接字连接到指定的服务器端点。</li>
+</ul>
+</li>
+<li><p><strong>接收新连接</strong> (<code>accept_new_connection</code>):</p>
+<ul>
+<li>服务端监听并接受来自客户端的新连接请求。<strong>创建一个新的套接字与客户端进行通信</strong>。（注意，创建新的套接字通信）</li>
+</ul>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+端点，套接字，接收器套接字代码</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>功能</th>
+<th>参数</th>
+<th>示例代码</th>
+<th>应用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boost::system::error_code</td>
+<td>错误代码对象</td>
+<td>-</td>
+<td>boost::system::error_code ec;</td>
+<td>用于处理网络操作中的错误，如套接字打开或绑定失败。</td>
+</tr>
+<tr>
+<td>asio::ip::address</td>
+<td>表示一个IP地址</td>
+<td>1.IP地址字符串<br />2.错误代码对象</td>
+<td>asio::ip::address ip_address &#x3D; asio::ip::address::from_string(“127.0.0.1”, ec);</td>
+<td>定义网络通信的IP地址，用于创建端点。</td>
+</tr>
+<tr>
+<td>asio::ip::tcp::endpoint</td>
+<td>表示一个TCP网络端点</td>
+<td>1.ip_address<br />2.port_num</td>
+<td>asio::ip::tcp::endpoint ep(ip_address, port_num);</td>
+<td>用于定义TCP连接的目标地址和端口，客户端和服务器都会使用。</td>
+</tr>
+<tr>
+<td>asio::io_context</td>
+<td>提供I&#x2F;O功能</td>
+<td>-</td>
+<td>asio::io_context ios;</td>
+<td>用于管理异步I&#x2F;O操作，是Boost.Asio程序的核心。</td>
+</tr>
+<tr>
+<td>asio::ip::tcp::socket</td>
+<td>TCP套接字，用于网络通信</td>
+<td>1.<code>io_context</code>对象<br />2.协议</td>
+<td>asio::ip::tcp::socket sock(ios);</td>
+<td>用于客户端发起连接和服务器与客户端之间的数据交换。</td>
+</tr>
+<tr>
+<td>asio::ip::tcp::acceptor</td>
+<td>接收器套接字，用于接受连接</td>
+<td>1.<code>io_context</code>对象<br />2.协议</td>
+<td>asio::ip::tcp::acceptor acceptor(ios, protocol);</td>
+<td>服务器端使用，用于监听和接受来自客户端的连接。</td>
+</tr>
+</tbody></table>
+<h2 id="疑问"><a href="#疑问" class="headerlink" title="疑问"></a>疑问</h2><h4 id="1-关于地址解析"><a href="#1-关于地址解析" class="headerlink" title="1. 关于地址解析"></a>1. 关于地址解析</h4><p><strong>问题</strong>：根据string类型的ip地址解析，创建address对象，如果这个ip不是本机ip，是别的服务器的ip，就有可能解析不成功。如果是本机ip，一定可以成功。</p>
+<p><strong>答案</strong>：当你使用一个字符串类型的IP地址来创建<code>asio::ip::address</code>对象时，如果IP地址格式正确，它应该能够成功解析，无论这个IP是否属于本机。解析失败通常是由于格式错误或不支持的地址类型。</p>
+<h4 id="2-创建端点endpoint对象需要address对象和端口"><a href="#2-创建端点endpoint对象需要address对象和端口" class="headerlink" title="2. 创建端点endpoint对象需要address对象和端口"></a>2. 创建端点endpoint对象需要address对象和端口</h4><p><strong>问题</strong>：创建端点endpoint对象需要address对象和端口。</p>
+<p><strong>答案</strong>：正确，<code>asio::ip::tcp::endpoint</code>对象的创建需要一个IP地址（<code>asio::ip::address</code>对象）和一个端口号。</p>
+<h4 id="3-关于创建和打开socket"><a href="#3-关于创建和打开socket" class="headerlink" title="3. 关于创建和打开socket"></a>3. 关于创建和打开<code>socket</code></h4><p><strong>问题</strong>：创建socket对象需要ios，打开socket需要protocol和error_code?为啥需要打开呢？打开的时候在什么情况下会出错呢？</p>
+<p><strong>答案</strong>：<code>asio::ip::tcp::socket</code>对象需要一个<code>asio::io_context</code>对象来处理I&#x2F;O操作。打开<code>socket</code>指的是使其准备好进行网络通信。如果指定的协议不支持，或者系统资源不足（如端口号被占用），打开<code>socket</code>可能会出错。</p>
+<h4 id="4-关于acceptor"><a href="#4-关于acceptor" class="headerlink" title="4. 关于acceptor"></a>4. 关于<code>acceptor</code></h4><p><strong>问题</strong>：accecptor也是一个接收器socket，也需要打开，并且流程跟socket一样？</p>
+<p><strong>答案</strong>：<code>asio::ip::tcp::acceptor</code>类似于一个特殊的<code>socket</code>，专门用于监听和接受来自客户端的连接。它也需要被打开和绑定到一个端点上，以便知道在哪个端口上监听。</p>
+<h4 id="5-绑定acceptor"><a href="#5-绑定acceptor" class="headerlink" title="5. 绑定acceptor"></a>5. 绑定<code>acceptor</code></h4><p><strong>问题</strong>：绑定accecptor，是先创建，然后在将他绑定到endpoint上么？然后listen，就可以接受ip：port的消息了？</p>
+<p><strong>答案</strong>：你需要先创建一个<code>acceptor</code>，然后将其绑定到一个<code>endpoint</code>上（一个IP地址和端口号的组合）。一旦绑定并调用了<code>listen()</code>，它就开始监听该端点上的入站连接。</p>
+<h4 id="6-客户端访问服务端"><a href="#6-客户端访问服务端" class="headerlink" title="6. 客户端访问服务端"></a>6. 客户端访问服务端</h4><p><strong>问题</strong>：客户端访问服务端，需要socket绑定endpoint（服务器的ip:port）。</p>
+<p><strong>答案</strong>：客户端的<code>socket</code>需要连接到服务器的<code>endpoint</code>（服务器的IP地址和端口号）。</p>
+<h4 id="7-关于asio-ip-address-v6-any"><a href="#7-关于asio-ip-address-v6-any" class="headerlink" title="7. 关于asio::ip::address_v6::any()"></a>7. 关于<code>asio::ip::address_v6::any()</code></h4><p><strong>问题</strong>：asio::ip::address_v6::any()，这种代码只会在服务器上创建endpoint上使用，而且基本不会出错？</p>
+<p><strong>答案</strong>：<code>asio::ip::address_v6::any()</code>在服务器上创建一个可以接受任何IPv6地址的端点，这意味着它可以从任何IPv6地址接收连接。这通常不会出错，除非有底层网络配置问题。</p>
+<h4 id="8-关于接收器端点的访问"><a href="#8-关于接收器端点的访问" class="headerlink" title="8. 关于接收器端点的访问"></a>8. 关于接收器端点的访问</h4><p><strong>问题</strong>：接收器接受服务器的端点，此时是不是只用（端点的ip，和端口号）访问？比如开放了公网ip，那只可以用“公网ip:端口”访问，如果用“127.0.0.1：3333”就不可以（如果服务器在本地）。</p>
+<p><strong>答案</strong>：如果服务器监听公网IP和端口，那么客户端必须使用这个公网IP和端口来连接。如果服务器监听的是本地地址（如127.0.0.1），那么只有本地客户端（在同一台机器上）可以使用这个地址和端口连接。</p>
+<h4 id="9-理解asio-io-context的重要性"><a href="#9-理解asio-io-context的重要性" class="headerlink" title="9. 理解asio::io_context的重要性"></a>9. 理解<code>asio::io_context</code>的重要性</h4><p><strong>问题</strong>：如果不理解asio::io_context，是不是可以先跳过？</p>
+<p><strong>答案</strong>：<code>asio::io_context</code>是Boost Asio库的核心，负责管理所有I&#x2F;O服务。虽然一开始可能不容易理解，但它在Asio编程中非常重要，建议不要跳过。随着实践的增加，你会逐渐理解它的用途和重要性。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF/" class="category-chain-item">后端</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%90%8E%E7%AB%AF/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" class="category-chain-item">网络编程</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/c/" class="print-no-link">#c++</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>asio socket的创建和连接</div>
+      <div>http://example.com/2023/11/11/cpp/asio socket的创建和连接/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Mrxiad</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年11月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/11/11/%E7%AE%97%E6%B3%95/%E6%9C%89%E9%99%90%E5%88%B6%E7%9A%84%E8%83%8C%E5%8C%85/" title="有限制的背包（No Bug No Game）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">有限制的背包（No Bug No Game）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/11/07/docker%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="配置docker服务器">
+                        <span class="hidden-mobile">配置docker服务器</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
