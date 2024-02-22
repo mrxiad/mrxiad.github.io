@@ -211,8 +211,6 @@ int main()
 
 
 
-
-
 ## 函数指针
 
 ### 基本函数指针语法
@@ -362,3 +360,167 @@ int main() {
 
 对齐：类(结构体)对象每个成员分配内存的起始地址为其所占空间的整数倍。
 补齐：类(结构体)对象所占用的总大小为其内部最大成员所占空间的整数倍。
+
+
+
+
+
+
+
+## 引用折叠
+
+引用折叠是C++中的一个规则，用于确定当模板实例化或类型别名声明中出现多重引用时，引用应该如何被处理。其规则如下：
+
+- `T& &`、`T& &&`、`T&& &`都折叠成`T&`
+- `T&& &&`折叠成`T&&`
+
+
+
+## 通用引用
+
+### 语法
+
+通用引用的语法很简单，只需在类型后面加上`&&`，并且这个类型必须是模板参数的推导类型。例如：
+
+```cpp
+template<typename T>
+void function(T&& arg) {
+    // ...
+}
+```
+
+在这个例子中，`T&&`类型的参数`arg`是一个通用引用。
+
+### 工作原理
+
+当一个左值被传递给`function`时，模板参数`T`被推导为左值引用类型。例如，如果你传递一个`int`类型的左值给`function`，`T`将被推导为`int&`，使得`T&&`实际上成为`int& &&`，根据引用折叠规则（Reference Collapsing Rules），它会变成`int&`。
+
+相反，如果一个右值被传递给`function`，`T`将被推导为该右值的实际类型，所以如果你传递一个`int`类型的右值，`T`将被推导为`int`，使得`T&&`实际上是`int&&`。
+
+> 通用引用避免重载
+
+
+
+## 完美转发
+
+直接转发会导致所有参数都被视为左值。为了保持参数的原始左值或右值属性，使用`std::forward`。
+
+```cpp
+#include <utility>
+#include <iostream>
+
+// 目标函数，接受一个右值引用参数
+void function(int&& x)
+{
+    std::cout << "function called with right value\n";
+}
+
+// 目标函数，重载版本接受一个左值引用参数
+void function(int& x)
+{
+    std::cout << "function called with left value\n";
+}
+
+
+// 函数模板，使用通用引用和完美转发
+template<typename T>
+void wrapper(T&& arg)
+{
+    // 完美转发arg到另一个函数
+    function(std::forward<T>(arg));
+}
+
+
+int main()
+{
+    int x = 10;
+    wrapper(x);  // 输出: function called with left value
+    wrapper(20); // 输出: function called with right value
+}
+```
+
+
+
+
+
+## 完美转发与可变参数
+
+当我们结合使用可变参数模板和完美转发时，可以创建非常通用的函数包装器，这些包装器能将任意数量和类型的参数完美地转发给其他函数。
+
+```cpp
+template<typename F, typename... Args>
+auto wrapper(F&& f, Args&&... args) -> decltype(f(std::forward<Args>(args)...)) {
+    return f(std::forward<Args>(args)...);
+}
+```
+
+在这个例子中：
+
+- `F&& f` 使用通用引用接受任何类型的函数或可调用对象。
+- `Args&&... args` 是一个参数包，使用通用引用接受任意数量和类型的参数。
+- `std::forward<Args>(args)...` 完美转发这些参数给函数`f`。
+- `decltype(f(std::forward<Args>(args)...))` 用于推断函数`f`调用的返回类型。
+
+### 展开参数包
+
+参数包的展开是通过递归函数调用或初始化列表的方式实现的。在完美转发的上下文中，通常不需要手动展开参数包，因为`std::forward<Args>(args)...`语法已经为我们完成了这项工作。
+
+### 使用示例一
+
+假设有一个函数`void print(int a, double b)`，我们想通过`wrapper`函数完美转发参数给它：
+
+```cpp
+void print(int a, double b) {
+    std::cout << a << ", " << b << std::endl;
+}
+
+int main() {
+    wrapper(print, 5, 3.14); // 完美转发5和3.14到print函数
+}
+```
+
+> 注意：这里`return void`是合法的
+
+
+
+### 使用示例二
+
+```cpp
+#include <string>
+#include <utility> // For std::forward
+
+class MyClass {
+public:
+    // 基础构造函数，执行主要的初始化逻辑
+    MyClass(int x, const std::string& name) : value(x), name(name) {}
+
+    // 模板构造函数，接受一个int和可变数量的其他参数
+    // 使用完美转发将其他参数转发到std::string的构造函数
+    template<typename... Args>
+    MyClass(int x, Args&&... args)
+        : MyClass(x, std::string(std::forward<Args>(args)...)) {//委托构造
+        // 这里可以添加特定于此构造函数的逻辑
+    }
+
+private:
+    int value;
+    std::string name;
+};
+```
+
+
+
+
+
+## 异常
+
+
+
+
+
+## allocator类
+
+
+
+
+
