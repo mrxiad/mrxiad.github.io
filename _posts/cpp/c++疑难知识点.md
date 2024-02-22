@@ -315,79 +315,39 @@ MyClass *objPtr = &obj;
 
 ### 3.要点
 
+- 虚函数表是虚函数指针数组
 - 一个类对象其内存分布的基本结构为**虚函数表地址+非静态成员变量**，类的成员函数**不占**用类对象的空间，他们分布在一片属于类的共有区域。
 - 类的静态成员函数喝成员变量不占用类对象的空间，他们分配在静态区。
-- 虚函数表的地址存储在类对象的起始位置。所以我们利用这个原理，通过寻址的方式访问虚函数表里的函数
+- **虚函数表的地址**存储在类对象的起始位置。所以我们利用这个原理，通过寻址的方式访问虚函数表里的函数
+- 一个类得所有实例共享一个虚函数表
 
 
 
 ## 4.代码演示
 
 ```cpp
-#include<bits/stdc++.h>
-
-using namespace std;
-
-
-class Baseclass
-{
-
+#include <iostream>
+class A {
 public:
-    Baseclass() : a(1024) {}
-    virtual void f() { cout << "Base::f" << endl; }
-    virtual void g() { cout << "Base::g" << endl; }
-    virtual void h() { cout << "Base::h" << endl; }
-    int a;
+    virtual void func1() { std::cout << "A::func1" << std::endl; }
+    virtual void func2() { std::cout << "A::func2" << std::endl; }
+    virtual ~A() {} // 虚析构函数，确保派生类的正确析构
 };
 
-// 0 1 2 3   4 5 6 7(虚函数表空间)    8 9 10 11 12 13 14 15(存储的是a)
+int main() {
+    A a;
+    // 获取虚函数表的地址
+    void** vptr = *reinterpret_cast<void***>(&a);
 
-class DeriveClass : public Baseclass
-{
-public:
-    virtual void f() { cout << "Derive::f" << endl; }
-    virtual void g2() { cout << "Derive::g2" << endl; }
-    virtual void h3() { cout << "Derive::h3" << endl; }
-};
+    typedef void (*Func1Ptr)();
+    Func1Ptr func1 = reinterpret_cast<Func1Ptr>(vptr[0]);
+    func1();
 
-void uesVitualTable()
-{
-    typedef void (*Func)(void);
-    Baseclass b;
-    b.a=1024;
-    cout<<"sizeof(b):"<<sizeof(b)<<endl;
-
-    int *p=(int*)&b;    //取出虚函数表的地址
-    cout<<"虚函数表地址的地址："<<p<<endl;
-    cout<<"b的地址:"<<&b<<endl;
-
-    cout<<"b.a的地址:"<<p+2<<endl;//这一步涉及到内存对齐
-    cout<<"b.a的值:"<<*(p+2)<<endl;
-
-    cout<<"虚函数表的地址:"<<(int*)(*p)<<endl;
-
-    cout << "int大小:" << sizeof(int) << endl;
-    cout << "p大小:" << sizeof(p) << " int*大小" << sizeof(int *) << endl;
-
-    Func pFunc = (Func)(*(int*)(*p));
-    pFunc();
-
-    pFunc = (Func)(*p+1);
-    pFunc();
-
-    pFunc = (Func)(*p+2);
-    pFunc();
+    typedef void (*Func2Ptr)();
+    Func2Ptr func2 = reinterpret_cast<Func2Ptr>(vptr[1]);
+    func2(); 
+    return 0;
 }
-
-int main()
-{
-    uesVitualTable();
-}
-
-/*
-
-
-*/
 ```
 
 
