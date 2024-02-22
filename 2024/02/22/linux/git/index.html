@@ -16,13 +16,15 @@
   <meta name="author" content="Mrxiad">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
+    <meta name="description" content="12345title: git（github）date: 2024-2-21 15:14:00tags: 技术categories: - linux      配置github的SSH keys步骤 查看本机是否有已经生成公钥： 123456789ls -al ~&#x2F;.ssh#输出如下：total 20drwx------  2 xiadong xiadong 4096 Feb 21 15:08 .">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Mrxiad">
-<meta property="og:url" content="http://example.com/2024/02/21/linux/github%E9%85%8D%E7%BD%AEssh%E5%85%AC%E9%92%A5/index.html">
+<meta property="og:url" content="http://example.com/2024/02/22/linux/git/index.html">
 <meta property="og:site_name" content="Mrxiad">
+<meta property="og:description" content="12345title: git（github）date: 2024-2-21 15:14:00tags: 技术categories: - linux      配置github的SSH keys步骤 查看本机是否有已经生成公钥： 123456789ls -al ~&#x2F;.ssh#输出如下：total 20drwx------  2 xiadong xiadong 4096 Feb 21 15:08 .">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-02-21T07:07:18.568Z">
-<meta property="article:modified_time" content="2024-02-22T08:13:14.912Z">
+<meta property="article:published_time" content="2024-02-22T08:12:48.948Z">
+<meta property="article:modified_time" content="2024-02-22T12:47:41.577Z">
 <meta property="article:author" content="Mrxiad">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -217,8 +219,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-02-21 15:07" pubdate>
-          2024年2月21日 下午
+        <time datetime="2024-02-22 16:12" pubdate>
+          2024年2月22日 下午
         </time>
       </span>
     
@@ -229,7 +231,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          1.2k 字
         
       </span>
     
@@ -240,7 +242,7 @@
         
         
         
-          1 分钟
+          11 分钟
         
       </span>
     
@@ -282,7 +284,64 @@
             
               <div class="markdown-body">
                 
-                
+                <figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs subunit">title: git（github）<br>date: 2024<span class="hljs-string">-2</span><span class="hljs-string">-21</span> 15:14:00<br><span class="hljs-keyword">tags:</span> 技术<br>categories: <br>- linux<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="配置github的SSH-keys"><a href="#配置github的SSH-keys" class="headerlink" title="配置github的SSH keys"></a>配置github的SSH keys</h1><h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
+<li><h3 id="查看本机是否有已经生成公钥："><a href="#查看本机是否有已经生成公钥：" class="headerlink" title="查看本机是否有已经生成公钥："></a>查看本机是否有已经生成公钥：</h3> <figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs tap">ls -al ~/.ssh<br><br><span class="hljs-comment">#输出如下：</span><br>total 20<br>drwx------ <span class="hljs-number"> 2 </span>xiadong xiadong<span class="hljs-number"> 4096 </span>Feb<span class="hljs-number"> 21 </span>15:08 .<br>drwxr-xr-x<span class="hljs-number"> 24 </span>xiadong xiadong<span class="hljs-number"> 4096 </span>Feb<span class="hljs-number"> 21 </span>15:06 ..<br>-rw------- <span class="hljs-number"> 1 </span>xiadong xiadong<span class="hljs-number"> 3239 </span>Feb<span class="hljs-number"> 21 </span>15:08 id_rsa      <br>-rw-r--r-- <span class="hljs-number"> 1 </span>xiadong xiadong <span class="hljs-number"> 743 </span>Feb<span class="hljs-number"> 21 </span>15:08 id_rsa.pub<br>-rw-r--r-- <span class="hljs-number"> 1 </span>xiadong xiadong <span class="hljs-number"> 666 </span>Jan<span class="hljs-number"> 27 </span>19:50 known_hosts<br></code></pre></td></tr></table></figure>
+
+</li>
+<li><h2 id="如果没有id-rsa和id-rsa-pub，则生成公钥"><a href="#如果没有id-rsa和id-rsa-pub，则生成公钥" class="headerlink" title="如果没有id_rsa和id_rsa.pub，则生成公钥"></a>如果没有<code>id_rsa</code>和<code>id_rsa.pub</code>，则生成公钥</h2> <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ssh</span>-keygen -t rsa -b <span class="hljs-number">4096</span> -C <span class="hljs-string">&quot;123@qq.com&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p> <strong>一路回车即可</strong></p>
+</li>
+<li><h3 id="查看公钥内容"><a href="#查看公钥内容" class="headerlink" title="查看公钥内容"></a>查看公钥内容</h3> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> ~/.ssh/id_rsa.pub<br></code></pre></td></tr></table></figure>
+
+</li>
+<li><h3 id="复制公钥内容到github上即可"><a href="#复制公钥内容到github上即可" class="headerlink" title="复制公钥内容到github上即可"></a>复制公钥内容到github上即可</h3></li>
+</ol>
+<h1 id="git常用命令"><a href="#git常用命令" class="headerlink" title="git常用命令"></a>git常用命令</h1><h2 id="git强制拉取远程分支"><a href="#git强制拉取远程分支" class="headerlink" title="git强制拉取远程分支"></a>git强制拉取远程分支</h2><ol>
+<li><strong>重置本地分支到远程分支的状态：</strong></li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">git fetch origin<br>git reset --hard origin/master<br></code></pre></td></tr></table></figure>
+
+<p>这将会使你的本地分支回到远程分支的状态，丢弃所有本地的更改。</p>
+<ol>
+<li><strong>如果需要，清理未跟踪的文件：</strong></li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">git clean -fd<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="git回滚到某个特定版本"><a href="#git回滚到某个特定版本" class="headerlink" title="git回滚到某个特定版本"></a>git回滚到某个特定版本</h2><p>如果你想将当前分支回滚到指定的提交，并且不介意放弃该提交之后的所有更改（在本地分支上），你可以使用 <code>git reset</code> 命令。这样做会重置你的 HEAD 指针到指定的提交，并且可以选择如何处理工作目录和暂存区的更改。</p>
+<ul>
+<li><strong>仅重置 HEAD 指针（保留工作目录和暂存区的更改）：</strong></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">git reset --soft 07e95cc2d284e4f040e4c4aba407920cc11237d6<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>重置 HEAD 指针，并且重置暂存区（但保留工作目录中的更改作为未提交的更改）：</strong></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">git reset --mixed 07e95cc2d284e4f040e4c4aba407920cc11237d6<br></code></pre></td></tr></table></figure>
+
+<p>或者简写为（因为 <code>--mixed</code> 是默认选项）：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">git reset 07e95cc2d284e4f040e4c4aba407920cc11237d6<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>彻底回滚（重置 HEAD、暂存区和工作目录，放弃所有未提交的更改）：</strong></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">git reset --hard 07e95cc2d284e4f040e4c4aba407920cc11237d6<br></code></pre></td></tr></table></figure>
+
+<p>请注意，使用 <code>git reset --hard</code> 会丢失所有未提交的更改。确保在使用这个命令之前备份重要更改。</p>
+<h2 id="git强制推送"><a href="#git强制推送" class="headerlink" title="git强制推送"></a>git强制推送</h2><p>强制推送到远程仓库的 <code>master</code> 分支可以使用以下命令，但请注意，这将覆盖远程分支上的所有更改，可能会导致其他人的工作丢失。因此，只有在你确实知道自己在做什么，并且这是解决问题的唯一方式时，才应该使用强制推送。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git push origin master --force<br></code></pre></td></tr></table></figure>
+
+
                 
               </div>
             
@@ -300,7 +359,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div></div>
-      <div>http://example.com/2024/02/21/linux/github配置ssh公钥/</div>
+      <div>http://example.com/2024/02/22/linux/git/</div>
     </div>
     <div class="license-meta">
       
@@ -312,7 +371,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年2月21日</div>
+          <div>2024年2月22日</div>
         </div>
       
       
@@ -344,18 +403,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/02/21/cpp/c++%E7%96%91%E9%9A%BE%E7%9F%A5%E8%AF%86%E7%82%B9/" title="c++恶心知识点">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">c++恶心知识点</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/01/17/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="linux常用指令">
-                        <span class="hidden-mobile">linux常用指令</span>
+                      <a href="/2024/02/22/%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7/" title="常用工具汇总">
+                        <span class="hidden-mobile">常用工具汇总</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
