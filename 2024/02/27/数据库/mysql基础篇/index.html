@@ -1,0 +1,1041 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Mrxiad">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="登录1mysql -uroot -p123456    重置密码步骤(linux)1.停止 MySQL 服务首先，你需要停止正在运行的 MySQL 服务。这个步骤根据你的操作系统会有所不同。  对于 Linux 系统，可以使用以下命令之一，具体取决于你的系统管理工具：   123bashCopy codesudo systemctl stop mysql# 或者sudo &#x2F;etc&#x2F;init.d&#x2F;m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql基础篇">
+<meta property="og:url" content="http://example.com/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E5%9F%BA%E7%A1%80%E7%AF%87/index.html">
+<meta property="og:site_name" content="Mrxiad">
+<meta property="og:description" content="登录1mysql -uroot -p123456    重置密码步骤(linux)1.停止 MySQL 服务首先，你需要停止正在运行的 MySQL 服务。这个步骤根据你的操作系统会有所不同。  对于 Linux 系统，可以使用以下命令之一，具体取决于你的系统管理工具：   123bashCopy codesudo systemctl stop mysql# 或者sudo &#x2F;etc&#x2F;init.d&#x2F;m">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-02-27T04:33:12.000Z">
+<meta property="article:modified_time" content="2024-02-27T04:38:08.508Z">
+<meta property="article:author" content="Mrxiad">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>mysql基础篇 - Mrxiad</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Mrxiad</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="mysql基础篇"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-27 12:33" pubdate>
+          2024年2月27日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          74 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">mysql基础篇</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">mysql -uroot -p123456<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="重置密码步骤-linux"><a href="#重置密码步骤-linux" class="headerlink" title="重置密码步骤(linux)"></a>重置密码步骤(linux)</h2><h3 id="1-停止-MySQL-服务"><a href="#1-停止-MySQL-服务" class="headerlink" title="1.停止 MySQL 服务"></a>1.停止 MySQL 服务</h3><p>首先，你需要停止正在运行的 MySQL 服务。这个步骤根据你的操作系统会有所不同。</p>
+<ul>
+<li><p><strong>对于 Linux 系统</strong>，可以使用以下命令之一，具体取决于你的系统管理工具：</p>
+  <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">bashCopy codesudo systemctl <span class="hljs-literal">stop</span> mysql<br><span class="hljs-comment"># 或者</span><br>sudo /etc/init.d/mysql <span class="hljs-literal">stop</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-启动-MySQL-无密码模式"><a href="#2-启动-MySQL-无密码模式" class="headerlink" title="2. 启动 MySQL 无密码模式"></a>2. 启动 MySQL 无密码模式</h3><p>接下来，你需要以无密码模式启动 MySQL。这允许你以 root 用户身份登录而不需要密码，从而可以重置丢失的密码。</p>
+<ul>
+<li><p><strong>对于 Linux</strong>，启动 MySQL 时添加 <code>--skip-grant-tables</code> 参数：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo mysqld_safe --skip-grant-tables &amp;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-重置密码"><a href="#3-重置密码" class="headerlink" title="3. 重置密码"></a>3. 重置密码</h3><p>现在，你可以登录到 MySQL 服务器而不需要密码，然后重置密码。</p>
+<ol>
+<li><p>登录到 MySQL：</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">mysql -u root<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>选择 MySQL 数据库：</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">USE mysql;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>更新 root 用户的密码。根据你的 MySQL 版本，命令可能略有不同：</p>
+<ul>
+<li><p><strong>MySQL 5.7 及以前版本</strong>：</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">UPDATE user SET password=PASSWORD(&quot;新密码&quot;) WHERE User=&#x27;root&#x27;;<br>FLUSH PRIVILEGES;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>MySQL 5.7.6 及之后版本</strong>：</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">ALTER USER &#x27;root&#x27;@&#x27;localhost&#x27; IDENTIFIED BY &#x27;新密码&#x27;;<br>FLUSH PRIVILEGES;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>MariaDB</strong> 可能也支持 <code>ALTER USER</code> 或需要使用 <code>UPDATE</code> 语句。</p>
+</li>
+</ul>
+</li>
+<li><p>退出 MySQL：</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">quit<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="4-重启-MySQL-服务"><a href="#4-重启-MySQL-服务" class="headerlink" title="4. 重启 MySQL 服务"></a>4. 重启 MySQL 服务</h3><p>最后，停止无密码模式下运行的 MySQL 服务，然后正常启动 MySQL 服务。</p>
+<ul>
+<li><p><strong>对于 Linux</strong>：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo systemctl stop mysqld<br>sudo systemctl start mysql<br><span class="hljs-comment"># 或者使用 /etc/init.d/mysql stop 和 start</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="更改密码（已知密码）"><a href="#更改密码（已知密码）" class="headerlink" title="更改密码（已知密码）"></a>更改密码（已知密码）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mysql">-- 需要先进入数据库<br><br>-- 这里把数据库登录密码改为111111<br>alter user &#x27;root&#x27;@&#x27;localhost&#x27; identified by &#x27;111111&#x27;; <br>  <br>-- 账号和地址不带引号也可以  <br>alter user root@localhost identified by &#x27;88888888&#x27; ;   <br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="乱码问题"><a href="#乱码问题" class="headerlink" title="乱码问题"></a>乱码问题</h2><p>MySQL 数据库乱码问题通常是由于字符集设置不一致导致的。解决这个问题通常涉及检查和设置数据库、表或连接的字符集和排序规则（collation）。</p>
+<h3 id="检查当前的字符集设置"><a href="#检查当前的字符集设置" class="headerlink" title="检查当前的字符集设置"></a>检查当前的字符集设置</h3><p>首先，你需要检查 MySQL 的当前字符集和排序规则设置。可以使用以下命令查看全局、数据库级别和表级别的字符集和排序规则设置：</p>
+<ul>
+<li><p><strong>查看全局字符集和排序规则</strong>:</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SHOW VARIABLES LIKE &#x27;character_set_%&#x27;;<br>SHOW VARIABLES LIKE &#x27;collation_%&#x27;;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>查看特定数据库的字符集和排序规则</strong>:</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SELECT DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME<br>FROM information_schema.SCHEMATA<br>WHERE SCHEMA_NAME = &#x27;your_database_name&#x27;;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>查看特定表的字符集和排序规则</strong>:</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SELECT CCSA.character_set_name AS &#x27;Charset&#x27;, CCSA.collation_name AS &#x27;Collation&#x27;<br>FROM information_schema.`TABLES` T,<br>     information_schema.`COLLATION_CHARACTER_SET_APPLICABILITY` CCSA<br>WHERE CCSA.collation_name = T.table_collation<br>  AND T.table_schema = &quot;your_database_name&quot;<br>  AND T.table_name = &quot;your_table_name&quot;;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-设置字符集"><a href="#2-设置字符集" class="headerlink" title="2. 设置字符集"></a>2. 设置字符集</h3><p>如果你发现字符集设置不正确，你可以通过以下方式进行调整：</p>
+<ul>
+<li><p><strong>设置数据库的默认字符集</strong>:</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE DATABASE 数据库名 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>修改现有数据库的字符集</strong>:</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">ALTER DATABASE 数据库名 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>设置表的字符集</strong>:</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">ALTER TABLE 表名 CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="3-设置连接字符集"><a href="#3-设置连接字符集" class="headerlink" title="3. 设置连接字符集"></a>3. 设置连接字符集</h3><p>当你的应用程序连接到 MySQL 服务器时，确保连接使用的字符集也是正确的。这可以通过在连接字符串中设置字符集来实现，具体方法取决于你使用的编程语言和数据库驱动。</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
+<li><strong>字符集选择</strong>：<code>utf8mb4</code>是一个好的通用选择，因为它支持所有Unicode字符，包括表情符号。如果你的应用不需要这么广泛的字符支持，你可以选择其他字符集，但最好保持数据库、表和连接字符集的一致性。</li>
+<li><strong>备份数据</strong>：在对数据库或表进行字符集更改之前，务必备份你的数据，以避免潜在的数据丢失。</li>
+<li><strong>测试更改</strong>：在生产环境应用任何更改之前，先在测试环境中进行测试，以确保更改不会导致应用程序中出现问题。</li>
+</ul>
+<h2 id="数据库的备份和恢复【等待完成】"><a href="#数据库的备份和恢复【等待完成】" class="headerlink" title="数据库的备份和恢复【等待完成】"></a>数据库的备份和恢复【等待完成】</h2><h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><h3 id="整数类型"><a href="#整数类型" class="headerlink" title="整数类型"></a>整数类型</h3><ul>
+<li><code>int</code> (integer): 整数类型。</li>
+</ul>
+<h3 id="小数类型"><a href="#小数类型" class="headerlink" title="小数类型"></a>小数类型</h3><ul>
+<li><code>double</code>: 双精度浮点类型。</li>
+<li><code>decimal (m,d)</code>: 指定整数位与小数位长度的小数类型。例如，<code>decimal(10,2)</code> 表示总共10位数字，其中2位为小数。</li>
+</ul>
+<h3 id="日期类型"><a href="#日期类型" class="headerlink" title="日期类型"></a>日期类型</h3><ul>
+<li><code>date</code>: 日期类型，格式为 <code>yyyy-MM-dd</code>，包含年月日，不包含时分秒。例如，<code>2019-05-06</code>。</li>
+<li><code>datetime</code>: 日期类型，格式为 <code>YYYY-MM-DD HH:MM:SS</code>，包含年月日时分秒。例如，<code>2019-05-06 09:49:30</code>。</li>
+<li><code>timestamp</code>: 日期类型，时间戳。</li>
+</ul>
+<h3 id="文本类型"><a href="#文本类型" class="headerlink" title="文本类型"></a>文本类型</h3><ul>
+<li><code>varchar (M)</code>: 文本类型，<code>M</code> 为0-65535之间的整数。</li>
+</ul>
+<h2 id="数据库基本操作"><a href="#数据库基本操作" class="headerlink" title="数据库基本操作"></a>数据库基本操作</h2><h3 id="查看所有数据库"><a href="#查看所有数据库" class="headerlink" title="查看所有数据库"></a>查看所有数据库</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">show databases;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="切换数据库"><a href="#切换数据库" class="headerlink" title="切换数据库"></a>切换数据库</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">use db1;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="查看当前数据库"><a href="#查看当前数据库" class="headerlink" title="查看当前数据库"></a>查看当前数据库</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">select database()<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mysql">create database 数据库名称;<br>-- 不存在则创建<br>create database if not exists db1;<br>-- 创建的时候指定字符集<br>create database db1 default character set gbk;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="查看某个数据库定义信息"><a href="#查看某个数据库定义信息" class="headerlink" title="查看某个数据库定义信息"></a>查看某个数据库定义信息</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">show create database db1;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">drop database db1;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<h2 id="数据表基本操作"><a href="#数据表基本操作" class="headerlink" title="数据表基本操作"></a>数据表基本操作</h2><h3 id="查看所有表"><a href="#查看所有表" class="headerlink" title="查看所有表"></a>查看所有表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">show tables;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="查看表的具体信息"><a href="#查看表的具体信息" class="headerlink" title="查看表的具体信息"></a>查看表的具体信息</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">desc 表名;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="查看如何创建的"><a href="#查看如何创建的" class="headerlink" title="查看如何创建的"></a>查看如何创建的</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">show create table 表名<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs mysql"> create table 表名(<br>         字段1 字段类型,<br>         字段2 字段类型,<br>         …<br>         字段n 字段类型<br>);<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="修改表属性"><a href="#修改表属性" class="headerlink" title="修改表属性"></a>修改表属性</h3><ul>
+<li><p>名称</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">ALTER TABLE 【old_table_name】 RENAME TO 【new_table_name】;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>字段</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mysql">-- 添加字段<br>ALTER TABLE 【table_name】 ADD 【column_name datatype】;<br><br>-- 删除字段<br>ALTER TABLE 【table_name】 DROP COLUMN 【column_name】;<br><br><br></code></pre></td></tr></table></figure>
+
+</li>
+<li><p>字段类型</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">ALTER TABLE 【table_name】 MODIFY 【column_name】 【new_datatype】;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">drop table 表名;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="数据表的约束"><a href="#数据表的约束" class="headerlink" title="数据表的约束"></a>数据表的约束</h2><h3 id="表的约束条件"><a href="#表的约束条件" class="headerlink" title="表的约束条件"></a>表的约束条件</h3><p>表的约束条件用于限制表中字段的数据，以保证数据的正确性和唯一性。以下是五种常见的约束条件：</p>
+<ul>
+<li><p><strong>PRIMARY KEY</strong>: 主键约束用于唯一标识对应的记录。每个表只能有一个主键，主键列中的值必须唯一，且不能为NULL。</p>
+</li>
+<li><p><strong>FOREIGN KEY</strong>: 外键约束，用于建立两个表之间的链接。外键在当前表中不能有唯一值，其值必须是另一个表中主键或唯一约束的值，或者为NULL。</p>
+</li>
+<li><p><strong>NOT NULL</strong>: 非空约束，确保该字段的每条记录都必须含有值，即该字段不能存储NULL值。</p>
+</li>
+<li><p><strong>UNIQUE</strong>: 唯一性约束，保证所有记录中的该字段的每个值都必须唯一。不同的记录中可以包含NULL值。</p>
+</li>
+<li><p><strong>DEFAULT</strong>: 默认值约束，用于设置字段的默认值。如果在插入记录时没有指定该字段的值，则会使用默认值。</p>
+</li>
+</ul>
+<p>表的约束实际上就是表中数据的限制条件，它们是维护数据完整性的重要工具。</p>
+<h3 id="具体代码"><a href="#具体代码" class="headerlink" title="具体代码"></a>具体代码</h3><ul>
+<li><p>主键约束</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">字段名 数据类型 primary key;<br></code></pre></td></tr></table></figure>
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE TABLE persons (<br>    firstName varchar(255),<br>    lastName varchar(255),<br>    address varchar(255),<br>    city varchar(255)<br>);<br><br>ALTER TABLE persons ADD PRIMARY KEY (firstName, lastName);-- 设置主键<br></code></pre></td></tr></table></figure>
+
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">ALTER TABLE persons DROP PRIMARY KEY; -- 撤销主键约束<br></code></pre></td></tr></table></figure>
+
+</li>
+<li><p>外键约束</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql">-- 在创建数据表时语法如下：<br>CONSTRAINT 外键名 FOREIGN KEY (从表外键字段) REFERENCES 主表 (主键字段)<br>-- 将创建数据表创号后语法如下：<br>ALTER TABLE 从表名 ADD CONSTRAINT 外键名 FOREIGN KEY (从表外键字段) REFERENCES 主表 (主键字段);<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>主表数据删除，从表数据也要删除</p>
+</blockquote>
+</li>
+<li><p>非空约束</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql’">字段名 数据类型 NOT NULL;<br></code></pre></td></tr></table></figure>
+
+</li>
+<li><p>唯一性约束</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">字段名 数据类型 UNIQUE;<br></code></pre></td></tr></table></figure>
+
+</li>
+<li><p>默认值约束</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">字段名 数据类型 DEFAULT 默认值；<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="级联删除（CASCADE）"><a href="#级联删除（CASCADE）" class="headerlink" title="级联删除（CASCADE）"></a>级联删除（CASCADE）</h3><p>设置级联删除，如果主表中的一条记录被删除，那么从表中所有引用了该记录的行也会被自动删除。这是为了保持数据库的引用完整性，避免出现“悬挂”的外键引用，即从表中有数据引用了已经不存在的主表数据。</p>
+<h2 id="数据表内容基本操作"><a href="#数据表内容基本操作" class="headerlink" title="数据表内容基本操作"></a>数据表内容基本操作</h2><h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs mysql">INSERT INTO 表名（字段名1,字段名2,...) VALUES (值 1,值 2,...);<br><br>INSERT INTO 表名 VALUES (值1，值2,...)  -- 每个字段都得填写，主键用null<br><br>-- 插入多条<br>INSERT INTO 表名 (字段名1,字段名2,...) VALUES (值 1,值 2,…),(值 1,值 2,…),...;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mysql">UPDATE 表名 SET 字段名=值, 字段名=值 WHERE 条件表达式;<br><br>-- example<br>update student set age=20,gender=&#x27;female&#x27; where name=&#x27;tom&#x27;;<br><br>-- 全部更新<br>update student set age=18;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs mysql">DELETE FROM 表名 WHERE 条件表达式;<br><br>-- example<br><br>-- 删除表中所有数据<br>delete from user;<br><br>-- 删除 uid 为1的数据<br>delete from user where uid = 1;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">truncate table 表名;<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>区别：</p>
+<p>delete :一条一条删除，不清空 ayto_increment 记录数。</p>
+<p>truncate :直接将表删除，重新建表，auto_increment 将置为零，从新开始</p>
+</blockquote>
+<h3 id="查看auto-increment当前值"><a href="#查看auto-increment当前值" class="headerlink" title="查看auto_increment当前值"></a>查看auto_increment当前值</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SELECT AUTO_INCREMENT<br>FROM information_schema.tables<br>WHERE table_name = &#x27;your_table_name&#x27;<br>AND table_schema = &#x27;your_database_name&#x27;;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="修改auto-increment值"><a href="#修改auto-increment值" class="headerlink" title="修改auto_increment值"></a>修改auto_increment值</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">ALTER TABLE 表名 AUTO_INCREMENT=100<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a>查询数据</h3><h4 id="去重查询"><a href="#去重查询" class="headerlink" title="去重查询"></a>去重查询</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SELECT DISTINCT 列名 from 表名;-- 去重<br></code></pre></td></tr></table></figure>
+
+<h4 id="改字段查询"><a href="#改字段查询" class="headerlink" title="改字段查询"></a>改字段查询</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SELECT DISTINCT pname, price + 2 from products;-- price+2 &amp;&amp; 去重<br></code></pre></td></tr></table></figure>
+
+<h4 id="条件查询"><a href="#条件查询" class="headerlink" title="条件查询"></a>条件查询</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs mysql">-- 条件查询<br>SELECT * FROM products WHERE price&gt;40 AND price &lt;900;<br><br>SELECT * FROM products WHERE price BETWEEN 20 AND 98;<br><br>SELECT * FROM products WHERE price NOT IN (20,38,98);<br></code></pre></td></tr></table></figure>
+
+<h4 id="模糊查询"><a href="#模糊查询" class="headerlink" title="模糊查询"></a>模糊查询</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mysql">select * from products where price like &#x27;%&#x27;;<br>-- %表示任意多个 _表示一个<br><br>-- 查找价格中包含数字&quot;5&quot;的产品<br>SELECT * FROM products WHERE CAST(price AS CHAR) LIKE &#x27;%5%&#x27;; -- 尽量不要使用，效率不高<br></code></pre></td></tr></table></figure>
+
+<h4 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mysql">-- 聚合查询（对单列进行分析）<br><br>select count(*) from products;<br>select max(price) as 商品价格最大值 from products;<br>select min(price) as 商品价格最小值 from products;<br>select sum(price) as 商品总价 from products;<br>select avg(price) as 平均价格 from products;<br></code></pre></td></tr></table></figure>
+
+<h4 id="分组查询"><a href="#分组查询" class="headerlink" title="分组查询"></a>分组查询</h4><blockquote>
+<p>注意事项：</p>
+<h3 id="分组查询的注意事项："><a href="#分组查询的注意事项：" class="headerlink" title="分组查询的注意事项："></a>分组查询的注意事项：</h3><ol>
+<li><strong>选择的非聚合列必须在GROUP BY子句中声明</strong>：在<code>SELECT</code>语句中，如果你使用了聚合函数，那么除了聚合函数外的其他所有列都应该包含在<code>GROUP BY</code>子句中。这是因为非聚合列的值在分组聚合中是不明确的。</li>
+<li><strong>HAVING子句的使用</strong>：<code>HAVING</code>子句是在分组后对聚合结果应用条件的方式。它类似于<code>WHERE</code>子句，但<code>WHERE</code>子句在数据分组前过滤行，而<code>HAVING</code>子句在数据分组和聚合之后过滤组。</li>
+<li><strong>性能考虑</strong>：大量数据的分组查询可能会导致性能下降，特别是如果分组依据的列没有被索引。优化分组查询通常涉及确保适当的索引存在，以及尽量减少需要处理的数据量。</li>
+<li><strong>聚合函数和NULL值</strong>：大多数聚合函数在计算时会忽略NULL值。因此，如果分组列中包含NULL值，这些值会被视为一个单独的组。</li>
+<li><strong>分组的结果</strong>：使用<code>GROUP BY</code>时，可以把它想象成对于每个唯一的分组键（本例中的<code>sid</code>），SQL都会创建一个“虚拟的子表”（虽然这不是在物理上发生的），然后对每个这样的“子表”应用聚合函数。<code>GROUP BY sid</code>后，查询就像是对每个由<code>sid</code>定义的分组单独进行了。</li>
+<li><strong>排序分组结果</strong>：可以使用<code>ORDER BY</code>子句对分组查询的结果进行排序，但需要注意的是，排序是在所有分组完成后进行的。</li>
+</ol>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">-- 分组查询<br>select sid as 商品分类,count(*) as 商品个数 from products group by sid;<br>select sid as 商品分类,avg(price) as 平均价格 from products group by sid having avg(price)&gt;=60;<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SELECT * FROM 表名 LIMIT 起始位置, 记录数;   -- 一般结合排序<br><br>-- example<br>SELECT product_id, name, price, added_on<br>FROM products<br>ORDER BY added_on DESC              <br>LIMIT 0, 5;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="多表操作"><a href="#多表操作" class="headerlink" title="多表操作"></a>多表操作</h2><h3 id="内连接查询"><a href="#内连接查询" class="headerlink" title="内连接查询"></a>内连接查询</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SELECT 查询字段1,查询字段2, ... FROM 表1 [INNER] JOIN 表2 ON 表1.关系字段=表2.关系字段<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="外连接查询"><a href="#外连接查询" class="headerlink" title="外连接查询"></a>外连接查询</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">SELECT 查询字段1,查询字段2, ... FROM 表1 LEFT | RIGHT [OUTER] JOIN 表2 ON 表1.关系字段=表2.关系字段 WHERE 条件<br></code></pre></td></tr></table></figure>
+
+<p><strong>1、LEFT [OUTER] JOIN 左(外)连接：返回包括左表中的所有记录和右表中符合连接条件的记录。<br>2、RIGHT [OUTER] JOIN 右(外)连接：返回包括右表中的所有记录和左表中符合连接条件的记录</strong></p>
+<h2 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h2><h3 id="带比较运算符的子查询"><a href="#带比较运算符的子查询" class="headerlink" title="带比较运算符的子查询"></a>带比较运算符的子查询</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">select * from class where cid=(select classid from student where sname=&#x27;张三&#x27;);<br></code></pre></td></tr></table></figure>
+
+<h3 id="带EXISTS关键字的子查询"><a href="#带EXISTS关键字的子查询" class="headerlink" title="带EXISTS关键字的子查询"></a>带EXISTS关键字的子查询</h3><p>EXISTS关键字后面的参数可以是任意一个子查询， 它不产生任何数据只返回TRUE或FALSE。当返回值为TRUE时外层查询才会 执行</p>
+<blockquote>
+<p>假如王五同学在学生表中则从班级表查询所有班级信息 MySQL命令：</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">select * from class where exists (select * from student where sname=&#x27;王五&#x27;);<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="带ANY关键字的子查询"><a href="#带ANY关键字的子查询" class="headerlink" title="带ANY关键字的子查询"></a>带ANY关键字的子查询</h3><p>ANY关键字表示满足其中任意一个条件就返回一个结果作为外层查询条件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">select * from class where cid &gt; any (select classid from student);<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="带ALL关键字的子查询"><a href="#带ALL关键字的子查询" class="headerlink" title="带ALL关键字的子查询"></a>带ALL关键字的子查询</h3><p>ALL关键字与ANY有点类似，只不过带ALL关键字的子査询返回的结果需同时满足所有内层査询条件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">select * from class where cid &gt; all (select classid from student);<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="各个指令的书写顺序【重要】"><a href="#各个指令的书写顺序【重要】" class="headerlink" title="各个指令的书写顺序【重要】"></a>各个指令的书写顺序【重要】</h2><ol>
+<li><strong>SELECT</strong><ul>
+<li>指定要从数据集中选择哪些列或进行哪些计算。</li>
+</ul>
+</li>
+<li><strong>DISTINCT</strong><ul>
+<li>用于返回唯一不同的值。如果使用，它紧跟在 SELECT 关键字后面。</li>
+</ul>
+</li>
+<li><strong>FROM</strong><ul>
+<li>指定要从哪个表中检索数据。这是定义数据源的地方。</li>
+</ul>
+</li>
+<li><strong>JOIN</strong><ul>
+<li>如果涉及多个表，使用 JOIN 来说明如何将这些表根据逻辑关系连接起来。</li>
+</ul>
+</li>
+<li><strong>WHERE</strong><ul>
+<li>对从 FROM 子句指定的表中检索到的数据进行条件过滤。</li>
+</ul>
+</li>
+<li><strong>GROUP BY</strong><ul>
+<li>如果需要按某一列或多列对结果集进行分组，使用 GROUP BY 子句。</li>
+</ul>
+</li>
+<li><strong>HAVING</strong><ul>
+<li>用于对 GROUP BY 分组后的结果集进行条件过滤。这是唯一可以在聚合函数上应用条件的地方。</li>
+</ul>
+</li>
+<li><strong>ORDER BY</strong><ul>
+<li>指定如何对查询结果进行排序（例如，按某列升序或降序）。</li>
+</ul>
+</li>
+<li><strong>LIMIT</strong> &#x2F; <strong>OFFSET</strong><ul>
+<li>用于限制返回的结果数量，或指定从哪一条记录开始返回。这在进行分页时特别有用。</li>
+</ul>
+</li>
+</ol>
+<h2 id="各个指令的执行顺序【重要】"><a href="#各个指令的执行顺序【重要】" class="headerlink" title="各个指令的执行顺序【重要】"></a>各个指令的执行顺序【重要】</h2><ol>
+<li><strong>FROM</strong>子句<ul>
+<li>这是第一步，数据库系统从指定的表中读取数据。如果有多个表，会进行相应的连接操作。</li>
+</ul>
+</li>
+<li><strong>JOIN</strong>（如果有）<ul>
+<li>如果查询涉及多个表，会在这一步根据 JOIN 条件进行表的连接。</li>
+</ul>
+</li>
+<li><strong>WHERE</strong>子句<ul>
+<li>接下来，数据库系统会根据 WHERE 子句中的条件过滤数据。这一步发生在任何分组（GROUP BY）之前，意味着 WHERE 条件是应用于原始数据上的。</li>
+</ul>
+</li>
+<li><strong>GROUP BY</strong>子句<ul>
+<li>如果查询指定了 GROUP BY，那么在 WHERE 过滤之后，下一步就是根据指定的列或表达式对结果集进行分组。</li>
+</ul>
+</li>
+<li><strong>HAVING</strong>子句<ul>
+<li>HAVING 子句用于过滤经过 GROUP BY 分组后的数据集。这意味着，与 WHERE 不同，HAVING 是在分组后对组应用的条件。</li>
+</ul>
+</li>
+<li><strong>SELECT</strong>子句<ul>
+<li>这一步选择从上一步结果中需要获取的列。如果有聚合函数（如 SUM、COUNT 等），它们也会在这一步计算。</li>
+</ul>
+</li>
+<li><strong>DISTINCT</strong>（如果有）<ul>
+<li>如果查询指定了 DISTINCT，那么在 SELECT 后，会去除重复的行。</li>
+</ul>
+</li>
+<li><strong>ORDER BY</strong>子句<ul>
+<li>接着，根据 ORDER BY 子句指定的列或表达式对结果集进行排序。注意，这是在所有的选择、聚合和过滤操作完成后进行的。</li>
+</ul>
+</li>
+<li><strong>LIMIT</strong>子句（或 OFFSET）<ul>
+<li>最后，如果指定了 LIMIT 或 OFFSET，数据库系统会根据这些限制来限定或跳过结果集中的一部分行。</li>
+</ul>
+</li>
+</ol>
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_56880706/article/details/122653735?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522170900723016800182152977%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=170900723016800182152977&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-2-122653735-null-null.142%5Ev99%5Epc_search_result_base3&utm_term=mysql%E4%BA%8B%E5%8A%A1&spm=1018.2226.3001.4187">参考文章</a></p>
+<ul>
+<li>原子性（Atomicity）：指事务是一个不可分割的最小工作单位，事务中的操作只有都发生和都不发生两种情况</li>
+<li>一致性（Consistency）：事务必须使数据库从一个一致状态变换到另外一个一致状态，举一个栗子，李二给王五转账50元，其事务就是让李二账户上减去50元，王五账户上加上50元；一致性是指其他事务看到的情况是要么李二还没有给王五转账的状态，要么王五已经成功接收到李二的50元转账。而对于李二少了50元，王五还没加上50元这个中间状态是不可见的。</li>
+<li>隔离性（Isolation）：一个事务的执行不能被其他事务干扰，即一个事务内部的操作及使用的数据对并发的其他事务是隔离的，并发执行的各个事务之间不能互相干扰。</li>
+<li>持久性（Durability）：一个事务一旦提交成功，它对数据库中数据的改变将是永久性的，接下来的其他操作或故障不应对其有任何影响。</li>
+</ul>
+<h3 id="事务分类"><a href="#事务分类" class="headerlink" title="事务分类"></a>事务分类</h3><ul>
+<li>隐式事务：该事务没有明显的开启和结束标记，它们都具有自动提交事务的功能；不妨思考一下，update语句修改数据时，是不是对表中数据进行改变了，它的本质其实就相当于一个事务</li>
+<li>显示事务：该事务具有明显的开启和结束标记；也是本文重点要讲的东西。使用显式事务的前提是你得先把自动提交事务的功能给禁用。禁用自动提交功能就是设置<code>autocommit</code>变量值为0（0:禁用 1:开启）</li>
+</ul>
+<h3 id="查看是否自动提交"><a href="#查看是否自动提交" class="headerlink" title="查看是否自动提交"></a>查看是否自动提交</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mysql">select @@autocommit;  -- 为0为禁用<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="开启事务"><a href="#开启事务" class="headerlink" title="开启事务"></a>开启事务</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs mysql">#步骤一：开启事务（可选）<br>start transaction;<br>#步骤二：编写事务中的sql语句（insert、update、delete）<br>#这里实现一下&quot;李二给王五转账&quot;的事务过程<br>update t_account set balance = 50 where vname = &quot;李二&quot;;<br>update t_account set balance = 130 where vname = &quot;王五&quot;;<br>#步骤三：结束事务<br>commit; #提交事务<br># rollback; #回滚事务:就是事务不执行，回滚到事务执行前的状态<br></code></pre></td></tr></table></figure>
+
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql/" class="category-chain-item">mysql</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="print-no-link">#数据库</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>mysql基础篇</div>
+      <div>http://example.com/2024/02/27/数据库/mysql基础篇/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Mrxiad</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年2月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/22/%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7/" title="常用工具汇总">
+                        <span class="hidden-mobile">常用工具汇总</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
