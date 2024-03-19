@@ -40,7 +40,7 @@ categories:
 
 	```bash
 	sudo fuser -k [端口]
-	
+
 #例如
 	sudo fuser -k 8080
 	```
@@ -68,10 +68,26 @@ categories:
 
 	```bash
 	kill -9 [pid]
-	
+
 #例如
 	kill -9 24009
 	```
-	
-	
+
+
+
+# 查看公网ip
+
+```bash
+curl ifconfig.me
+```
+
+
+
+# 查看内网ip
+
+```bash
+ip addr
+```
+
+
 

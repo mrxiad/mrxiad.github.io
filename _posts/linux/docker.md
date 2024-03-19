@@ -1,6 +1,6 @@
 ---
-title: 配置docker服务器
-date: 2023-11-07 21:05:30
+title: docker服务器 & docker-compose
+date: 2024-3-19 21:05:30
 tags: 技术
 categories: 
 - 工程
@@ -9,18 +9,22 @@ categories:
 
 
 
--  本文介绍如何在ubuntu环境下创建docker容器，并且将此容器设置成一个“服务器”
+
+
+# docker服务器
+
+
+
+-  介绍如何在ubuntu环境下创建docker容器，并且将此容器设置成一个“服务器”
 -  然后如何ssh进docker容器(root用户)，并且配置免密登录
 
 
 
 *步骤如下*
 
-------
 
 
-
-# 1.创建Dockerfile文件
+## 1.创建Dockerfile文件
 
 ```Docker
 # 使用官方Ubuntu基础镜像
@@ -64,7 +68,7 @@ CMD ["tail", "-f", "/dev/null"]
 
 
 
-# 2.执行命令创建镜像
+## 2.执行命令创建镜像
 
 ```bash
 docker build -t mydocker .
@@ -76,7 +80,7 @@ docker build -t mydocker .
 
 
 
-# 3.利用镜像创建容器
+## 3.利用镜像创建容器
 
 ```bash
 docker run -d --name mydocker-container -p 8080:8080 -p 20000:22 mydocker
@@ -96,9 +100,9 @@ docker exec -it myapp-container /bin/bash
 
 
 
-# 4.配置并开启docker容器的ssh服务
+## 4.配置并开启docker容器的ssh服务
 
-## (a)确保 SSH 服务已经在容器内安装并正在运行。
+### (a)确保 SSH 服务已经在容器内安装并正在运行。
 
 可以使用以下命令来安装并启动 SSH 服务：
 
@@ -120,7 +124,7 @@ docker exec -it xddocker /etc/init.d/ssh start
 docker exec -it xddocker systemctl start ssh
 ```
 
-## (b)设置 `root` 用户的密码。
+### (b)设置 `root` 用户的密码。
 
 你需要使用 `passwd` 命令来为 `root` 用户设置密码：
 
@@ -130,7 +134,7 @@ docker exec -it xddocker passwd root
 
 当系统提示时输入并确认密码。
 
-## (d)配置 SSH 以允许 `root` 用户登录。
+### (d)配置 SSH 以允许 `root` 用户登录。
 
 编辑容器中的 `/etc/ssh/sshd_config` 文件，将 `PermitRootLogin` 的值更改为 `yes`：
 
@@ -138,13 +142,13 @@ docker exec -it xddocker passwd root
 docker exec -it xddocker sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 ```
 
-## (e)重新启动 SSH 服务以使更改生效：
+### (e)重新启动 SSH 服务以使更改生效：
 
 ```
 docker exec -it xddocker service ssh restart
 ```
 
-## (f)使用 SSH 连接到容器：
+### (f)使用 SSH 连接到容器：
 
 现在您应该可以使用 SSH 连接到容器的 `root` 用户了。使用宿主机的端口 `20000` 来连接：
 
@@ -170,13 +174,13 @@ ssh root@localhost -p 20000
 
 ------
 
-# 5.配置免密登录
+## 5.配置免密登录
 
 以下是在Windows系统使用Git Bash来完成这个过程的详细步骤
 
 ------
 
-## (a)生成SSH密钥对
+### (a)生成SSH密钥对
 
 打开`git bash`,输入命令生成密钥对，一路回车，密钥对在 `/c/Users/<你的用户名>/.ssh/id_rsa`文件中
 
@@ -186,7 +190,7 @@ ssh-keygen -t rsa -b 4096
 
 
 
-## (b)复制SSH公钥到远程服务器
+### (b)复制SSH公钥到远程服务器
 
 本地git bash中查看公钥内容,复制下来
 
@@ -219,7 +223,85 @@ vim ~/.ssh/authorized_keys
 输入":wq"保存退出
 ```
 
-## (c)退出后，即可进行免密登录
+### (c)退出后，即可进行免密登录
 
 
+
+
+
+# docker-compose
+
+
+
+>  docker-compose示例
+
+使用Docker Compose可以将一系列创建及映射资源（网络、数据卷等）操作放在配置文件中，并且可以通过depends_on参数指定容器的启动顺序，通过environment参数指定Kafka需要的基本参数信息
+
+## 1.创建**kafka-group.yml**，保存以下信息
+
+```yml
+version: '3'
+
+services:
+  zookeeper-test:
+    image: zookeeper
+    ports:
+      - "2181:2181"
+    volumes:
+      - zookeeper_vol:/data
+      - zookeeper_vol:/datalog
+      - zookeeper_vol:/logs
+    container_name: zookeeper-test
+
+  kafka-test:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: "60.205.9.142"   					#注意这个改成公网ip
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper-test:2181"
+      KAFKA_LOG_DIRS: "/kafka/logs"
+    volumes:
+      - kafka_vol:/kafka
+    depends_on:
+      - zookeeper-test
+    container_name: kafka-test
+
+volumes:
+  zookeeper_vol: {}
+  kafka_vol: {}
+```
+
+
+
+## 2.启动容器组
+
+```bash
+# 启动Kafka容器组
+docker compose -f kafka-group.yml up -d
+
+#停止并移除容器以及数据卷
+docker-compose -f kafka-group.yml down -v
+
+# 输出示例
+ ✔ Network kafka-group_default         Created 
+ ✔ Volume "kafka-group_zookeeper_vol"  Created 
+ ✔ Volume "kafka-group_kafka_vol"      Created 
+ ✔ Container zookeeper-test            Started 
+ ✔ Container kafka-test                Started
+```
+
+
+
+## 3.进入kafka容器检查所有topic(以及所有消息)
+
+```bash
+docker exec -it kafka-test /bin/bash
+
+#检测所有topic
+/opt/kafka/bin/kafka-topics.sh --list --zookeeper zookeeper-test:2181
+
+#检测topic为[test]的所有信息
+/opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
+```
 
