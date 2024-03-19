@@ -16,22 +16,22 @@
   <meta name="author" content="Mrxiad">
   <meta name="keywords" content="">
   
-    <meta name="description" content="本文介绍如何在ubuntu环境下创建docker容器，并且将此容器设置成一个“服务器” 然后如何ssh进docker容器(root用户)，并且配置免密登录  步骤如下  1.创建Dockerfile文件1234567891011121314151617181920212223242526272829303132333435# 使用官方Ubuntu基础镜像FROM ubuntu:latest# 避">
+    <meta name="description" content="mysql为什么要用B+树而不用B树 B+树的查询的时间复杂度是多少 聚簇索引和非聚簇索引区别 聚簇索引和非聚簇索引是如何优化查询的 覆盖索引是什么 四种隔离级别是什么，分别解决什么问题">
 <meta property="og:type" content="article">
-<meta property="og:title" content="配置docker服务器">
-<meta property="og:url" content="http://example.com/2023/11/07/docker%E6%9C%8D%E5%8A%A1%E5%99%A8/index.html">
+<meta property="og:title" content="mysql面试题">
+<meta property="og:url" content="http://example.com/2024/02/28/%E9%9D%A2%E8%AF%95%E9%A2%98/mysql/index.html">
 <meta property="og:site_name" content="Mrxiad">
-<meta property="og:description" content="本文介绍如何在ubuntu环境下创建docker容器，并且将此容器设置成一个“服务器” 然后如何ssh进docker容器(root用户)，并且配置免密登录  步骤如下  1.创建Dockerfile文件1234567891011121314151617181920212223242526272829303132333435# 使用官方Ubuntu基础镜像FROM ubuntu:latest# 避">
+<meta property="og:description" content="mysql为什么要用B+树而不用B树 B+树的查询的时间复杂度是多少 聚簇索引和非聚簇索引区别 聚簇索引和非聚簇索引是如何优化查询的 覆盖索引是什么 四种隔离级别是什么，分别解决什么问题">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-11-07T13:05:30.000Z">
-<meta property="article:modified_time" content="2023-12-01T13:50:36.779Z">
+<meta property="article:published_time" content="2024-02-28T12:04:15.000Z">
+<meta property="article:modified_time" content="2024-02-28T12:08:53.856Z">
 <meta property="article:author" content="Mrxiad">
-<meta property="article:tag" content="技术">
+<meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>配置docker服务器 - Mrxiad</title>
+  <title>mysql面试题 - Mrxiad</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -209,7 +209,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="配置docker服务器"></span>
+            <span id="subtitle" data-typed-text="mysql面试题"></span>
           
         </div>
 
@@ -220,8 +220,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-11-07 21:05" pubdate>
-          2023年11月7日 晚上
+        <time datetime="2024-02-28 20:04" pubdate>
+          2024年2月28日 晚上
         </time>
       </span>
     
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.3k 字
+          88 字
         
       </span>
     
@@ -243,7 +243,7 @@
         
         
         
-          20 分钟
+          1 分钟
         
       </span>
     
@@ -280,81 +280,18 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">配置docker服务器</h1>
+            <h1 id="seo-header">mysql面试题</h1>
             
             
               <div class="markdown-body">
                 
-                <ul>
-<li>本文介绍如何在ubuntu环境下创建docker容器，并且将此容器设置成一个“服务器”</li>
-<li>然后如何ssh进docker容器(root用户)，并且配置免密登录</li>
-</ul>
-<p><em>步骤如下</em></p>
-<hr>
-<h1 id="1-创建Dockerfile文件"><a href="#1-创建Dockerfile文件" class="headerlink" title="1.创建Dockerfile文件"></a>1.创建Dockerfile文件</h1><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs Docker"><span class="hljs-comment"># 使用官方Ubuntu基础镜像</span><br><span class="hljs-keyword">FROM</span> ubuntu:latest<br><br><span class="hljs-comment"># 避免在自动化构建时出现提示</span><br><span class="hljs-keyword">ARG</span> DEBIAN_FRONTEND=noninteractive<br><br><span class="hljs-comment"># 安装开发所需的包</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> apt-get update &amp;&amp; apt-get install -y \</span><br><span class="language-bash">    vim \</span><br><span class="language-bash">    git \</span><br><span class="language-bash">    curl \</span><br><span class="language-bash">    wget \</span><br><span class="language-bash">    build-essential \</span><br><span class="language-bash">    lsb-release \</span><br><span class="language-bash">    sudo \</span><br><span class="language-bash">    man \</span><br><span class="language-bash">    software-properties-common \</span><br><span class="language-bash">    ca-certificates \</span><br><span class="language-bash">    &amp;&amp; apt-get clean \</span><br><span class="language-bash">    &amp;&amp; <span class="hljs-built_in">rm</span> -rf /var/lib/apt/lists/*</span><br><br><span class="hljs-comment"># 如果需要其他语言环境或工具，可以在这里继续安装，比如对于Python开发：</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> apt-get update &amp;&amp; apt-get install -y python3 python3-pip</span><br><br><span class="hljs-comment"># 对于Node.js开发：</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> curl -sL https://deb.nodesource.com/setup_14.x | bash - &amp;&amp; apt-get update &amp;&amp; apt-get install -y nodejs</span><br><br><span class="hljs-comment"># 清理apt缓存以减少镜像大小</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> apt-get clean &amp;&amp; <span class="hljs-built_in">rm</span> -rf /var/lib/apt/lists/*</span><br><br><span class="hljs-comment"># （可选）设置工作目录，这是容器内的目录，你的项目代码可以放在这里</span><br><span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /root</span><br><br><span class="hljs-comment"># 设置默认运行的命令，此命令将保持容器运行</span><br><span class="hljs-keyword">CMD</span><span class="language-bash"> [<span class="hljs-string">&quot;tail&quot;</span>, <span class="hljs-string">&quot;-f&quot;</span>, <span class="hljs-string">&quot;/dev/null&quot;</span>]</span><br></code></pre></td></tr></table></figure>
+                <p>mysql为什么要用B+树而不用B树</p>
+<p>B+树的查询的时间复杂度是多少</p>
+<p>聚簇索引和非聚簇索引区别</p>
+<p>聚簇索引和非聚簇索引是如何优化查询的</p>
+<p>覆盖索引是什么</p>
+<p>四种隔离级别是什么，分别解决什么问题</p>
 
-<hr>
-<h1 id="2-执行命令创建镜像"><a href="#2-执行命令创建镜像" class="headerlink" title="2.执行命令创建镜像"></a>2.执行命令创建镜像</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker build -t mydocker .<br></code></pre></td></tr></table></figure>
-
-<p>将<code>mydocker</code>换成你想要的镜像名称</p>
-<hr>
-<h1 id="3-利用镜像创建容器"><a href="#3-利用镜像创建容器" class="headerlink" title="3.利用镜像创建容器"></a>3.利用镜像创建容器</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run -d --name mydocker-container -p 8080:8080 -p 20000:22 mydocker<br></code></pre></td></tr></table></figure>
-
-<p>将<code>mydocker-container</code>换成你自己的容器名称，<code>mydocker</code>是镜像名称</p>
-<hr>
-<p>此时容器已经创建成功，可以进入容器查看 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">exec</span> -it myapp-container /bin/bash<br></code></pre></td></tr></table></figure>
-
-
-
-<h1 id="4-配置并开启docker容器的ssh服务"><a href="#4-配置并开启docker容器的ssh服务" class="headerlink" title="4.配置并开启docker容器的ssh服务"></a>4.配置并开启docker容器的ssh服务</h1><h2 id="a-确保-SSH-服务已经在容器内安装并正在运行。"><a href="#a-确保-SSH-服务已经在容器内安装并正在运行。" class="headerlink" title="(a)确保 SSH 服务已经在容器内安装并正在运行。"></a>(a)确保 SSH 服务已经在容器内安装并正在运行。</h2><p>可以使用以下命令来安装并启动 SSH 服务：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">exec</span> -it xddocker apt-get update<br>docker <span class="hljs-built_in">exec</span> -it xddocker apt-get install -y openssh-server<br>docker <span class="hljs-built_in">exec</span> -it xddocker service ssh start<br></code></pre></td></tr></table></figure>
-
-<p>如果 <code>service ssh start</code> 不工作，您也可以尝试：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">exec</span> -it xddocker /etc/init.d/ssh start<br></code></pre></td></tr></table></figure>
-
-<p>或者直接使用 systemctl（如果您的容器支持 systemd）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">exec</span> -it xddocker systemctl start ssh<br></code></pre></td></tr></table></figure>
-
-<h2 id="b-设置-root-用户的密码。"><a href="#b-设置-root-用户的密码。" class="headerlink" title="(b)设置 root 用户的密码。"></a>(b)设置 <code>root</code> 用户的密码。</h2><p>你需要使用 <code>passwd</code> 命令来为 <code>root</code> 用户设置密码：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">exec</span> -it xddocker passwd root<br></code></pre></td></tr></table></figure>
-
-<p>当系统提示时输入并确认密码。</p>
-<h2 id="d-配置-SSH-以允许-root-用户登录。"><a href="#d-配置-SSH-以允许-root-用户登录。" class="headerlink" title="(d)配置 SSH 以允许 root 用户登录。"></a>(d)配置 SSH 以允许 <code>root</code> 用户登录。</h2><p>编辑容器中的 <code>/etc/ssh/sshd_config</code> 文件，将 <code>PermitRootLogin</code> 的值更改为 <code>yes</code>：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">exec</span> -it xddocker sed -i <span class="hljs-string">&#x27;s/#PermitRootLogin prohibit-password/PermitRootLogin yes/&#x27;</span> /etc/ssh/sshd_config<br></code></pre></td></tr></table></figure>
-
-<h2 id="e-重新启动-SSH-服务以使更改生效："><a href="#e-重新启动-SSH-服务以使更改生效：" class="headerlink" title="(e)重新启动 SSH 服务以使更改生效："></a>(e)重新启动 SSH 服务以使更改生效：</h2><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">docker exec -<span class="hljs-keyword">it</span> xddocker service ssh restart<br></code></pre></td></tr></table></figure>
-
-<h2 id="f-使用-SSH-连接到容器："><a href="#f-使用-SSH-连接到容器：" class="headerlink" title="(f)使用 SSH 连接到容器："></a>(f)使用 SSH 连接到容器：</h2><p>现在您应该可以使用 SSH 连接到容器的 <code>root</code> 用户了。使用宿主机的端口 <code>20000</code> 来连接：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh root@localhost -p 20000<br></code></pre></td></tr></table></figure>
-
-
-
-
-
-<hr>
-<p><strong>到此为止，docker容器的ssh已经完全配置好了</strong></p>
-<hr>
-<h1 id="5-配置免密登录"><a href="#5-配置免密登录" class="headerlink" title="5.配置免密登录"></a>5.配置免密登录</h1><p>以下是在Windows系统使用Git Bash来完成这个过程的详细步骤</p>
-<hr>
-<h2 id="a-生成SSH密钥对"><a href="#a-生成SSH密钥对" class="headerlink" title="(a)生成SSH密钥对"></a>(a)生成SSH密钥对</h2><p>打开<code>git bash</code>,输入命令生成密钥对，一路回车，密钥对在 <code>/c/Users/&lt;你的用户名&gt;/.ssh/id_rsa</code>文件中</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh-keygen -t rsa -b 4096<br></code></pre></td></tr></table></figure>
-
-
-
-<h2 id="b-复制SSH公钥到远程服务器"><a href="#b-复制SSH公钥到远程服务器" class="headerlink" title="(b)复制SSH公钥到远程服务器"></a>(b)复制SSH公钥到远程服务器</h2><p>本地git bash中查看公钥内容,复制下来</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> ~/.ssh/id_rsa.pub<br></code></pre></td></tr></table></figure>
-
-<p>然后登录远程主机   (端口号20000，这是映射的端口)</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh root@远程主机ip -p 20000<br></code></pre></td></tr></table></figure>
-
-<p>登录到远程服务器后，执行以下命令来编辑（或创建）<code>authorized_keys</code>文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> -p ~/.ssh<br><span class="hljs-built_in">chmod</span> 700 ~/.ssh<br><span class="hljs-built_in">touch</span> ~/.ssh/authorized_keys<br><span class="hljs-built_in">chmod</span> 600 ~/.ssh/authorized_keys<br>vim ~/.ssh/authorized_keys<br></code></pre></td></tr></table></figure>
-
-<p>将复制的公钥粘贴进文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs basj">按i键进入编辑模式<br>按住Shift+Insert进行粘贴<br>按Esc退出面积模式<br>输入&quot;:wq&quot;保存退出<br></code></pre></td></tr></table></figure>
-
-<h2 id="c-退出后，即可进行免密登录"><a href="#c-退出后，即可进行免密登录" class="headerlink" title="(c)退出后，即可进行免密登录"></a>(c)退出后，即可进行免密登录</h2>
                 
               </div>
             
@@ -372,12 +309,12 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%B7%A5%E7%A8%8B/" class="category-chain-item">工程</a>
+  <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="category-chain-item">面试题</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E5%B7%A5%E7%A8%8B/docker/" class="category-chain-item">docker</a>
+  <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/mysql/" class="category-chain-item">mysql</a>
   
   
 
@@ -394,7 +331,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%8A%80%E6%9C%AF/" class="print-no-link">#技术</a>
+        <a href="/tags/mysql/" class="print-no-link">#mysql</a>
       
     </div>
   
@@ -406,8 +343,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>配置docker服务器</div>
-      <div>http://example.com/2023/11/07/docker服务器/</div>
+      <div>mysql面试题</div>
+      <div>http://example.com/2024/02/28/面试题/mysql/</div>
     </div>
     <div class="license-meta">
       
@@ -419,7 +356,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年11月7日</div>
+          <div>2024年2月28日</div>
         </div>
       
       
@@ -451,9 +388,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/11/11/cpp/asio%20socket%E7%9A%84%E5%88%9B%E5%BB%BA%E5%92%8C%E8%BF%9E%E6%8E%A5/" title="asio socket的创建和连接">
+                      <a href="/2024/03/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/CPU/" title="">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">asio socket的创建和连接</span>
+                        <span class="hidden-mobile"></span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -461,8 +398,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/11/07/%E7%AE%97%E6%B3%95/%E5%AD%97%E5%85%B8%E6%A0%91%E9%80%86%E5%BA%8F%E5%AF%B9/" title="字典树逆序对（Master of Both）">
-                        <span class="hidden-mobile">字典树逆序对（Master of Both）</span>
+                      <a href="/2024/02/28/%E9%9D%A2%E8%AF%95%E9%A2%98/%E7%BD%91%E7%BB%9C/" title="网络面试题">
+                        <span class="hidden-mobile">网络面试题</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

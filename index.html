@@ -236,15 +236,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E5%9F%BA%E7%A1%80%E7%AF%87/" target="_self">
-          mysql基础篇
+        <a href="/2024/03/19/linux/docker/" target="_self">
+          docker服务器 &amp; docker-compose
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E5%9F%BA%E7%A1%80%E7%AF%87/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/linux/docker/" target="_self">
         <div>
-          登录1mysql -uroot -p123456    重置密码步骤(linux)1.停止 MySQL 服务首先，你需要停止正在运行的 MySQL 服务。这个步骤根据你的操作系统会有所不同。  对于 Linux 系统，可以使用以下命令之一，具体取决于你的系统管理工具：   123bashCopy codesudo systemctl stop mysql# 或者sudo /etc/init.d/m
+          docker服务器 介绍如何在ubuntu环境下创建docker容器，并且将此容器设置成一个“服务器” 然后如何ssh进docker容器(root用户)，并且配置免密登录  步骤如下 1.创建Dockerfile文件1234567891011121314151617181920212223242526272829303132333435# 使用官方Ubuntu基础镜像FROM ubuntu:lat
         </div>
       </a>
 
@@ -252,8 +252,76 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-27 12:33" pubdate>
-              2024-02-27
+            <time datetime="2024-03-19 21:05" pubdate>
+              2024-03-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B7%A5%E7%A8%8B/" class="category-chain-item">工程</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%B7%A5%E7%A8%8B/docker/" class="category-chain-item">docker</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%8A%80%E6%9C%AF/">#技术</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" target="_self">
+          mysql主从复制
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" target="_self">
+        <div>
+          环境准备 主服务器IP: 假设为 43.138.20.23（公网IP或局域网IP） 从服务器IP: 假设为从服务器的IP地址 MySQL版本: 保证主从服务器的MySQL版本相同或兼容  主服务器配置 配置MySQL:  编辑MySQL配置文件（通常位于/etc/mysql/mysql.conf.d/mysqld.cnf或/etc/my.cnf）。 确保设置了唯一的server-id。 启用二进制
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-19 12:33" pubdate>
+              2024-03-19
             </time>
           </div>
         
@@ -304,15 +372,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/22/%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7/" target="_self">
-          常用工具汇总
+        <a href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E5%91%BD%E4%BB%A4/" target="_self">
+          mysql命令
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/22/%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E5%91%BD%E4%BB%A4/" target="_self">
         <div>
-          bilibili视频下载网址https://xbeibeix.com/api/bilibili/
+          基础命令查看客户端连接了1show processlist;    查看空闲连接最大空闲时长1show variables like &#x27;wait_timeout&#x27;;    手动断开空闲的连接1kill connection +6;  -- 6是id    查看最大连接数1show variables like &#x27;max_connections&#x27;;    文件
         </div>
       </a>
 
@@ -320,8 +388,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-22 13:50" pubdate>
-              2024-02-22
+            <time datetime="2024-03-19 12:33" pubdate>
+              2024-03-19
             </time>
           </div>
         
@@ -336,73 +404,12 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%B7%A5%E5%85%B7/" class="category-chain-item">工具</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%B7%A5%E5%85%B7/">#工具</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/22/%E9%9D%A2%E8%AF%95%E9%A2%98/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" target="_self">
-          多线程面试题
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/22/%E9%9D%A2%E8%AF%95%E9%A2%98/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" target="_self">
-        <div>
-          细颗粒度读写锁题目：给定一个长度为N(N&#x3D;100,000)的整数数组S，有M(M&gt;&#x3D;2)个工人并发访问和更新S。每个工人重复以下操作10,000次:生成随机数i和j，0&lt;&#x3D;i,j&lt;100,000。更新S使得S(j)=S(1)+S(i+1)+S(i+2)。如果i+1或i+2越界，则使用(i+1)%N或(i+2)%N。 提示:(a)请考虑并发保护，即读取
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-22 00:11" pubdate>
-              2024-02-22
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="category-chain-item">面试题</a>
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="category-chain-item">多线程</a>
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql/" class="category-chain-item">mysql</a>
   
   
 
@@ -419,7 +426,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">#多线程</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
             
           </div>
         
@@ -433,15 +440,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/21/cpp/c++%E7%96%91%E9%9A%BE%E7%9F%A5%E8%AF%86%E7%82%B9/" target="_self">
-          c++恶心知识点
+        <a href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E7%B4%A2%E5%BC%95%E7%AF%87/" target="_self">
+          mysql索引
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/21/cpp/c++%E7%96%91%E9%9A%BE%E7%9F%A5%E8%AF%86%E7%82%B9/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E7%B4%A2%E5%BC%95%E7%AF%87/" target="_self">
         <div>
-          本文介绍c++常用知识点内存溢出和内存泄漏，数组越界 内存溢出（Memory Overflow）：这通常发生在试图分配的内存超过了系统可用内存的情况。例如，在一个有限的内存空间中创建太多对象或数据结构。 内存泄漏（Memory Leak）：这发生在分配的内存没有得到适当释放的时候。如果程序反复分配内存而不释放，最终可能耗尽系统资源。 数组越界（Array Index Out of Bound）：当
+          索引分类 按「数据结构」分类：B+tree索引、Hash索引、Full-text索引。 按「物理存储」分类：聚簇索引（主键索引）、二级索引（辅助索引）。 按「字段特性」分类：主键索引、唯一索引、普通索引、前缀索引。 按「字段个数」分类：单列索引、联合索引。  自动创建索引 主键 —— 不包含NULL值的唯一列—— 自动生成一个隐式自增id  在创建表时，InnoDB 存储引擎会根据不同的场景选择不
         </div>
       </a>
 
@@ -449,8 +456,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-21 15:19" pubdate>
-              2024-02-21
+            <time datetime="2024-03-19 12:33" pubdate>
+              2024-03-19
             </time>
           </div>
         
@@ -465,256 +472,12 @@
     
       <span class="category-chain">
         
-  <a href="/categories/c/" class="category-chain-item">c++</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%8A%80%E6%9C%AF/">#技术</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/21/linux/git/" target="_self">
-          git（github）
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/21/linux/git/" target="_self">
-        <div>
-          配置github的SSH keys步骤 查看本机是否有已经生成公钥： 123456789ls -al ~/.ssh#输出如下：total 20drwx------  2 xiadong xiadong 4096 Feb 21 15:08 .drwxr-xr-x 24 xiadong xiadong 4096 Feb 21 15:06 ..-rw-------  1 xiadong xiadong
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-21 15:14" pubdate>
-              2024-02-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/linux/" class="category-chain-item">linux</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%8A%80%E6%9C%AF/">#技术</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/01/17/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
-          linux常用指令
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/01/17/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
-        <div>
-          已知进程杀死进程 ps aux：查看所有进程 ps aux | grep nginx : 查看nginx进程 kill -9 pid：杀死pid进程  已知端口杀死进程方案一 查看哪些端口被占用（tcp，udp）   1netstat -tulnp  杀死端口进程   12sudo fuser -k [端口]  #例如    sudo fuser -k 8080    12345678910111
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-01-17 23:28" pubdate>
-              2024-01-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/linux/" class="category-chain-item">linux</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%8A%80%E6%9C%AF/">#技术</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/01/17/linux/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
-          linux常用指令
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/01/17/linux/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
-        <div>
-          已知进程杀死进程 ps aux：查看所有进程 ps aux | grep nginx : 查看nginx进程 kill -9 pid：杀死pid进程  已知端口杀死进程方案一 查看哪些端口被占用（tcp，udp）   1netstat -tulnp  杀死端口进程   1234	sudo fuser -k [端口]	#例如	sudo fuser -k 8080  方案二 查看端口的进程 12345
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-01-17 23:28" pubdate>
-              2024-01-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/linux/" class="category-chain-item">linux</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%8A%80%E6%9C%AF/">#技术</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/01/03/cpp/CMake%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E5%BA%93%E6%A6%82%E5%BF%B5/" target="_self">
-          CMake配置
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/01/03/cpp/CMake%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E5%BA%93%E6%A6%82%E5%BF%B5/" target="_self">
-        <div>
-          本文介绍CMake的常用命令以及库的相关概念 项目地址：cmake教程 安装Cmake在ubuntu18.04下安装cmake 1sudo apt install cmake  安装后查看版本 1cmake -version      CMake编写【C++】Cmake使用教程（看这一篇就够了）_隐居的遮天恶鬼的博客-CSDN博客 【C++】静态库和动态库文件的生成和使用_c++ 生成静态库和动态
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-01-03 22:22" pubdate>
-              2024-01-03
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%B7%A5%E7%A8%8B/" class="category-chain-item">工程</a>
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E5%B7%A5%E7%A8%8B/Cmake/" class="category-chain-item">Cmake</a>
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql/" class="category-chain-item">mysql</a>
   
   
 
@@ -731,7 +494,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E6%8A%80%E6%9C%AF/">#技术</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
             
           </div>
         
@@ -745,15 +508,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2023/12/10/linux/vim/" target="_self">
-          vim常用指令
+        <a href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E9%94%81/" target="_self">
+          mysql锁
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/12/10/linux/vim/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E9%94%81/" target="_self">
         <div>
-          vim一般命令模式 0：将光标移动到本行开头 $：将光标移动到本行末尾 G：将光标移动到最后一行 gg：将光标移动到第一行 :n或者nG(n为数字)：将光标移动到第n行 n&lt;Space&gt;：将光标向后移动n格（会换行） n&lt;Enter&gt;：将光标向下移动n行 重复前一次操作（结合命令模式的查找）  编辑模式无常用操作 命令模式 &#x2F;word：光标位置下查找第一个word
+          全局锁要使用全局锁，则要执行这条命令： 1flush tables with read lock;  执行后，整个数据库就处于只读状态了，这时其他线程执行以下操作，都会被阻塞：  对数据的增删改操作，比如 insert、delete、update等语句； 对表结构的更改操作，比如 alter table、drop table 等语句。  如果要释放全局锁，则要执行这条命令： 1unlock tab
         </div>
       </a>
 
@@ -761,8 +524,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2023-12-10 00:22" pubdate>
-              2023-12-10
+            <time datetime="2024-03-19 12:33" pubdate>
+              2024-03-19
             </time>
           </div>
         
@@ -777,73 +540,12 @@
     
       <span class="category-chain">
         
-  <a href="/categories/linux/" class="category-chain-item">linux</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%8A%80%E6%9C%AF/">#技术</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2023/12/05/vscode%E8%B0%83%E8%AF%95/" target="_self">
-          vscode配置
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/12/05/vscode%E8%B0%83%E8%AF%95/" target="_self">
-        <div>
-          本文介绍vscode里的相关配置 常用快捷键对于 词 的操作： 选中一个词：ctrl + d  搜索或者替换： ctrl + f ：搜索 ctrl + alt + f： 替换 ctrl + shift + f：在项目内搜索  其他 通过Ctrl + &#96; 可以打开或关闭终端 Ctrl+P 快速打开最近打开的文件 Ctrl+Shift+N 打开新的编辑器窗口 Ctrl+Shift+W 关闭编辑
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-12-05 23:01" pubdate>
-              2023-12-05
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%B7%A5%E7%A8%8B/" class="category-chain-item">工程</a>
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
   
   
     <span>></span>
     
-  <a href="/categories/%E5%B7%A5%E7%A8%8B/vscode/" class="category-chain-item">vscode</a>
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql/" class="category-chain-item">mysql</a>
   
   
 
@@ -860,9 +562,230 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E6%8A%80%E6%9C%AF/">#技术</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
             
           </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/HTTP/" target="_self">
+          HTTp
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/HTTP/" target="_self">
+        <div>
+          HTTP 基本概念HTTP状态码HTTP 常见字段有哪些？ HOST：客户端发送请求时，用来指定服务器的域名  Content-Length：服务器在返回数据时，表明本次回应的数据长度。   1大家应该都知道 HTTP 是基于 TCP 传输协议进行通信的，而使用了 TCP 传输协议，就会存在一个“粘包”的问题，HTTP 协议通过设置回车符、换行符作为 HTTP header 的边界，通过 Cont
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-19 12:33" pubdate>
+              2024-03-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">#计算机网络</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%9F%BA%E7%A1%80%E7%AF%87/" target="_self">
+          计算机网络基础篇
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/%E5%9F%BA%E7%A1%80%E7%AF%87/" target="_self">
+        <div>
+          应用层而且应用层是工作在操作系统中的用户态，传输层及以下则工作在内核态。 传输层在传输层会有两个传输协议，分别是 TCP 和 UDP。 TCP 相比 UDP 多了很多特性，比如流量控制、超时重传、拥塞控制等，这些都是为了保证数据包能可靠地传输给对方。 应用需要传输的数据可能会非常大，如果直接传输就不好控制，因此当传输层的数据包大小超过 MSS（TCP 最大报文段长度） ，就要将数据包分块，这样即使
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-19 12:33" pubdate>
+              2024-03-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="category-chain-item">计算机网络</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">#计算机网络</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/14/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%9B%B6%E6%8B%B7%E8%B4%9D/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/14/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%9B%B6%E6%8B%B7%E8%B4%9D/" target="_self">
+        <div>
+          
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-14 19:08" pubdate>
+              2024-03-14
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" target="_self">
+        <div>
+          虚拟内存操作系统会提供一种机制，将不同进程的虚拟地址和不同内存的物理地址映射起来。 如果程序要访问虚拟地址的时候，由操作系统转换成不同的物理地址，这样不同的进程运行的时候，写入的是不同的物理地址，这样就不会冲突了。  我们程序所使用的内存地址叫做虚拟内存地址（Virtual Memory Address） 实际存在硬件里面的空间地址叫物理内存地址（Physical Memory Address）。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-13 11:04" pubdate>
+              2024-03-13
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%85%E6%A0%B8/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%85%E6%A0%B8/" target="_self">
+        <div>
+          内核计算机是由各种外部硬件设备组成的，比如内存、cpu、硬盘等，如果每个应用都要和这些硬件设备对接通信协议，那这样太累了，所以这个中间人就由内核来负责，让内核作为应用连接硬件设备的桥梁，应用程序只需关心与内核交互，不用关心硬件的细节。、 内核一般会提供 4 个基本能力  管理进程、线程，决定哪个进程、线程使用 CPU，也就是进程调度的能力； 管理内存，决定内存的分配和回收，也就是内存管理的能力；
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-13 11:01" pubdate>
+              2024-03-13
+            </time>
+          </div>
+        
+        
         
       </div>
     </article>
@@ -872,7 +795,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#board">5</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
