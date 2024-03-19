@@ -18,20 +18,20 @@
   
     <meta name="description" content="docker服务器 介绍如何在ubuntu环境下创建docker容器，并且将此容器设置成一个“服务器” 然后如何ssh进docker容器(root用户)，并且配置免密登录  步骤如下 1.创建Dockerfile文件1234567891011121314151617181920212223242526272829303132333435# 使用官方Ubuntu基础镜像FROM ubuntu:lat">
 <meta property="og:type" content="article">
-<meta property="og:title" content="docker服务器 &amp; docker-compose">
+<meta property="og:title" content="docker服务器">
 <meta property="og:url" content="http://example.com/2024/03/19/linux/docker/index.html">
 <meta property="og:site_name" content="Mrxiad">
 <meta property="og:description" content="docker服务器 介绍如何在ubuntu环境下创建docker容器，并且将此容器设置成一个“服务器” 然后如何ssh进docker容器(root用户)，并且配置免密登录  步骤如下 1.创建Dockerfile文件1234567891011121314151617181920212223242526272829303132333435# 使用官方Ubuntu基础镜像FROM ubuntu:lat">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-03-19T13:05:30.000Z">
-<meta property="article:modified_time" content="2024-03-19T09:27:03.721Z">
+<meta property="article:modified_time" content="2024-03-19T12:52:21.224Z">
 <meta property="article:author" content="Mrxiad">
 <meta property="article:tag" content="技术">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>docker服务器 &amp; docker-compose - Mrxiad</title>
+  <title>docker服务器 - Mrxiad</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -209,7 +209,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="docker服务器 &amp; docker-compose"></span>
+            <span id="subtitle" data-typed-text="docker服务器"></span>
           
         </div>
 
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.7k 字
+          2.3k 字
         
       </span>
     
@@ -243,7 +243,7 @@
         
         
         
-          31 分钟
+          20 分钟
         
       </span>
     
@@ -280,7 +280,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">docker服务器 &amp; docker-compose</h1>
+            <h1 id="seo-header">docker服务器</h1>
             
             
               <div class="markdown-body">
@@ -353,21 +353,7 @@
 <p>将复制的公钥粘贴进文件</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs basj">按i键进入编辑模式<br>按住Shift+Insert进行粘贴<br>按Esc退出面积模式<br>输入&quot;:wq&quot;保存退出<br></code></pre></td></tr></table></figure>
 
-<h3 id="c-退出后，即可进行免密登录"><a href="#c-退出后，即可进行免密登录" class="headerlink" title="(c)退出后，即可进行免密登录"></a>(c)退出后，即可进行免密登录</h3><h1 id="docker-compose"><a href="#docker-compose" class="headerlink" title="docker-compose"></a>docker-compose</h1><blockquote>
-<p> docker-compose示例</p>
-</blockquote>
-<p>使用Docker Compose可以将一系列创建及映射资源（网络、数据卷等）操作放在配置文件中，并且可以通过depends_on参数指定容器的启动顺序，通过environment参数指定Kafka需要的基本参数信息</p>
-<h2 id="1-创建kafka-group-yml，保存以下信息"><a href="#1-创建kafka-group-yml，保存以下信息" class="headerlink" title="1.创建kafka-group.yml，保存以下信息"></a>1.创建<strong>kafka-group.yml</strong>，保存以下信息</h2><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">zookeeper-test:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">zookeeper</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;2181:2181&quot;</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">zookeeper_vol:/data</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">zookeeper_vol:/datalog</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">zookeeper_vol:/logs</span><br>    <span class="hljs-attr">container_name:</span> <span class="hljs-string">zookeeper-test</span><br><br>  <span class="hljs-attr">kafka-test:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">wurstmeister/kafka</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;9092:9092&quot;</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-attr">KAFKA_ADVERTISED_HOST_NAME:</span> <span class="hljs-string">&quot;60.205.9.142&quot;</span>   					<span class="hljs-comment">#注意这个改成公网ip</span><br>      <span class="hljs-attr">KAFKA_ZOOKEEPER_CONNECT:</span> <span class="hljs-string">&quot;zookeeper-test:2181&quot;</span><br>      <span class="hljs-attr">KAFKA_LOG_DIRS:</span> <span class="hljs-string">&quot;/kafka/logs&quot;</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">kafka_vol:/kafka</span><br>    <span class="hljs-attr">depends_on:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">zookeeper-test</span><br>    <span class="hljs-attr">container_name:</span> <span class="hljs-string">kafka-test</span><br><br><span class="hljs-attr">volumes:</span><br>  <span class="hljs-attr">zookeeper_vol:</span> &#123;&#125;<br>  <span class="hljs-attr">kafka_vol:</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
-
-
-
-<h2 id="2-启动容器组"><a href="#2-启动容器组" class="headerlink" title="2.启动容器组"></a>2.启动容器组</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 启动Kafka容器组</span><br>docker compose -f kafka-group.yml up -d<br><br><span class="hljs-comment">#停止并移除容器以及数据卷</span><br>docker-compose -f kafka-group.yml down -v<br><br><span class="hljs-comment"># 输出示例</span><br> ✔ Network kafka-group_default         Created <br> ✔ Volume <span class="hljs-string">&quot;kafka-group_zookeeper_vol&quot;</span>  Created <br> ✔ Volume <span class="hljs-string">&quot;kafka-group_kafka_vol&quot;</span>      Created <br> ✔ Container zookeeper-test            Started <br> ✔ Container kafka-test                Started<br></code></pre></td></tr></table></figure>
-
-
-
-<h2 id="3-进入kafka容器检查所有topic-以及所有消息"><a href="#3-进入kafka容器检查所有topic-以及所有消息" class="headerlink" title="3.进入kafka容器检查所有topic(以及所有消息)"></a>3.进入kafka容器检查所有topic(以及所有消息)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">exec</span> -it kafka-test /bin/bash<br><br><span class="hljs-comment">#检测所有topic</span><br>/opt/kafka/bin/kafka-topics.sh --list --zookeeper zookeeper-test:2181<br><br><span class="hljs-comment">#检测topic为[test]的所有信息</span><br>/opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <span class="hljs-built_in">test</span> --from-beginning<br></code></pre></td></tr></table></figure>
-
-
+<h3 id="c-退出后，即可进行免密登录"><a href="#c-退出后，即可进行免密登录" class="headerlink" title="(c)退出后，即可进行免密登录"></a>(c)退出后，即可进行免密登录</h3>
                 
               </div>
             
@@ -419,7 +405,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>docker服务器 &amp; docker-compose</div>
+      <div>docker服务器</div>
       <div>http://example.com/2024/03/19/linux/docker/</div>
     </div>
     <div class="license-meta">
@@ -468,8 +454,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" title="mysql主从复制">
-                        <span class="hidden-mobile">mysql主从复制</span>
+                      <a href="/2024/03/19/kafka/docker%E5%88%9B%E5%BB%BAkafka/" title="搭建kafka">
+                        <span class="hidden-mobile">搭建kafka</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

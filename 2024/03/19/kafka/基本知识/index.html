@@ -16,22 +16,22 @@
   <meta name="author" content="Mrxiad">
   <meta name="keywords" content="">
   
-    <meta name="description" content="配置github的SSH keys步骤 查看本机是否有已经生成公钥： 123456789ls -al ~&#x2F;.ssh#输出如下：total 20drwx------  2 xiadong xiadong 4096 Feb 21 15:08 .drwxr-xr-x 24 xiadong xiadong 4096 Feb 21 15:06 ..-rw-------  1 xiadong xiadong">
+    <meta name="description" content="基本概念 消息以主题（Topic）来分类，每一个主题都对应一个「消息队列」  面相消费者和生产者，物理上存储的其实是 Partition，每一个 Partition 最终对应一个目录，里面存储所有的消息和索引文件。  默认情况下，每一个 Topic 在创建时如果不指定 Partition 数量时只会创建 1 个 Partition。比如，我创建了一个 Topic 名字为 test ，没有指定 Pa">
 <meta property="og:type" content="article">
-<meta property="og:title" content="git（github）">
-<meta property="og:url" content="http://example.com/2024/02/21/linux/git/index.html">
+<meta property="og:title" content="kafka基本知识">
+<meta property="og:url" content="http://example.com/2024/03/19/kafka/%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/index.html">
 <meta property="og:site_name" content="Mrxiad">
-<meta property="og:description" content="配置github的SSH keys步骤 查看本机是否有已经生成公钥： 123456789ls -al ~&#x2F;.ssh#输出如下：total 20drwx------  2 xiadong xiadong 4096 Feb 21 15:08 .drwxr-xr-x 24 xiadong xiadong 4096 Feb 21 15:06 ..-rw-------  1 xiadong xiadong">
+<meta property="og:description" content="基本概念 消息以主题（Topic）来分类，每一个主题都对应一个「消息队列」  面相消费者和生产者，物理上存储的其实是 Partition，每一个 Partition 最终对应一个目录，里面存储所有的消息和索引文件。  默认情况下，每一个 Topic 在创建时如果不指定 Partition 数量时只会创建 1 个 Partition。比如，我创建了一个 Topic 名字为 test ，没有指定 Pa">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-02-21T07:14:00.000Z">
-<meta property="article:modified_time" content="2024-02-22T12:58:25.953Z">
+<meta property="article:published_time" content="2024-03-19T11:33:12.000Z">
+<meta property="article:modified_time" content="2024-03-19T13:43:47.904Z">
 <meta property="article:author" content="Mrxiad">
-<meta property="article:tag" content="技术">
+<meta property="article:tag" content="kafka">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>git（github） - Mrxiad</title>
+  <title>kafka基本知识 - Mrxiad</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -209,7 +209,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="git（github）"></span>
+            <span id="subtitle" data-typed-text="kafka基本知识"></span>
           
         </div>
 
@@ -220,8 +220,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-02-21 15:14" pubdate>
-          2024年2月21日 下午
+        <time datetime="2024-03-19 19:33" pubdate>
+          2024年3月19日 晚上
         </time>
       </span>
     
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.2k 字
+          2.8k 字
         
       </span>
     
@@ -243,7 +243,7 @@
         
         
         
-          10 分钟
+          24 分钟
         
       </span>
     
@@ -280,63 +280,95 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">git（github）</h1>
+            <h1 id="seo-header">kafka基本知识</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="配置github的SSH-keys"><a href="#配置github的SSH-keys" class="headerlink" title="配置github的SSH keys"></a>配置github的SSH keys</h1><h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
-<li><h3 id="查看本机是否有已经生成公钥："><a href="#查看本机是否有已经生成公钥：" class="headerlink" title="查看本机是否有已经生成公钥："></a>查看本机是否有已经生成公钥：</h3> <figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs tap">ls -al ~/.ssh<br><br><span class="hljs-comment">#输出如下：</span><br>total 20<br>drwx------ <span class="hljs-number"> 2 </span>xiadong xiadong<span class="hljs-number"> 4096 </span>Feb<span class="hljs-number"> 21 </span>15:08 .<br>drwxr-xr-x<span class="hljs-number"> 24 </span>xiadong xiadong<span class="hljs-number"> 4096 </span>Feb<span class="hljs-number"> 21 </span>15:06 ..<br>-rw------- <span class="hljs-number"> 1 </span>xiadong xiadong<span class="hljs-number"> 3239 </span>Feb<span class="hljs-number"> 21 </span>15:08 id_rsa      <br>-rw-r--r-- <span class="hljs-number"> 1 </span>xiadong xiadong <span class="hljs-number"> 743 </span>Feb<span class="hljs-number"> 21 </span>15:08 id_rsa.pub<br>-rw-r--r-- <span class="hljs-number"> 1 </span>xiadong xiadong <span class="hljs-number"> 666 </span>Jan<span class="hljs-number"> 27 </span>19:50 known_hosts<br></code></pre></td></tr></table></figure>
-
+                <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><ol>
+<li><p>消息以<strong>主题（Topic）</strong>来分类，每一个主题都对应一个「消息队列」</p>
 </li>
-<li><h2 id="如果没有id-rsa和id-rsa-pub，则生成公钥"><a href="#如果没有id-rsa和id-rsa-pub，则生成公钥" class="headerlink" title="如果没有id_rsa和id_rsa.pub，则生成公钥"></a>如果没有<code>id_rsa</code>和<code>id_rsa.pub</code>，则生成公钥</h2> <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ssh</span>-keygen -t rsa -b <span class="hljs-number">4096</span> -C <span class="hljs-string">&quot;123@qq.com&quot;</span><br></code></pre></td></tr></table></figure>
-
-<p> <strong>一路回车即可</strong></p>
+<li><p><strong>面相消费者和生产者，物理上存储的其实是 Partition</strong>，每一个 Partition 最终对应一个目录，里面存储所有的消息和索引文件。</p>
+<blockquote>
+<p>默认情况下，每一个 Topic 在创建时如果不指定 Partition 数量时只会创建 1 个 Partition。比如，我创建了一个 Topic 名字为 test ，没有指定 Partition 的数量，那么会默认创建一个 test-0 的文件夹，这里的命名规则是：<code>&lt;topic_name&gt;-&lt;partition_id&gt;</code>。</p>
+</blockquote>
 </li>
-<li><h3 id="查看公钥内容"><a href="#查看公钥内容" class="headerlink" title="查看公钥内容"></a>查看公钥内容</h3> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> ~/.ssh/id_rsa.pub<br></code></pre></td></tr></table></figure>
-
+<li><p>任何发布到 Partition 的消息都会被追加到 Partition 数据文件的尾部，这样的顺序写磁盘操作让 Kafka 的效率非常高</p>
 </li>
-<li><h3 id="复制公钥内容到github上即可"><a href="#复制公钥内容到github上即可" class="headerlink" title="复制公钥内容到github上即可"></a>复制公钥内容到github上即可</h3></li>
 </ol>
-<h1 id="git常用命令"><a href="#git常用命令" class="headerlink" title="git常用命令"></a>git常用命令</h1><h2 id="git强制拉取远程分支"><a href="#git强制拉取远程分支" class="headerlink" title="git强制拉取远程分支"></a>git强制拉取远程分支</h2><ol>
-<li><strong>重置本地分支到远程分支的状态：</strong></li>
+<h1 id="具体结构"><a href="#具体结构" class="headerlink" title="具体结构"></a>具体结构</h1><p>每个 Partition 都为一个目录，而每一个目录又被平均分配成多个大小相等的 <strong>Segment File</strong> 中，Segment File 又由 index file 和 data file 组成，他们总是成对出现，后缀 “.index” 和 “.log” 分表表示 Segment 索引文件和数据文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#两个topic：topic0和topic1</span><br>| --topic1-0<br>        | --00000000000000000000.index<br>        | --00000000000000000000.<span class="hljs-built_in">log</span><br>        | --00000000000000368769.index<br>        | --00000000000000368769.<span class="hljs-built_in">log</span><br>        | --00000000000000737337.index<br>        | --00000000000000737337.<span class="hljs-built_in">log</span><br>        | --00000000000001105814.index<br>        | --00000000000001105814.<span class="hljs-built_in">log</span><br>        <br>        <br>| --topic2-0<br>| --topic2-1<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>Segment 是 Kafka 文件存储的最小单位。</strong>Segment 文件命名规则：Partition 全局的第一个 Segment 从 0 开始，后续每个 Segment 文件名为上一个 Segment 文件最后一条消息的 offset 值。</p>
+<blockquote>
+<p>Kafka 是如何准确的知道 message 的偏移的呢？这是因为在 Kafka 定义了标准的数据存储结构，在 Partition 中的每一条 message 都包含了以下三个属性：</p>
+</blockquote>
+<ul>
+<li>offset：表示 message 在当前 Partition 中的偏移量，是一个逻辑上的值，唯一确定了 Partition 中的一条 message，可以简单的认为是一个 id；</li>
+<li>MessageSize：表示 message 内容 data 的大小；</li>
+<li>data：message 的具体内容</li>
+</ul>
+<h1 id="消费组"><a href="#消费组" class="headerlink" title="消费组"></a>消费组</h1><h2 id="消费组-1"><a href="#消费组-1" class="headerlink" title="消费组"></a>消费组</h2><ol>
+<li><code>消费组的概念</code>：在Kafka中，消费组是一组消费者的集合，这些消费者共同订阅一个或多个主题，共享消息的消费。<strong>Kafka保证一个分区内的消息只被消费组中的一个消费者处理</strong>，这样可以在消费者间实现负载均衡。</li>
+<li><code>分区与消费者的关系</code>：每个消费者负责读取指定主题的一个或多个分区中的消息。如果消费者的数量等于分区的数量，那么每个消费者负责读取一个分区的消息。如果消费者数量少于分区数量，某些消费者将负责多个分区。如果消费者数量多于分区数量，将会有一些空闲的消费者。</li>
 </ol>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">git fetch origin<br>git reset --hard origin/master<br></code></pre></td></tr></table></figure>
-
-<p>这将会使你的本地分支回到远程分支的状态，丢弃所有本地的更改。</p>
-<ol>
-<li><strong>如果需要，清理未跟踪的文件：</strong></li>
-</ol>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">git clean -fd<br></code></pre></td></tr></table></figure>
-
-
-
-
-
-<h2 id="git回滚到某个特定版本"><a href="#git回滚到某个特定版本" class="headerlink" title="git回滚到某个特定版本"></a>git回滚到某个特定版本</h2><p>如果你想将当前分支回滚到指定的提交，并且不介意放弃该提交之后的所有更改（在本地分支上），你可以使用 <code>git reset</code> 命令。这样做会重置你的 HEAD 指针到指定的提交，并且可以选择如何处理工作目录和暂存区的更改。</p>
-<ul>
-<li><strong>仅重置 HEAD 指针（保留工作目录和暂存区的更改）：</strong></li>
+<h2 id="支持多应用消费"><a href="#支持多应用消费" class="headerlink" title="支持多应用消费"></a>支持多应用消费</h2><ul>
+<li><code>全量消息读取</code>：Kafka允许<strong>多个消费组独立地订阅同一个主题</strong>。这意味着每个消费组都可以从头到尾读取主题中的所有消息，而<strong>不会影响到其他消费组</strong>。这个特性对于需要处理相同数据集的不同应用非常重要。</li>
+<li><code>消费组与应用的关系</code>：通常，每个独立的应用会有自己的消费组。这样，即使多个应用需要读取并处理同一主题的消息，它们也能保证获取到全量的消息数据。每个消费组的消费进度是独立管理的。</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">git reset --soft 07e95cc2d284e4f040e4c4aba407920cc11237d6<br></code></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>重置 HEAD 指针，并且重置暂存区（但保留工作目录中的更改作为未提交的更改）：</strong></li>
+<h1 id="消费顺序"><a href="#消费顺序" class="headerlink" title="消费顺序"></a>消费顺序</h1><p>Kafka 中一个 topic 中的消息是被打散分配在多个 Partition(分区) 中存储的， Consumer Group 在消费时需要从不同的 Partition 获取消息，那最终如何重建出 Topic 中消息的顺序呢？</p>
+<blockquote>
+<p> 答案是：没有办法。Kafka 只会保证在 Partition 内消息是有序的，而不管全局的情况。</p>
+</blockquote>
+<p><strong>可以指定消息的key，确保相同的key发布到同一个分区</strong></p>
+<h1 id="可靠性"><a href="#可靠性" class="headerlink" title="可靠性"></a>可靠性</h1><ul>
+<li>对于一个分区来说，它的消息是有序的。如果一个生产者向一个分区先写入消息A，然后写入消息B，那么消费者会先读取消息A再读取消息B。</li>
+<li>当消息写入所有in-sync状态的副本后，消息才会认为<strong>已提交（committed）</strong>。这里的写入有可能只是写入到文件系统的缓存，不一定刷新到磁盘。生产者可以等待不同时机的确认，比如等待分区主副本写入即返回，后者等待所有in-sync状态副本写入才返回。</li>
+<li>一旦消息已提交，那么只要有一个副本存活，数据不会丢失。</li>
+<li>消费者只能读取到已提交的消息</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">git reset --mixed 07e95cc2d284e4f040e4c4aba407920cc11237d6<br></code></pre></td></tr></table></figure>
+<h1 id="主题的分区数目"><a href="#主题的分区数目" class="headerlink" title="主题的分区数目"></a>主题的分区数目</h1><p>当你创建一个Kafka主题时，可以指定分区的数量。分区数量不是随机的，而是由你在创建主题时设置的。分区使得Kafka可以在多个服务器上分布数据和负载，提高吞吐量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kafka-topics.sh --create --bootstrap-server &lt;broker&gt; --replication-factor 1 --partitions 3 --topic &lt;topic_name&gt;<br></code></pre></td></tr></table></figure>
 
-<p>或者简写为（因为 <code>--mixed</code> 是默认选项）：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">git reset 07e95cc2d284e4f040e4c4aba407920cc11237d6<br></code></pre></td></tr></table></figure>
 
+
+<h1 id="Kafka配置文件修改与参数"><a href="#Kafka配置文件修改与参数" class="headerlink" title="Kafka配置文件修改与参数"></a>Kafka配置文件修改与参数</h1><p>Kafka的配置主要在其配置文件中设置，例如<code>server.properties</code>。有许多配置参数，比如：</p>
 <ul>
-<li><strong>彻底回滚（重置 HEAD、暂存区和工作目录，放弃所有未提交的更改）：</strong></li>
+<li><code>broker.id</code>：唯一标识每个Kafka节点。</li>
+<li><code>log.dirs</code>：存储日志文件的位置。</li>
+<li><code>zookeeper.connect</code>：Zookeeper的连接信息，Kafka用它来存储集群的状态。</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">git reset --hard 07e95cc2d284e4f040e4c4aba407920cc11237d6<br></code></pre></td></tr></table></figure>
+<p>更改配置文件通常是直接编辑文件，然后重启Kafka服务。</p>
+<h1 id="消费者读取启动之前的数据"><a href="#消费者读取启动之前的数据" class="headerlink" title="消费者读取启动之前的数据"></a>消费者读取启动之前的数据</h1><p>消费者可以读取到启动之前的数据。这取决于消费者的<code>auto.offset.reset</code>配置：</p>
+<ul>
+<li>设置为<code>earliest</code>时，消费者将从有效负载的最开始读取数据。</li>
+<li>设置为<code>latest</code>时，消费者将从新产生的数据开始读取。</li>
+</ul>
+<p>使用Go语言的Sarama库，这可以在消费者配置中设置：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs go">config := sarama.NewConfig()<br>config.Consumer.Offsets.Initial = sarama.OffsetOldest<br></code></pre></td></tr></table></figure>
 
-<p>请注意，使用 <code>git reset --hard</code> 会丢失所有未提交的更改。确保在使用这个命令之前备份重要更改。</p>
-<h2 id="git强制推送"><a href="#git强制推送" class="headerlink" title="git强制推送"></a>git强制推送</h2><p>强制推送到远程仓库的 <code>master</code> 分支可以使用以下命令，但请注意，这将覆盖远程分支上的所有更改，可能会导致其他人的工作丢失。因此，只有在你确实知道自己在做什么，并且这是解决问题的唯一方式时，才应该使用强制推送。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git push origin master --force<br></code></pre></td></tr></table></figure>
 
 
+
+
+<h1 id="事务的默认隔离级别"><a href="#事务的默认隔离级别" class="headerlink" title="事务的默认隔离级别"></a>事务的默认隔离级别</h1><blockquote>
+<p>默认为读未提交</p>
+</blockquote>
+<p>Kafka的事务隔离级别通过<code>isolation.level</code>配置控制，有两个值：</p>
+<ul>
+<li><code>read_uncommitted</code>（默认）：消费者可以读取到未提交的消息。</li>
+<li><code>read_committed</code>：消费者只能读取到已提交的消息。</li>
+</ul>
+<p>在Go语言中，使用Sarama库设置消费者的隔离级别时，需要使用Kafka版本0.11.0或更高，并配置消费者如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs go">config := sarama.NewConfig()<br>config.Version = sarama.V0_11_0_0 <span class="hljs-comment">// 必须设置版本支持事务</span><br>config.Consumer.IsolationLevel = sarama.ReadCommitted <span class="hljs-comment">// 设置为读已提交</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="kafka序列化"><a href="#kafka序列化" class="headerlink" title="kafka序列化"></a>kafka序列化</h1>
                 
               </div>
             
@@ -354,7 +386,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  <a href="/categories/kafka/" class="category-chain-item">kafka</a>
   
   
 
@@ -369,7 +401,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%8A%80%E6%9C%AF/" class="print-no-link">#技术</a>
+        <a href="/tags/kafka/" class="print-no-link">#kafka</a>
       
     </div>
   
@@ -381,8 +413,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>git（github）</div>
-      <div>http://example.com/2024/02/21/linux/git/</div>
+      <div>kafka基本知识</div>
+      <div>http://example.com/2024/03/19/kafka/基本知识/</div>
     </div>
     <div class="license-meta">
       
@@ -394,7 +426,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年2月21日</div>
+          <div>2024年3月19日</div>
         </div>
       
       
@@ -426,9 +458,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/02/21/cpp/c++%E7%96%91%E9%9A%BE%E7%9F%A5%E8%AF%86%E7%82%B9/" title="c++恶心知识点">
+                      <a href="/2024/03/19/kafka/docker%E5%88%9B%E5%BB%BAkafka/" title="搭建kafka">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">c++恶心知识点</span>
+                        <span class="hidden-mobile">搭建kafka</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -436,8 +468,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/01/17/linux/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="linux常用指令">
-                        <span class="hidden-mobile">linux常用指令</span>
+                      <a href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" title="mysql主从复制">
+                        <span class="hidden-mobile">mysql主从复制</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

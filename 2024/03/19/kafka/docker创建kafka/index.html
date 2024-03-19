@@ -16,22 +16,22 @@
   <meta name="author" content="Mrxiad">
   <meta name="keywords" content="">
   
-    <meta name="description" content="已知进程杀死进程 ps aux：查看所有进程 ps aux | grep nginx : 查看nginx进程 kill -9 pid：杀死pid进程  已知端口杀死进程方案一 查看哪些端口被占用（tcp，udp）   1netstat -tulnp  杀死端口进程   12sudo fuser -k [端口]  #例如    sudo fuser -k 8080    12345678910111">
+    <meta name="description" content="docker-compose创建使用Docker Compose可以将一系列创建及映射资源（网络、数据卷等）操作放在配置文件中，并且可以通过depends_on参数指定容器的启动顺序，通过environment参数指定Kafka需要的基本参数信息 1.创建kafka-group.yml，保存以下信息12345678910111213141516171819202122232425262728293">
 <meta property="og:type" content="article">
-<meta property="og:title" content="linux常用指令">
-<meta property="og:url" content="http://example.com/2024/01/17/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:title" content="搭建kafka">
+<meta property="og:url" content="http://example.com/2024/03/19/kafka/docker%E5%88%9B%E5%BB%BAkafka/index.html">
 <meta property="og:site_name" content="Mrxiad">
-<meta property="og:description" content="已知进程杀死进程 ps aux：查看所有进程 ps aux | grep nginx : 查看nginx进程 kill -9 pid：杀死pid进程  已知端口杀死进程方案一 查看哪些端口被占用（tcp，udp）   1netstat -tulnp  杀死端口进程   12sudo fuser -k [端口]  #例如    sudo fuser -k 8080    12345678910111">
+<meta property="og:description" content="docker-compose创建使用Docker Compose可以将一系列创建及映射资源（网络、数据卷等）操作放在配置文件中，并且可以通过depends_on参数指定容器的启动顺序，通过environment参数指定Kafka需要的基本参数信息 1.创建kafka-group.yml，保存以下信息12345678910111213141516171819202122232425262728293">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-01-17T15:28:00.000Z">
-<meta property="article:modified_time" content="2024-03-19T09:20:17.315Z">
+<meta property="article:published_time" content="2024-03-19T12:33:12.000Z">
+<meta property="article:modified_time" content="2024-03-19T13:08:26.450Z">
 <meta property="article:author" content="Mrxiad">
-<meta property="article:tag" content="技术">
+<meta property="article:tag" content="kafka">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>linux常用指令 - Mrxiad</title>
+  <title>搭建kafka - Mrxiad</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -209,7 +209,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="linux常用指令"></span>
+            <span id="subtitle" data-typed-text="搭建kafka"></span>
           
         </div>
 
@@ -220,8 +220,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-01-17 23:28" pubdate>
-          2024年1月17日 晚上
+        <time datetime="2024-03-19 20:33" pubdate>
+          2024年3月19日 晚上
         </time>
       </span>
     
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          369 字
+          1.5k 字
         
       </span>
     
@@ -243,7 +243,7 @@
         
         
         
-          4 分钟
+          13 分钟
         
       </span>
     
@@ -280,30 +280,27 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">linux常用指令</h1>
+            <h1 id="seo-header">搭建kafka</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="已知进程杀死进程"><a href="#已知进程杀死进程" class="headerlink" title="已知进程杀死进程"></a>已知进程杀死进程</h1><ul>
-<li>ps aux：查看所有进程</li>
-<li>ps aux | grep nginx : 查看nginx进程</li>
-<li>kill -9 pid：杀死pid进程</li>
-</ul>
-<h1 id="已知端口杀死进程"><a href="#已知端口杀死进程" class="headerlink" title="已知端口杀死进程"></a>已知端口杀死进程</h1><h2 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h2><ul>
-<li><p>查看哪些端口被占用（tcp，udp）</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">netstat -tulnp<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>杀死端口进程</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo fuser -k [端口]<br><br></code></pre></td></tr></table></figure></li>
-</ul>
-<p>#例如<br>    sudo fuser -k 8080<br>    <figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">	<br>	<br><br><br><br><span class="hljs-comment">## 方案二</span><br><br>- 查看端口的进程<br><br>  ```bash<br>  lsof -i :[端口]<br>  <br>  <span class="hljs-comment">#例如</span><br>  lsof -i :<span class="hljs-number">8080</span><br>  <br>  <span class="hljs-comment">#输出</span><br>  COMMAND     PID    <span class="hljs-keyword">USER</span>   <span class="hljs-title">FD</span>   <span class="hljs-keyword">TYPE</span>  DEVICE SIZE/OFF <span class="hljs-keyword">NODE</span> <span class="hljs-title">NAME</span><br>  httpServe <span class="hljs-number">24009</span> xiadong    <span class="hljs-number">3</span>u  IPv4 <span class="hljs-number">1496040</span>      <span class="hljs-number">0</span>t0  TCP *:http-alt (LISTEN)<br></code></pre></td></tr></table></figure></p>
-<ul>
-<li><p>杀死这个进程</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">kill</span> -9 [pid]<br><br></code></pre></td></tr></table></figure></li>
-</ul>
-<p>#例如<br>    kill -9 24009<br>    &#96;&#96;&#96;</p>
+                <h1 id="docker-compose创建"><a href="#docker-compose创建" class="headerlink" title="docker-compose创建"></a>docker-compose创建</h1><p>使用Docker Compose可以将一系列创建及映射资源（网络、数据卷等）操作放在配置文件中，并且可以通过depends_on参数指定容器的启动顺序，通过environment参数指定Kafka需要的基本参数信息</p>
+<h2 id="1-创建kafka-group-yml，保存以下信息"><a href="#1-创建kafka-group-yml，保存以下信息" class="headerlink" title="1.创建kafka-group.yml，保存以下信息"></a>1.创建<strong>kafka-group.yml</strong>，保存以下信息</h2><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs yml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">zookeeper-test:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">zookeeper</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;2181:2181&quot;</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">zookeeper_data_vol:/data</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">zookeeper_datalog_vol:/datalog</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">zookeeper_logs_vol:/logs</span><br>    <span class="hljs-attr">container_name:</span> <span class="hljs-string">zookeeper-test</span><br><br>  <span class="hljs-attr">kafka-test:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">wurstmeister/kafka</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;9092:9092&quot;</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-attr">KAFKA_ADVERTISED_HOST_NAME:</span> <span class="hljs-string">&quot;localhost&quot;</span>   <span class="hljs-comment">#注意这个改成公网ip</span><br>      <span class="hljs-attr">KAFKA_ZOOKEEPER_CONNECT:</span> <span class="hljs-string">&quot;zookeeper-test:2181&quot;</span><br>      <span class="hljs-attr">KAFKA_LOG_DIRS:</span> <span class="hljs-string">&quot;/kafka/logs&quot;</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">kafka_vol:/kafka</span><br>    <span class="hljs-attr">depends_on:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">zookeeper-test</span><br>    <span class="hljs-attr">container_name:</span> <span class="hljs-string">kafka-test</span><br>    <br><span class="hljs-attr">volumes:</span><br>  <span class="hljs-attr">zookeeper_data_vol:</span> &#123;&#125;<br>  <span class="hljs-attr">zookeeper_datalog_vol:</span> &#123;&#125;<br>  <span class="hljs-attr">zookeeper_logs_vol:</span> &#123;&#125;<br>  <span class="hljs-attr">kafka_vol:</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
 
+
+
+<h2 id="2-启动容器组"><a href="#2-启动容器组" class="headerlink" title="2.启动容器组"></a>2.启动容器组</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 启动Kafka容器组</span><br>docker compose -f kafka-group.yml up -d<br>docker compose up -d<br><br><span class="hljs-comment">#停止并移除容器以及数据卷</span><br>docker-compose -f kafka-group.yml down -v<br>docker-compose down -v<br><br><span class="hljs-comment"># 输出示例</span><br> ✔ Network kafka-group_default         Created <br> ✔ Volume <span class="hljs-string">&quot;kafka-group_zookeeper_vol&quot;</span>  Created <br> ✔ Volume <span class="hljs-string">&quot;kafka-group_kafka_vol&quot;</span>      Created <br> ✔ Container zookeeper-test            Started <br> ✔ Container kafka-test                Started<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-进入kafka容器检查所有topic-以及所有消息"><a href="#3-进入kafka容器检查所有topic-以及所有消息" class="headerlink" title="3.进入kafka容器检查所有topic(以及所有消息)"></a>3.进入kafka容器检查所有topic(以及所有消息)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">exec</span> -it kafka-test /bin/bash<br><br><span class="hljs-comment">#检测所有topic</span><br>/opt/kafka/bin/kafka-topics.sh --list --zookeeper zookeeper-test:2181<br><br><span class="hljs-comment">#检测topic为[test]的所有信息</span><br>/opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <span class="hljs-built_in">test</span> --from-beginning<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="docker-compose搭建集群"><a href="#docker-compose搭建集群" class="headerlink" title="docker-compose搭建集群"></a>docker-compose搭建集群</h1>
                 
               </div>
             
@@ -321,7 +318,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  <a href="/categories/kafka/" class="category-chain-item">kafka</a>
   
   
 
@@ -336,7 +333,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%8A%80%E6%9C%AF/" class="print-no-link">#技术</a>
+        <a href="/tags/kafka/" class="print-no-link">#kafka</a>
       
     </div>
   
@@ -348,8 +345,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>linux常用指令</div>
-      <div>http://example.com/2024/01/17/linux常用命令/</div>
+      <div>搭建kafka</div>
+      <div>http://example.com/2024/03/19/kafka/docker创建kafka/</div>
     </div>
     <div class="license-meta">
       
@@ -361,7 +358,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年1月17日</div>
+          <div>2024年3月19日</div>
         </div>
       
       
@@ -393,9 +390,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/02/21/linux/git/" title="git（github）">
+                      <a href="/2024/03/19/linux/docker/" title="docker服务器">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">git（github）</span>
+                        <span class="hidden-mobile">docker服务器</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -403,8 +400,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/01/17/linux/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="linux常用指令">
-                        <span class="hidden-mobile">linux常用指令</span>
+                      <a href="/2024/03/19/kafka/%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/" title="kafka基本知识">
+                        <span class="hidden-mobile">kafka基本知识</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
