@@ -32,20 +32,21 @@ categories:
 
 - 查看哪些端口被占用（tcp，udp）
 
-	```bash
-	netstat -tulnp
-	```
+```bash
+netstat -tulnp
+```
 
 - 杀死端口进程
 
-	```bash
-	sudo fuser -k [端口]
+```bash
+sudo fuser -k [端口]
 
-#例如
-	sudo fuser -k 8080
-	```
+sudo fuser -k 8080
+```
+
+
 	
-	
+
 
 
 
@@ -66,12 +67,9 @@ categories:
 
 - 杀死这个进程
 
-	```bash
-	kill -9 [pid]
-
-#例如
-	kill -9 24009
-	```
+```bash
+kill -9 [pid]
+```
 
 
 
