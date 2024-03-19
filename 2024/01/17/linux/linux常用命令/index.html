@@ -16,15 +16,15 @@
   <meta name="author" content="Mrxiad">
   <meta name="keywords" content="">
   
-    <meta name="description" content="已知进程杀死进程 ps aux：查看所有进程 ps aux | grep nginx : 查看nginx进程 kill -9 pid：杀死pid进程  已知端口杀死进程方案一 查看哪些端口被占用（tcp，udp）   1netstat -tulnp  杀死端口进程   1234	sudo fuser -k [端口]#例如	sudo fuser -k 8080  方案二 查看端口的进程 123456">
+    <meta name="description" content="已知进程杀死进程 ps aux：查看所有进程 ps aux | grep nginx : 查看nginx进程 kill -9 pid：杀死pid进程  已知端口杀死进程方案一 查看哪些端口被占用（tcp，udp）  1netstat -tulnp   杀死端口进程  123sudo fuser -k [端口]sudo fuser -k 8080   方案二 查看端口的进程 12345678lsof">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux常用指令">
 <meta property="og:url" content="http://example.com/2024/01/17/linux/linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="Mrxiad">
-<meta property="og:description" content="已知进程杀死进程 ps aux：查看所有进程 ps aux | grep nginx : 查看nginx进程 kill -9 pid：杀死pid进程  已知端口杀死进程方案一 查看哪些端口被占用（tcp，udp）   1netstat -tulnp  杀死端口进程   1234	sudo fuser -k [端口]#例如	sudo fuser -k 8080  方案二 查看端口的进程 123456">
+<meta property="og:description" content="已知进程杀死进程 ps aux：查看所有进程 ps aux | grep nginx : 查看nginx进程 kill -9 pid：杀死pid进程  已知端口杀死进程方案一 查看哪些端口被占用（tcp，udp）  1netstat -tulnp   杀死端口进程  123sudo fuser -k [端口]sudo fuser -k 8080   方案二 查看端口的进程 12345678lsof">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-01-17T15:28:00.000Z">
-<meta property="article:modified_time" content="2024-03-19T09:20:52.172Z">
+<meta property="article:modified_time" content="2024-03-19T09:31:00.413Z">
 <meta property="article:author" content="Mrxiad">
 <meta property="article:tag" content="技术">
 <meta name="twitter:card" content="summary_large_image">
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          364 字
+          343 字
         
       </span>
     
@@ -243,7 +243,7 @@
         
         
         
-          4 分钟
+          3 分钟
         
       </span>
     
@@ -291,19 +291,27 @@
 <li>kill -9 pid：杀死pid进程</li>
 </ul>
 <h1 id="已知端口杀死进程"><a href="#已知端口杀死进程" class="headerlink" title="已知端口杀死进程"></a>已知端口杀死进程</h1><h2 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h2><ul>
-<li><p>查看哪些端口被占用（tcp，udp）</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">netstat -tulnp<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>杀死端口进程</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">	sudo fuser -k [端口]<br><br><span class="hljs-comment">#例如</span><br>	sudo fuser -k 8080<br></code></pre></td></tr></table></figure></li>
+<li>查看哪些端口被占用（tcp，udp）</li>
 </ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">netstat -tulnp<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>杀死端口进程</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo fuser -k [端口]<br><br>sudo fuser -k 8080<br></code></pre></td></tr></table></figure>
+
+
 <h2 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h2><ul>
 <li><p>查看端口的进程</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">lsof -i :[端口]<br><br><span class="hljs-comment">#例如</span><br>lsof -i :8080<br><br><span class="hljs-comment">#输出</span><br>COMMAND     PID    USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME<br>httpServe 24009 xiadong    3u  IPv4 1496040      0t0  TCP *:http-alt (LISTEN)<br></code></pre></td></tr></table></figure>
 </li>
 <li><p>杀死这个进程</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">	<span class="hljs-built_in">kill</span> -9 [pid]<br><br><span class="hljs-comment">#例如</span><br>	<span class="hljs-built_in">kill</span> -9 24009<br></code></pre></td></tr></table></figure></li>
+</li>
 </ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">kill</span> -9 [pid]<br></code></pre></td></tr></table></figure>
+
+
+
 <h1 id="查看公网ip"><a href="#查看公网ip" class="headerlink" title="查看公网ip"></a>查看公网ip</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl ifconfig.me<br></code></pre></td></tr></table></figure>
 
 

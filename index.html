@@ -440,15 +440,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E7%B4%A2%E5%BC%95%E7%AF%87/" target="_self">
-          mysql索引
+        <a href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E9%94%81/" target="_self">
+          mysql锁
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E7%B4%A2%E5%BC%95%E7%AF%87/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E9%94%81/" target="_self">
         <div>
-          索引分类 按「数据结构」分类：B+tree索引、Hash索引、Full-text索引。 按「物理存储」分类：聚簇索引（主键索引）、二级索引（辅助索引）。 按「字段特性」分类：主键索引、唯一索引、普通索引、前缀索引。 按「字段个数」分类：单列索引、联合索引。  自动创建索引 主键 —— 不包含NULL值的唯一列—— 自动生成一个隐式自增id  在创建表时，InnoDB 存储引擎会根据不同的场景选择不
+          全局锁要使用全局锁，则要执行这条命令： 1flush tables with read lock;  执行后，整个数据库就处于只读状态了，这时其他线程执行以下操作，都会被阻塞：  对数据的增删改操作，比如 insert、delete、update等语句； 对表结构的更改操作，比如 alter table、drop table 等语句。  如果要释放全局锁，则要执行这条命令： 1unlock tab
         </div>
       </a>
 
@@ -508,15 +508,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E9%94%81/" target="_self">
-          mysql锁
+        <a href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E7%B4%A2%E5%BC%95%E7%AF%87/" target="_self">
+          mysql索引
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E9%94%81/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E7%B4%A2%E5%BC%95%E7%AF%87/" target="_self">
         <div>
-          全局锁要使用全局锁，则要执行这条命令： 1flush tables with read lock;  执行后，整个数据库就处于只读状态了，这时其他线程执行以下操作，都会被阻塞：  对数据的增删改操作，比如 insert、delete、update等语句； 对表结构的更改操作，比如 alter table、drop table 等语句。  如果要释放全局锁，则要执行这条命令： 1unlock tab
+          索引分类 按「数据结构」分类：B+tree索引、Hash索引、Full-text索引。 按「物理存储」分类：聚簇索引（主键索引）、二级索引（辅助索引）。 按「字段特性」分类：主键索引、唯一索引、普通索引、前缀索引。 按「字段个数」分类：单列索引、联合索引。  自动创建索引 主键 —— 不包含NULL值的唯一列—— 自动生成一个隐式自增id  在创建表时，InnoDB 存储引擎会根据不同的场景选择不
         </div>
       </a>
 
