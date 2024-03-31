@@ -119,3 +119,128 @@ mysql -u username -p database_name < backup_file.sql
 - `-p`：在命令执行后，你会被提示输入该用户的密码。出于安全考虑，建议不要在命令行中直接包含密码。
 - `database_name`：指定要恢复到的目标数据库名。这个数据库应该已经存在于MySQL服务器上，`mysql`命令不会自动创建数据库。
 - `< backup_file.sql`：这部分告诉shell从`backup_file.sql`文件中读取SQL语句并将其作为输入传递给`mysql`命令。
+
+
+
+
+
+
+
+# 日志
+
+
+
+## (1)mysql开启SQL语句日志
+
+在mysql控制台输入
+
+```mysql
+SET GLOBAL general_log = 'ON';  --开启通用日志
+
+SET GLOBAL slow_query_log = 'ON'; --开启慢查询日志
+```
+
+
+
+>  日志默认存储在mysql的数据目录下，可以修改配置文件`my.cnf`中修改，开启日志会影响性能
+
+
+
+## (2)关闭SQL语句日志
+
+```mysql
+SET GLOBAL general_log = 'OFF';
+```
+
+
+
+## (3)mysql日志文件
+
+
+
+### 通用日志文件位置
+
+```mysql
+show variables like 'general%';
+
++------------------+---------------------------------+
+| Variable_name    | Value                           |
++------------------+---------------------------------+
+| general_log      | ON                              |
+| general_log_file | /var/lib/mysql/9b872b1dacc0.log |
++------------------+---------------------------------+
+```
+
+
+
+### 错误日志文件路径
+
+```mysql
+show variables like 'log_error';
+
++---------------+--------+
+| Variable_name | Value  |
++---------------+--------+
+| log_error     | stderr |
++---------------+--------+
+```
+
+
+
+### 慢查询日志
+
+```mysql
+show variables like '%slow%';
+
+mysql> show variables like '%slow%';
++-----------------------------+--------------------------------------+
+| Variable_name               | Value                                |
++-----------------------------+--------------------------------------+
+| log_slow_admin_statements   | OFF                                  |
+| log_slow_extra              | OFF                                  |
+| log_slow_replica_statements | OFF                                  |
+| log_slow_slave_statements   | OFF                                  |
+| slow_launch_time            | 2                                    |
+| slow_query_log              | OFF                                  |
+| slow_query_log_file         | /var/lib/mysql/9b872b1dacc0-slow.log |
++-----------------------------+--------------------------------------+
+```
+
+
+
+### 慢查询日志时间设置
+
+```mysql
+show variables like 'long_query_time%';
+
++-----------------+-----------+
+| Variable_name   | Value     |
++-----------------+-----------+
+| long_query_time | 10.000000 |
++-----------------+-----------+
+```
+
+
+
+
+
+### 二进制日志
+
+```mysql
+show variables like 'log_bin%';
+
++---------------------------------+-----------------------------+
+| Variable_name                   | Value                       |
++---------------------------------+-----------------------------+
+| log_bin                         | ON                          |
+| log_bin_basename                | /var/lib/mysql/binlog       |
+| log_bin_index                   | /var/lib/mysql/binlog.index |
+| log_bin_trust_function_creators | OFF                         |
+| log_bin_use_v1_row_events       | OFF                         |
++---------------------------------+-----------------------------+
+```
+
+
+
+## (4)修改配置文件
+
