@@ -16,21 +16,24 @@
   <meta name="author" content="Mrxiad">
   <meta name="keywords" content="">
   
-    <meta name="description" content="内核计算机是由各种外部硬件设备组成的，比如内存、cpu、硬盘等，如果每个应用都要和这些硬件设备对接通信协议，那这样太累了，所以这个中间人就由内核来负责，让内核作为应用连接硬件设备的桥梁，应用程序只需关心与内核交互，不用关心硬件的细节。、 内核一般会提供 4 个基本能力  管理进程、线程，决定哪个进程、线程使用 CPU，也就是进程调度的能力； 管理内存，决定内存的分配和回收，也就是内存管理的能力；">
+    <meta name="description" content="基本概念 go操作阿里云(1)安装sdk1234567891011package mainimport (	&quot;fmt&quot;	&quot;github.com&#x2F;aliyun&#x2F;aliyun-oss-go-sdk&#x2F;oss&quot;)func main() &#123;	fmt.Println(&quot;OSS Go SDK Version: &quot;, oss.Version)&amp;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mrxiad">
-<meta property="og:url" content="http://example.com/2024/03/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%85%E6%A0%B8/index.html">
+<meta property="og:title" content="阿里云OSS">
+<meta property="og:url" content="http://example.com/2024/03/25/oss/%E9%98%BF%E9%87%8C%E4%BA%91oss/index.html">
 <meta property="og:site_name" content="Mrxiad">
-<meta property="og:description" content="内核计算机是由各种外部硬件设备组成的，比如内存、cpu、硬盘等，如果每个应用都要和这些硬件设备对接通信协议，那这样太累了，所以这个中间人就由内核来负责，让内核作为应用连接硬件设备的桥梁，应用程序只需关心与内核交互，不用关心硬件的细节。、 内核一般会提供 4 个基本能力  管理进程、线程，决定哪个进程、线程使用 CPU，也就是进程调度的能力； 管理内存，决定内存的分配和回收，也就是内存管理的能力；">
+<meta property="og:description" content="基本概念 go操作阿里云(1)安装sdk1234567891011package mainimport (	&quot;fmt&quot;	&quot;github.com&#x2F;aliyun&#x2F;aliyun-oss-go-sdk&#x2F;oss&quot;)func main() &#123;	fmt.Println(&quot;OSS Go SDK Version: &quot;, oss.Version)&amp;">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-03-13T03:01:21.495Z">
-<meta property="article:modified_time" content="2024-03-13T03:03:13.330Z">
+<meta property="og:image" content="c:/Users/%E5%A4%8F%E5%86%AC/AppData/Roaming/Typora/typora-user-images/image-20240325205911939.png">
+<meta property="article:published_time" content="2024-03-25T13:05:30.000Z">
+<meta property="article:modified_time" content="2024-03-25T16:27:20.774Z">
 <meta property="article:author" content="Mrxiad">
+<meta property="article:tag" content="技术">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="c:/Users/%E5%A4%8F%E5%86%AC/AppData/Roaming/Typora/typora-user-images/image-20240325205911939.png">
   
   
   
-  <title>Mrxiad</title>
+  <title>阿里云OSS - Mrxiad</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -208,7 +211,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="阿里云OSS"></span>
           
         </div>
 
@@ -219,8 +222,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-03-13 11:01" pubdate>
-          2024年3月13日 上午
+        <time datetime="2024-03-25 21:05" pubdate>
+          2024年3月25日 晚上
         </time>
       </span>
     
@@ -231,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          516 字
+          2k 字
         
       </span>
     
@@ -242,7 +245,7 @@
         
         
         
-          5 分钟
+          17 分钟
         
       </span>
     
@@ -279,25 +282,18 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header"></h1>
+            <h1 id="seo-header">阿里云OSS</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="内核"><a href="#内核" class="headerlink" title="内核"></a>内核</h1><p>计算机是由各种外部硬件设备组成的，比如内存、cpu、硬盘等，如果每个应用都要和这些硬件设备对接通信协议，那这样太累了，所以这个中间人就由内核来负责，<strong>让内核作为应用连接硬件设备的桥梁</strong>，应用程序只需关心与内核交互，不用关心硬件的细节。、</p>
-<p>内核一般会提供 4 个基本能力</p>
-<ul>
-<li>管理进程、线程，决定哪个进程、线程使用 CPU，也就是进程调度的能力；</li>
-<li>管理内存，决定内存的分配和回收，也就是内存管理的能力；</li>
-<li>管理硬件设备，为进程与硬件设备之间提供通信能力，也就是硬件通信能力；</li>
-<li>提供系统调用，如果应用程序要运行更高权限运行的服务，那么就需要有系统调用，它是用户程序与操作系统之间的接口。</li>
-</ul>
-<h1 id="权限"><a href="#权限" class="headerlink" title="权限"></a>权限</h1><p>内核具有很高的权限，可以控制 cpu、内存、硬盘等硬件，而应用程序具有的权限很小，因此大多数操作系统，把内存分成了两个区域：</p>
-<ul>
-<li>内核空间，这个内存空间只有内核程序可以访问；</li>
-<li>用户空间，这个内存空间专门给应用程序使用；‘</li>
-</ul>
-<p>内核程序执行在内核态，用户程序执行在用户态。当应用程序使用系统调用时，会产生一个中断。发生中断后， CPU 会中断当前在执行的用户程序，转而跳转到中断处理程序，也就是开始执行内核程序。内核处理完后，主动触发中断，把 CPU 执行权限交回给用户程序，回到用户态继续工作</p>
+                <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><p><img src="C:/Users/夏冬/AppData/Roaming/Typora/typora-user-images/image-20240325205911939.png" srcset="/img/loading.gif" lazyload alt="image-20240325205911939"></p>
+<h1 id="go操作阿里云"><a href="#go操作阿里云" class="headerlink" title="go操作阿里云"></a>go操作阿里云</h1><h2 id="1-安装sdk"><a href="#1-安装sdk" class="headerlink" title="(1)安装sdk"></a>(1)安装sdk</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">package main<br><br>import (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;github.com/aliyun/aliyun-oss-go-sdk/oss&quot;</span><br>)<br><br>func <span class="hljs-function"><span class="hljs-title">main</span></span>() &#123;<br>	fmt.Println(<span class="hljs-string">&quot;OSS Go SDK Version: &quot;</span>, oss.Version)<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="2-文件上传和下载"><a href="#2-文件上传和下载" class="headerlink" title="(2)文件上传和下载"></a>(2)文件上传和下载</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;github.com/aliyun/aliyun-oss-go-sdk/oss&quot;</span><br>	<span class="hljs-string">&quot;log&quot;</span><br>	<span class="hljs-string">&quot;os&quot;</span><br>)<br><br><span class="hljs-comment">//基本配置信息</span><br><span class="hljs-keyword">const</span> (<br>	OSSBucket          = <span class="hljs-string">&quot;bucket-fileserver-store&quot;</span><br>	OSSEndpoint        = <span class="hljs-string">&quot;oss-cn-beijing.aliyuncs.com&quot;</span><br>	OSSAccessKeyID     = <span class="hljs-string">&quot;&quot;</span><br>	OSSAccessKeySecret = <span class="hljs-string">&quot;&quot;</span><br>)<br><br><span class="hljs-keyword">const</span> (<br>	OssPath = <span class="hljs-string">&quot;test/&quot;</span><br>)<br><br><span class="hljs-keyword">var</span> ossClient *oss.Client<br><br><span class="hljs-comment">// OssClient 获取oss客户端</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">OssClient</span><span class="hljs-params">()</span></span> (*oss.Client, <span class="hljs-type">error</span>) &#123;<br>	<span class="hljs-keyword">if</span> ossClient != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> ossClient, <span class="hljs-literal">nil</span><br>	&#125;<br>	client, err := oss.New(OSSEndpoint, OSSAccessKeyID, OSSAccessKeySecret)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err<br>	&#125;<br>	ossClient = client<br>	<span class="hljs-keyword">return</span> ossClient, <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-comment">// Bucket 获取bucket</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Bucket</span><span class="hljs-params">()</span></span> (*oss.Bucket, <span class="hljs-type">error</span>) &#123;<br>	client, err := OssClient()<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err<br>	&#125;<br>	bucket, err := client.Bucket(OSSBucket)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err<br>	&#125;<br>	<span class="hljs-keyword">return</span> bucket, <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	bucket, err := Bucket()<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(err)<br>	&#125;<br>	<span class="hljs-comment">//创建一个文件流</span><br>	fd, err := os.Open(<span class="hljs-string">&quot;./create.txt&quot;</span>)<br><br>	err = bucket.PutObject(<br>		OssPath+<span class="hljs-string">&quot;create.txt&quot;</span>,<br>		fd)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(err)<br>	&#125;<br>	<span class="hljs-comment">//获取下载链接</span><br>	url := DownloadURL(OssPath + <span class="hljs-string">&quot;create.txt&quot;</span>)<br>	fmt.Println(url)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">UploadObject</span><span class="hljs-params">(objectName, localFileName <span class="hljs-type">string</span>)</span></span> <span class="hljs-type">error</span> &#123;<br>	<span class="hljs-comment">//获取bucket</span><br>	bucket, err := Bucket()<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> err<br>	&#125;<br>	<span class="hljs-comment">//打开文件</span><br>	fd, err := os.Open(localFileName)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> err<br>	&#125;<br>	<span class="hljs-comment">//上传文件</span><br>	err = bucket.PutObject(objectName, fd)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> err<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-comment">// DownloadURL 获取文件下载url</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">DownloadURL</span><span class="hljs-params">(objectName <span class="hljs-type">string</span>)</span></span> <span class="hljs-type">string</span> &#123;<br>	<span class="hljs-comment">//获取bucket</span><br>	bucket, err := Bucket()<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(err)<br>	&#125;<br>	<span class="hljs-comment">//获取下载链接</span><br>	signedURL, err := bucket.SignURL(objectName, oss.HTTPGet, <span class="hljs-number">3600</span>)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		log.Println(err)<br>		<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span><br>	&#125;<br>	<span class="hljs-keyword">return</span> signedURL<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
 
                 
               </div>
@@ -306,6 +302,41 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B7%A5%E7%A8%8B/" class="category-chain-item">工程</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%B7%A5%E7%A8%8B/OSS/" class="category-chain-item">OSS</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%8A%80%E6%9C%AF/" class="print-no-link">#技术</a>
+      
+    </div>
   
 </div>
 
@@ -315,8 +346,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
-      <div>http://example.com/2024/03/13/操作系统/内核/</div>
+      <div>阿里云OSS</div>
+      <div>http://example.com/2024/03/25/oss/阿里云oss/</div>
     </div>
     <div class="license-meta">
       
@@ -328,7 +359,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年3月13日</div>
+          <div>2024年3月25日</div>
         </div>
       
       
@@ -360,9 +391,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/03/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="">
+                      <a href="/2024/03/31/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%A1%AC%E4%BB%B6%E7%BB%93%E6%9E%84/" title="硬件结构">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">硬件结构</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -370,8 +401,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/03/13/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%B8%AD%E6%96%AD/" title="">
-                        <span class="hidden-mobile"></span>
+                      <a href="/2024/03/24/go/go%E8%AF%AD%E6%B3%95/" title="go语法">
+                        <span class="hidden-mobile">go语法</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
