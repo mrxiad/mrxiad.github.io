@@ -1,5 +1,5 @@
 ---
-title: docker服务器
+title: docker
 date: 2024-3-19 21:05:30
 tags: 技术
 categories: 
@@ -228,4 +228,287 @@ vim ~/.ssh/authorized_keys
 
 
 
+
+
+
+
+
+# docker网络
+
+## 常用命令
+
+### (1)查看网络帮助
+
+```bash
+docker network help
+```
+
+```bash
+connect 			Connect a container to a network	#将一个容器连接到一个网络
+
+create 				Create a network					#创建一个网络
+
+disconnect 			Disconnect a container from a network #从网络断开一个容器
+
+inspect 			Display detailed information on one or more networks  #在一个或多个网络上显示详细信息
+
+ls 					List networks  					#网络列表
+
+prune 				Remove all unused networks 		#删除所有未使用的网络(不要使用)
+
+rm 					Remove one or more networks 	#删除一个或多个网络。
+```
+
+
+
+### (2)查看容器信息
+
+```bash
+docker port 【容器id】
+docker inspect 【容器id】
+```
+
+### (3)查看容器详细信息
+
+```bash
+docker inspect 【容器id】
+```
+
+
+
+
+
+
+
+## 常用的网络模式
+
+### (1)bridge模式(默认)
+
+Docker的**默认模式**，它会在docker容器启动时候，自动配置好自己的网络信息，同一宿主机的所有容器都在一个网络下，彼此间可以通信。利用宿主机的网卡进行通信，因为涉及到网络转换，所以会造成资源消耗，网络效率会低。
+
+
+
+### (2)host模式
+
+容器使用宿主机的ip地址进行通信。特点：容器和宿主机共享网络
+
+
+
+### (3)container模式
+
+新创建的容器间使用，使用已创建的容器网络，类似一个局域网。 特点：容器和容器共享网络
+
+
+
+### (4)none模式
+
+这种模式最纯粹，不会帮你做任何网络的配置，可以最大限度的定制化。 不提供网络服务，容器启动后无网络连接。
+
+
+
+### (5)overlay模式
+
+容器彼此不在同一网络，而且能互相通行。
+
+
+
+
+
+
+
+# dockerfile（构建镜像）
+
+- **基础镜像**：从一个已存在的镜像开始构建新镜像（例如`FROM ubuntu:18.04`）。
+- **维护者信息**：镜像创建者的信息（例如`MAINTAINER`）。
+- **环境配置**：设置环境变量（例如`ENV`）。
+- **安装软件**：使用包管理器安装所需软件（例如`RUN apt-get install -y nginx`）。
+- **添加文件/目录**：将本地文件或目录添加到镜像中（例如`ADD`或`COPY`）。
+- **配置工作目录**：设置工作目录的路径（例如`WORKDIR /app`）。
+- **配置启动命令**：设置容器启动时执行的命令（例如`CMD ["nginx", "-g", "daemon off;"]`）。
+- **端口暴露**：声明容器运行时监听的端口（例如`EXPOSE 80`）。
+
+
+
+## 构建命令
+
+```bash
+docker build -t [镜像名]:[版本号][Dockerfile所在目录]
+```
+
+
+
+
+
+## 多阶段构建
+
+
+
+example:
+
+```dockerfile
+# 第一阶段：构建应用
+FROM golang:1.16 AS builder
+WORKDIR /app       #相当于cd
+
+# 复制源代码到工作目录
+COPY . .
+
+# 选择以下两种方式之一：
+
+# 方式1: 如果你的项目使用Go模块，请确保你的项目目录中有go.mod和go.sum文件，然后使用此行：
+# RUN CGO_ENABLED=0 go build -o myapp .
+
+# 方式2: 如果你的项目不使用Go模块，取消以下行的注释：
+RUN GO111MODULE=off CGO_ENABLED=0 go build -o myapp .
+
+# 第二阶段：构建最终镜像
+FROM alpine:latest
+WORKDIR /root/
+
+# 从builder阶段复制构建好的应用
+COPY --from=builder /app/myapp .
+
+# 设置运行时的命令
+CMD ["sh", "-c", "./myapp || tail -f /dev/null"]
+```
+
+
+
+创建并启动容器
+
+```bash
+docker run -d --name mygo-app mygo:1.0
+```
+
+
+
+查看日志
+
+```bash
+docker logs mygo-app
+```
+
+
+
+
+
+
+
+
+
+# docker-compose（创建容器）
+
+
+
+## 概念
+
+
+
+### 服务（Services）
+
+- **image**：指定服务使用的镜像。
+- **build**：**指定一个目录的路径，该目录中包含了一个Dockerfile，Docker Compose将用它来构建镜像。**
+- **command**：覆盖容器启动后默认执行的命令。
+- **environment**：设置环境变量。
+- **volumes**：挂载卷。
+- **ports**：端口映射。
+- **depends_on**：设置服务间的依赖关系。
+- **networks**：指定网络设置。
+
+### 卷（Volumes）
+
+- 定义用于数据持久化或共享数据的卷。
+
+### 网络（Networks）
+
+- 定义容器间如何相互通信的网络。
+
+
+
+
+
+> build  &  image 都是指定镜像
+
+
+
+## 常用命令
+
+### `docker compose`命令（Docker CLI的一部分）
+
+> 需要在docker-compose.yml目录下运行
+
+- **启动服务**：
+
+	```bash
+	docker compose up
+	```
+	
+	在后台运行：
+	
+	```bash
+	docker compose up -d
+	```
+
+- **停止删除服务**：
+
+	```bash
+	docker compose down
+	```
+
+- **停止服务**
+
+  ```bash
+  docker compose stop
+  ```
+
+- **构建或重建服务**：
+
+	```bash
+	docker compose build
+	```
+
+- **查看运行中的服务**：
+
+	```bash
+	docker compose ps
+	```
+
+- **查看服务的日志**：
+
+	```bash
+	docker compose logs
+	```
+
+- **执行一个服务容器中的命令**：
+
+	```bash
+	docker compose exec service_name command
+	```
+
+
+
+
+
+```yaml
+version: '3'
+services:
+  web:
+    image: "nginx:alpine"
+    ports:
+      - "80:80"
+    volumes:
+      - ./html:/usr/share/nginx/html
+  db:
+    image: "postgres:9.6"
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
+
+```
 
