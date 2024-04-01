@@ -1,0 +1,811 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Mrxiad">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="kong &amp; konga参考笔记 中文文档 下载第1步：创建Docker网络首先，创建一个Docker网络kong-net，这样你的服务可以在隔离的网络空间中通信。 1docker network create kong-net  第2步：安装并启动PostgreSQL容器运行以下命令来启动PostgreSQL容器，使用kong-net网络，并设置环境变量来配置数据库用户、密码和数据库名。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kong">
+<meta property="og:url" content="http://example.com/2024/04/01/kong/kong%20&%20konga/index.html">
+<meta property="og:site_name" content="Mrxiad">
+<meta property="og:description" content="kong &amp; konga参考笔记 中文文档 下载第1步：创建Docker网络首先，创建一个Docker网络kong-net，这样你的服务可以在隔离的网络空间中通信。 1docker network create kong-net  第2步：安装并启动PostgreSQL容器运行以下命令来启动PostgreSQL容器，使用kong-net网络，并设置环境变量来配置数据库用户、密码和数据库名。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-01T05:50:55.000Z">
+<meta property="article:modified_time" content="2024-04-01T08:15:20.974Z">
+<meta property="article:author" content="Mrxiad">
+<meta property="article:tag" content="kong">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>kong - Mrxiad</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Mrxiad</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="kong"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-01 13:50" pubdate>
+          2024年4月1日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          92 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">kong</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="kong-konga"><a href="#kong-konga" class="headerlink" title="kong &amp; konga"></a>kong &amp; konga</h1><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zz18435842675/article/details/122449579?spm=1001.2014.3001.5501">参考笔记</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/wanglongsxr/kong-docs-cn?tab=readme-ov-file">中文文档</a></p>
+<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><h3 id="第1步：创建Docker网络"><a href="#第1步：创建Docker网络" class="headerlink" title="第1步：创建Docker网络"></a>第1步：创建Docker网络</h3><p>首先，创建一个Docker网络<code>kong-net</code>，这样你的服务可以在隔离的网络空间中通信。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker network create kong-net<br></code></pre></td></tr></table></figure>
+
+<h3 id="第2步：安装并启动PostgreSQL容器"><a href="#第2步：安装并启动PostgreSQL容器" class="headerlink" title="第2步：安装并启动PostgreSQL容器"></a>第2步：安装并启动PostgreSQL容器</h3><p>运行以下命令来启动PostgreSQL容器，使用<code>kong-net</code>网络，并设置环境变量来配置数据库用户、密码和数据库名。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run -d --name kong-database \<br>           --network=kong-net \<br>           -p 5432:5432 \<br>           -e <span class="hljs-string">&quot;POSTGRES_USER=kong&quot;</span> \<br>           -e <span class="hljs-string">&quot;POSTGRES_DB=kong&quot;</span> \<br>           -e <span class="hljs-string">&quot;POSTGRES_PASSWORD=kong&quot;</span> \<br>     postgres:9.6<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-p 5432:5432</code>: 将容器的5432端口映射到宿主机的5432端口，使得可以从宿主机访问PostgreSQL服务。</li>
+<li><code>-e</code>: 设置环境变量，用于配置PostgreSQL数据库的<strong>用户名</strong>、<strong>数据库名</strong>和<strong>密码</strong>。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run --<span class="hljs-built_in">rm</span> \<br>           --network=kong-net \<br>           -e <span class="hljs-string">&quot;KONG_DATABASE=postgres&quot;</span> \<br>           -e <span class="hljs-string">&quot;KONG_PG_HOST=kong-database&quot;</span> \<br>           -e <span class="hljs-string">&quot;KONG_PG_USER=kong&quot;</span> \<br>           -e <span class="hljs-string">&quot;KONG_PG_PASSWORD=kong&quot;</span> \<br>           kong:latest kong migrations bootstrap<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>--rm</code>: 容器退出后<strong>自动清理容器</strong>文件系统。</li>
+<li><code>-e</code>: 设置环境变量来配置Kong连接到PostgreSQL的细节。</li>
+<li><code>kong:latest kong migrations bootstrap</code>: 使用最新的Kong镜像执行数据库迁移命令，准备数据库。</li>
+</ul>
+<blockquote>
+<p> 这一步指令的作用</p>
+</blockquote>
+<ul>
+<li><strong>创建表</strong>：Kong需要在PostgreSQL数据库中创建多个表，用来存储它的配置数据，比如服务（Services）、路由（Routes）、消费者（Consumers）、插件（Plugins）等的信息。</li>
+<li><strong>应用数据模式更新</strong>：随着Kong的版本更新，数据库模式（schema）也可能发生变化。迁移确保数据库模式与Kong的当前版本兼容。</li>
+<li><strong>准备数据库</strong>：此外，迁移还会执行一些检查和准备工作，确保Kong可以顺利地与数据库交互。</li>
+</ul>
+<h3 id="第3步：安装配置Kong"><a href="#第3步：安装配置Kong" class="headerlink" title="第3步：安装配置Kong"></a>第3步：安装配置Kong</h3><p>启动Kong容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run -d --name kong \<br>           --network=kong-net \<br>           -e <span class="hljs-string">&quot;KONG_DATABASE=postgres&quot;</span> \<br>           -e <span class="hljs-string">&quot;KONG_PG_HOST=kong-database&quot;</span> \<br>           -e <span class="hljs-string">&quot;KONG_PG_USER=kong&quot;</span> \<br>           -e <span class="hljs-string">&quot;KONG_PG_PASSWORD=kong&quot;</span> \<br>           -e <span class="hljs-string">&quot;KONG_PROXY_ACCESS_LOG=/dev/stdout&quot;</span> \<br>           -e <span class="hljs-string">&quot;KONG_ADMIN_ACCESS_LOG=/dev/stdout&quot;</span> \<br>           -e <span class="hljs-string">&quot;KONG_PROXY_ERROR_LOG=/dev/stderr&quot;</span> \<br>           -e <span class="hljs-string">&quot;KONG_ADMIN_ERROR_LOG=/dev/stderr&quot;</span> \<br>           -e <span class="hljs-string">&quot;KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl&quot;</span> \<br>           -p 8000:8000 \<br>           -p 8443:8443 \<br>           -p 8001:8001 \<br>           -p 8444:8444 \<br>     kong:latest<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>8000</strong>: Kong的代理监听端口，用于接收API请求。</li>
+<li><strong>8443</strong>: Kong的代理SSL监听端口，用于接收API请求（通过HTTPS）。</li>
+<li><strong>8001</strong>: Kong的Admin API监听端口，用于配置Kong和查看状态信息。</li>
+<li><strong>8444</strong>: Kong的Admin API SSL监听端口，通过HTTPS提供同8001相同的功能。</li>
+</ul>
+<blockquote>
+<p>查看docker网络</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker network inspect kong-net<br></code></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="第4步：安装并启动PostgreSQL容器"><a href="#第4步：安装并启动PostgreSQL容器" class="headerlink" title="第4步：安装并启动PostgreSQL容器"></a>第4步：安装并启动PostgreSQL容器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run -d --name konga-database \<br>           --network=kong-net \<br>           -p 5433:5432 \<br>           -e <span class="hljs-string">&quot;POSTGRES_USER=konga&quot;</span> \<br>           -e <span class="hljs-string">&quot;POSTGRES_DB=konga&quot;</span> \<br>           -e <span class="hljs-string">&quot;POSTGRES_PASSWORD=konga&quot;</span> \<br>     postgres:9.6<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run --<span class="hljs-built_in">rm</span> \<br>           --network=kong-net \<br>           pantsel/konga:latest \<br>           -c prepare \<br>           -a postgres \<br>           -u postgresql://konga:konga@konga-database:5432/konga<br></code></pre></td></tr></table></figure>
+
+<h3 id="第5步：启动Konga容器"><a href="#第5步：启动Konga容器" class="headerlink" title="第5步：启动Konga容器"></a>第5步：启动Konga容器</h3><p>最后一步是启动Konga容器，它将连接到同一个Docker网络内的PostgreSQL数据库。Konga提供了一个Web界面，使得管理Kong变得更加容易和直观。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run -d --name konga \<br>           --network=kong-net \<br>           -e <span class="hljs-string">&quot;DB_ADAPTER=postgres&quot;</span> \<br>           -e <span class="hljs-string">&quot;DB_HOST=konga-database&quot;</span> \<br>           -e <span class="hljs-string">&quot;DB_PORT=5432&quot;</span> \<br>           -e <span class="hljs-string">&quot;DB_USER=konga&quot;</span> \<br>           -e <span class="hljs-string">&quot;DB_PASSWORD=konga&quot;</span> \<br>           -e <span class="hljs-string">&quot;DB_DATABASE=konga&quot;</span> \<br>           -e <span class="hljs-string">&quot;DB_PG_SCHEMA=public&quot;</span> \<br>           -e <span class="hljs-string">&quot;NODE_ENV=production&quot;</span> \<br>           -p 1337:1337 \<br>     pantsel/konga<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="第6步：docker-compose"><a href="#第6步：docker-compose" class="headerlink" title="第6步：docker-compose"></a>第6步：docker-compose</h3><blockquote>
+<p> docker-compose</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">kong-database:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">postgres:9.6</span><br>    <span class="hljs-attr">container_name:</span> <span class="hljs-string">kong-database</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">kong-net</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-attr">POSTGRES_DB:</span> <span class="hljs-string">kong</span><br>      <span class="hljs-attr">POSTGRES_USER:</span> <span class="hljs-string">kong</span><br>      <span class="hljs-attr">POSTGRES_PASSWORD:</span> <span class="hljs-string">kong</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;5432:5432&quot;</span><br><br>  <span class="hljs-attr">kong:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">kong:latest</span><br>    <span class="hljs-attr">container_name:</span> <span class="hljs-string">kong</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">kong-net</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-attr">KONG_DATABASE:</span> <span class="hljs-string">postgres</span><br>      <span class="hljs-attr">KONG_PG_HOST:</span> <span class="hljs-string">kong-database</span><br>      <span class="hljs-attr">KONG_PG_USER:</span> <span class="hljs-string">kong</span><br>      <span class="hljs-attr">KONG_PG_PASSWORD:</span> <span class="hljs-string">kong</span><br>      <span class="hljs-attr">KONG_PROXY_ACCESS_LOG:</span> <span class="hljs-string">/dev/stdout</span><br>      <span class="hljs-attr">KONG_ADMIN_ACCESS_LOG:</span> <span class="hljs-string">/dev/stdout</span><br>      <span class="hljs-attr">KONG_PROXY_ERROR_LOG:</span> <span class="hljs-string">/dev/stderr</span><br>      <span class="hljs-attr">KONG_ADMIN_ERROR_LOG:</span> <span class="hljs-string">/dev/stderr</span><br>      <span class="hljs-attr">KONG_ADMIN_LISTEN:</span> <span class="hljs-string">&#x27;0.0.0.0:8001, 0.0.0.0:8444 ssl&#x27;</span><br>    <span class="hljs-attr">depends_on:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">kong-database</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;8000:8000&quot;</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;8443:8443&quot;</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;8001:8001&quot;</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;8444:8444&quot;</span><br>    <span class="hljs-attr">command:</span> <span class="hljs-string">kong</span> <span class="hljs-string">migrations</span> <span class="hljs-string">bootstrap</span> <span class="hljs-string">&amp;&amp;</span> <span class="hljs-string">kong</span> <span class="hljs-string">start</span><br><br>  <span class="hljs-attr">konga-database:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">postgres:9.6</span><br>    <span class="hljs-attr">container_name:</span> <span class="hljs-string">konga-database</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">kong-net</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-attr">POSTGRES_DB:</span> <span class="hljs-string">konga</span><br>      <span class="hljs-attr">POSTGRES_USER:</span> <span class="hljs-string">konga</span><br>      <span class="hljs-attr">POSTGRES_PASSWORD:</span> <span class="hljs-string">konga</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;5433:5432&quot;</span><br><br>  <span class="hljs-attr">konga:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">pantsel/konga:latest</span><br>    <span class="hljs-attr">container_name:</span> <span class="hljs-string">konga</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">kong-net</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-attr">DB_ADAPTER:</span> <span class="hljs-string">postgres</span><br>      <span class="hljs-attr">DB_HOST:</span> <span class="hljs-string">konga-database</span><br>      <span class="hljs-attr">DB_PORT:</span> <span class="hljs-number">5432</span><br>      <span class="hljs-attr">DB_USER:</span> <span class="hljs-string">konga</span><br>      <span class="hljs-attr">DB_PASSWORD:</span> <span class="hljs-string">konga</span><br>      <span class="hljs-attr">DB_DATABASE:</span> <span class="hljs-string">konga</span><br>      <span class="hljs-attr">NODE_ENV:</span> <span class="hljs-string">production</span><br>    <span class="hljs-attr">depends_on:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">konga-database</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;1337:1337&quot;</span><br>    <span class="hljs-attr">command:</span> [<span class="hljs-string">&quot;./wait-for-it.sh&quot;</span>, <span class="hljs-string">&quot;konga-database:5432&quot;</span>, <span class="hljs-string">&quot;--&quot;</span>, <span class="hljs-string">&quot;npm&quot;</span>, <span class="hljs-string">&quot;start&quot;</span>]<br><br><span class="hljs-attr">networks:</span><br>  <span class="hljs-attr">kong-net:</span><br>    <span class="hljs-attr">driver:</span> <span class="hljs-string">bridge</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h2><p>kong的路由主要涉及到两个组件，<code>service</code>和<code>route</code></p>
+<p>定义<br><strong>service服务</strong></p>
+<p>就是我们自己定义的上游服务,通过Kong匹配到相应的请求要转发的地方, Service 可以与下面的Route进行关联,一个Service可以有很多Route,匹配到的Route就会转发到Service中, 当然中间也会通过Plugin的处理,增加或者减少一些相应的Header或者其他信息。</p>
+<p><strong>route路由</strong></p>
+<p>Route实体定义匹配客户端请求的规则. 每个路由都与一个服务相关联,而服务可能有多个与之相关联的路由. 每一个匹配给定路线的请求都将被提交给它的相关服务。</p>
+<h3 id="example"><a href="#example" class="headerlink" title="example"></a>example</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zz18435842675/article/details/120410085">参考博客</a></p>
+<h4 id="konga方式："><a href="#konga方式：" class="headerlink" title="konga方式："></a>konga方式：</h4><ol>
+<li>打开konga后台管理画面，打开Service</li>
+<li>配置service: 添加<code>name=baidu-text</code>,<code>url=https://www.baidu.com</code></li>
+<li>配置route路由:    点击刚才配置好的service，然后点击routes，配置<code>name=baidu-route</code>和<code>paths=/myPath</code></li>
+<li>测试：浏览器访问<code>http://8.130.144.38:8000/myPath</code>,或者输入<code>curl http://localhost:8000/myPath</code></li>
+</ol>
+<h4 id="kong方式"><a href="#kong方式" class="headerlink" title="kong方式:"></a>kong方式:</h4><ol>
+<li><p>创建service服务</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -i -X POST \<br>  --url http://localhost:8001/services/ \<br>  --data <span class="hljs-string">&#x27;name=baidu-test&#x27;</span> \<br>  --data <span class="hljs-string">&#x27;url=http://www.baidu.com&#x27;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>为service添加route</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -i -X POST \<br>  --url http://localhost:8001/services/baidu-test/routes \<br>  --data <span class="hljs-string">&#x27;name=baidu-route&#x27;</span> \<br>  --data <span class="hljs-string">&#x27;paths[]=/myPath&#x27;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>验证是否成功</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl http://localhost:8000/myPath<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="身份认证-oauth2"><a href="#身份认证-oauth2" class="headerlink" title="身份认证(oauth2)"></a>身份认证(oauth2)</h2><h3 id="创建Service"><a href="#创建Service" class="headerlink" title="创建Service"></a>创建Service</h3><p>创建一个Kong的Service Object指向上游的服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -X POST \<br>  --url <span class="hljs-string">&quot;http://localhost:8001/services&quot;</span> \<br>  --data <span class="hljs-string">&quot;name=oauth2-test&quot;</span> \<br>  --data <span class="hljs-string">&quot;url=http://httpbin.org/anything&quot;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>response</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;host&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;httpbin.org&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;33459a79-e284-4bb8-aa6f-65dafd456c6f&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;protocol&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;http&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;read_timeout&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60000</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;tls_verify_depth&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;port&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">80</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;updated_at&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1615001132</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;ca_certificates&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;created_at&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1615001132</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;connect_timeout&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60000</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;write_timeout&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">60000</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;oauth2-test&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;retries&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">5</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;path&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/anything&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;tls_verify&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;tags&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;client_certificate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="创建Route"><a href="#创建Route" class="headerlink" title="创建Route"></a>创建Route</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -X POST \<br>  --url <span class="hljs-string">&quot;http://localhost:8001/services/oauth2-test/routes&quot;</span> \<br>  --data <span class="hljs-string">&#x27;paths[]=/demo&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>response</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;strip_path&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;tags&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;updated_at&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1615004204</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;destinations&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;headers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;protocols&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;http&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;https&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;methods&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;service&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;33459a79-e284-4bb8-aa6f-65dafd456c6f&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;snis&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;hosts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;path_handling&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;v0&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;paths&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;/demo&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;preserve_host&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;regex_priority&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;response_buffering&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;sources&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;e804fef4-fa42-4f7e-be0c-bbe9b9999027&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;https_redirect_status_code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">426</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;request_buffering&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;created_at&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1615004204</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p> 在这之后我们可以通过 <code>curl localhost:8000/demo</code>来访问服务。</p>
+</blockquote>
+<h3 id="启用Oauth2插件"><a href="#启用Oauth2插件" class="headerlink" title="启用Oauth2插件"></a>启用Oauth2插件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -X POST \<br>  --url http://localhost:8001/services/oauth2-<span class="hljs-built_in">test</span>/plugins/ \<br>  --data <span class="hljs-string">&quot;name=oauth2&quot;</span> \<br>  --data <span class="hljs-string">&quot;config.scopes[]=email&quot;</span> \<br>  --data <span class="hljs-string">&quot;config.scopes[]=phone&quot;</span> \<br>  --data <span class="hljs-string">&quot;config.scopes[]=address&quot;</span> \<br>  --data <span class="hljs-string">&quot;config.mandatory_scope=true&quot;</span> \<br>  --data <span class="hljs-string">&quot;config.provision_key=oauth2-demo-provision-key&quot;</span> \<br>  --data <span class="hljs-string">&quot;config.enable_authorization_code=true&quot;</span> \<br>  --data <span class="hljs-string">&quot;config.enable_client_credentials=true&quot;</span> \<br>  --data <span class="hljs-string">&quot;config.enable_implicit_grant=true&quot;</span> \<br>  --data <span class="hljs-string">&quot;config.enable_password_grant=true&quot;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>response</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;created_at&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1615003048</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;8bc8ed59-cdb4-4ac4-ab48-7719655cb9f3&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;tags&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;enabled&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;protocols&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;grpc&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;grpcs&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;http&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;https&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;oauth2&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;consumer&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;service&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;33459a79-e284-4bb8-aa6f-65dafd456c6f&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;route&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;config&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;pkce&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;lax&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;accept_http_if_already_terminated&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;reuse_refresh_token&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;token_expiration&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">7200</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;mandatory_scope&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;enable_client_credentials&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;hide_credentials&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;enable_authorization_code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;enable_implicit_grant&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;global_credentials&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;refresh_token_ttl&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1209600</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;enable_password_grant&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;scopes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>      <span class="hljs-string">&quot;email&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-string">&quot;phone&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-string">&quot;address&quot;</span><br>    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;anonymous&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;provision_key&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;oauth2-demo-provision-key&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;auth_header_name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;authorization&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>我们再次链接 <code>curl localhost:8000/demo</code> 的时候，我们会得到 <code>HTTP/1.1 401 Unauthorized</code> 已经以下错误信息。这就说明Oauth2插件已经成功开启。</p>
+</blockquote>
+<h3 id="创建Consumer"><a href="#创建Consumer" class="headerlink" title="创建Consumer"></a>创建Consumer</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -X POST \<br>  --url <span class="hljs-string">&quot;http://localhost:8001/consumers/&quot;</span> \<br>  --data <span class="hljs-string">&quot;username=oauth2-tester&quot;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>response</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;custom_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;created_at&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1615003502</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;06d53376-8bfd-4bc7-aaaf-05c37316e7ef&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;tags&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;username&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;oauth2-tester&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="创建Oauth2-Credential-App"><a href="#创建Oauth2-Credential-App" class="headerlink" title="创建Oauth2 Credential (App)"></a>创建Oauth2 Credential (App)</h3><p>然后我们会在这个consumer下创建Oauth2的身份凭证。在这里我也会使用自定义的 <code>client_id</code> 和 <code>client_secret</code>。如果留空，Kong会自动生成这两个变量。</p>
+<blockquote>
+<p>如果使用Kong来生成身份凭证请切记不要添加 <code>hash_secret=true</code> 在您的curl命令里面。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -X POST \<br>  --url <span class="hljs-string">&quot;http://localhost:8001/consumers/oauth2-tester/oauth2/&quot;</span> \<br>  --data <span class="hljs-string">&quot;name=Oauth2 Demo App&quot;</span> \<br>  --data <span class="hljs-string">&quot;client_id=oauth2-demo-client-id&quot;</span> \<br>  --data <span class="hljs-string">&quot;client_secret=oauth2-demo-client-secret&quot;</span> \<br>  --data <span class="hljs-string">&quot;redirect_uris[]=http://localhost:8000/demo&quot;</span> \<br>  --data <span class="hljs-string">&quot;hash_secret=true&quot;</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>response</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;created_at&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1615004674</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;f602f09b-7b7e-4326-b236-2fa8d45badff&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;tags&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Oauth2 Demo App&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;client_secret&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;$pbkdf2-sha512$i=10000,l=32$e3SNVIWRFt8PuBxjoL1ncQ$/hF26HS30QHopDLMzlZqC+zv0nt3m4YFokuW9eTma6Q&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;client_id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;oauth2-demo-client-id&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;redirect_uris&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;http://localhost:8000/demo&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;hash_secret&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;client_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;confidential&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;consumer&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;06d53376-8bfd-4bc7-aaaf-05c37316e7ef&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="测试【等待完成】"><a href="#测试【等待完成】" class="headerlink" title="测试【等待完成】"></a>测试【等待完成】</h3><h2 id="身份认证-jwt"><a href="#身份认证-jwt" class="headerlink" title="身份认证(jwt)"></a>身份认证(jwt)</h2><h3 id="创建service"><a href="#创建service" class="headerlink" title="创建service"></a>创建service</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -X POST \<br>  --url <span class="hljs-string">&quot;http://localhost:8001/services&quot;</span> \<br>  --data <span class="hljs-string">&quot;name=jwt-test&quot;</span> \<br>  --data <span class="hljs-string">&quot;url=http://www.baidu.com&quot;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="创建Route-1"><a href="#创建Route-1" class="headerlink" title="创建Route"></a>创建Route</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -i -X POST \<br>  --url http://localhost:8001/services/jwt-test/routes \<br>  --data <span class="hljs-string">&#x27;name=jwt-route&#x27;</span> \<br>  --data <span class="hljs-string">&#x27;paths[]=/jwt&#x27;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="启用jwt插件"><a href="#启用jwt插件" class="headerlink" title="启用jwt插件"></a>启用jwt插件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -X POST http://localhost:8001/services/jwt-test/plugins \<br>	--data <span class="hljs-string">&quot;name=jwt&quot;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>尝试访问 <code>curl http://localhost:8000/jwt</code></p>
+<p>response:{“message”:”Unauthorized”}</p>
+</blockquote>
+<h3 id="在-Kong-中创建用户"><a href="#在-Kong-中创建用户" class="headerlink" title="在 Kong 中创建用户"></a>在 Kong 中创建用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -X POST http://localhost:8001/consumers \<br>	--data <span class="hljs-string">&quot;username=kirito&quot;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="创建jwt凭证-可以指定jwt的key和secret"><a href="#创建jwt凭证-可以指定jwt的key和secret" class="headerlink" title="创建jwt凭证(可以指定jwt的key和secret)"></a>创建jwt凭证(可以指定jwt的key和secret)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -X POST http://localhost:8001/consumers/kirito/jwt<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="查看用户的jwt信息"><a href="#查看用户的jwt信息" class="headerlink" title="查看用户的jwt信息"></a>查看用户的jwt信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl http://127.0.0.1:8001/consumers/kirito/jwt<br></code></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>然后生成jwt</p>
+</blockquote>
+<h3 id="携带jwt访问"><a href="#携带jwt访问" class="headerlink" title="携带jwt访问"></a>携带jwt访问</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl http://localhost:8000/jwt -H <span class="hljs-string">&#x27;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTE5OTA2MTksImlzcyI6ImU1SzI0UHZaNEhVbUI0dm01dlFBbmlHVGZMSm5DdlRWIn0.wKzHKWqkvSleVJFT6Mnhlmj8PAekXDHwZr9Pa5l8CNY&#x27;</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h2><h2 id="黑白名单"><a href="#黑白名单" class="headerlink" title="黑白名单"></a>黑白名单</h2>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/kong/" class="category-chain-item">kong</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/kong/" class="print-no-link">#kong</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>kong</div>
+      <div>http://example.com/2024/04/01/kong/kong &amp; konga/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Mrxiad</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/31/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/CPU/" title="CPU">
+                        <span class="hidden-mobile">CPU</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -18,20 +18,20 @@
   
     <meta name="description" content="docker服务器 介绍如何在ubuntu环境下创建docker容器，并且将此容器设置成一个“服务器” 然后如何ssh进docker容器(root用户)，并且配置免密登录  步骤如下 1.创建Dockerfile文件1234567891011121314151617181920212223242526272829303132333435# 使用官方Ubuntu基础镜像FROM ubuntu:lat">
 <meta property="og:type" content="article">
-<meta property="og:title" content="docker服务器">
+<meta property="og:title" content="docker">
 <meta property="og:url" content="http://example.com/2024/03/19/linux/docker/index.html">
 <meta property="og:site_name" content="Mrxiad">
 <meta property="og:description" content="docker服务器 介绍如何在ubuntu环境下创建docker容器，并且将此容器设置成一个“服务器” 然后如何ssh进docker容器(root用户)，并且配置免密登录  步骤如下 1.创建Dockerfile文件1234567891011121314151617181920212223242526272829303132333435# 使用官方Ubuntu基础镜像FROM ubuntu:lat">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-03-19T13:05:30.000Z">
-<meta property="article:modified_time" content="2024-03-19T12:52:21.224Z">
+<meta property="article:modified_time" content="2024-04-01T09:33:50.657Z">
 <meta property="article:author" content="Mrxiad">
 <meta property="article:tag" content="技术">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>docker服务器 - Mrxiad</title>
+  <title>docker - Mrxiad</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -209,7 +209,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="docker服务器"></span>
+            <span id="subtitle" data-typed-text="docker"></span>
           
         </div>
 
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.3k 字
+          4.9k 字
         
       </span>
     
@@ -243,7 +243,7 @@
         
         
         
-          20 分钟
+          41 分钟
         
       </span>
     
@@ -280,7 +280,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">docker服务器</h1>
+            <h1 id="seo-header">docker</h1>
             
             
               <div class="markdown-body">
@@ -353,7 +353,113 @@
 <p>将复制的公钥粘贴进文件</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs basj">按i键进入编辑模式<br>按住Shift+Insert进行粘贴<br>按Esc退出面积模式<br>输入&quot;:wq&quot;保存退出<br></code></pre></td></tr></table></figure>
 
-<h3 id="c-退出后，即可进行免密登录"><a href="#c-退出后，即可进行免密登录" class="headerlink" title="(c)退出后，即可进行免密登录"></a>(c)退出后，即可进行免密登录</h3>
+<h3 id="c-退出后，即可进行免密登录"><a href="#c-退出后，即可进行免密登录" class="headerlink" title="(c)退出后，即可进行免密登录"></a>(c)退出后，即可进行免密登录</h3><h1 id="docker网络"><a href="#docker网络" class="headerlink" title="docker网络"></a>docker网络</h1><h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="1-查看网络帮助"><a href="#1-查看网络帮助" class="headerlink" title="(1)查看网络帮助"></a>(1)查看网络帮助</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker network <span class="hljs-built_in">help</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash">connect 			Connect a container to a network	<span class="hljs-comment">#将一个容器连接到一个网络</span><br><br>create 				Create a network					<span class="hljs-comment">#创建一个网络</span><br><br>disconnect 			Disconnect a container from a network <span class="hljs-comment">#从网络断开一个容器</span><br><br>inspect 			Display detailed information on one or more networks  <span class="hljs-comment">#在一个或多个网络上显示详细信息</span><br><br><span class="hljs-built_in">ls</span> 					List networks  					<span class="hljs-comment">#网络列表</span><br><br>prune 				Remove all unused networks 		<span class="hljs-comment">#删除所有未使用的网络(不要使用)</span><br><br><span class="hljs-built_in">rm</span> 					Remove one or more networks 	<span class="hljs-comment">#删除一个或多个网络。</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-查看容器信息"><a href="#2-查看容器信息" class="headerlink" title="(2)查看容器信息"></a>(2)查看容器信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker port 【容器<span class="hljs-built_in">id</span>】<br>docker inspect 【容器<span class="hljs-built_in">id</span>】<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-查看容器详细信息"><a href="#3-查看容器详细信息" class="headerlink" title="(3)查看容器详细信息"></a>(3)查看容器详细信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker inspect 【容器<span class="hljs-built_in">id</span>】<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="常用的网络模式"><a href="#常用的网络模式" class="headerlink" title="常用的网络模式"></a>常用的网络模式</h2><h3 id="1-bridge模式-默认"><a href="#1-bridge模式-默认" class="headerlink" title="(1)bridge模式(默认)"></a>(1)bridge模式(默认)</h3><p>Docker的<strong>默认模式</strong>，它会在docker容器启动时候，自动配置好自己的网络信息，同一宿主机的所有容器都在一个网络下，彼此间可以通信。利用宿主机的网卡进行通信，因为涉及到网络转换，所以会造成资源消耗，网络效率会低。</p>
+<h3 id="2-host模式"><a href="#2-host模式" class="headerlink" title="(2)host模式"></a>(2)host模式</h3><p>容器使用宿主机的ip地址进行通信。特点：容器和宿主机共享网络</p>
+<h3 id="3-container模式"><a href="#3-container模式" class="headerlink" title="(3)container模式"></a>(3)container模式</h3><p>新创建的容器间使用，使用已创建的容器网络，类似一个局域网。 特点：容器和容器共享网络</p>
+<h3 id="4-none模式"><a href="#4-none模式" class="headerlink" title="(4)none模式"></a>(4)none模式</h3><p>这种模式最纯粹，不会帮你做任何网络的配置，可以最大限度的定制化。 不提供网络服务，容器启动后无网络连接。</p>
+<h3 id="5-overlay模式"><a href="#5-overlay模式" class="headerlink" title="(5)overlay模式"></a>(5)overlay模式</h3><p>容器彼此不在同一网络，而且能互相通行。</p>
+<h1 id="dockerfile（构建镜像）"><a href="#dockerfile（构建镜像）" class="headerlink" title="dockerfile（构建镜像）"></a>dockerfile（构建镜像）</h1><ul>
+<li><strong>基础镜像</strong>：从一个已存在的镜像开始构建新镜像（例如<code>FROM ubuntu:18.04</code>）。</li>
+<li><strong>维护者信息</strong>：镜像创建者的信息（例如<code>MAINTAINER</code>）。</li>
+<li><strong>环境配置</strong>：设置环境变量（例如<code>ENV</code>）。</li>
+<li><strong>安装软件</strong>：使用包管理器安装所需软件（例如<code>RUN apt-get install -y nginx</code>）。</li>
+<li><strong>添加文件&#x2F;目录</strong>：将本地文件或目录添加到镜像中（例如<code>ADD</code>或<code>COPY</code>）。</li>
+<li><strong>配置工作目录</strong>：设置工作目录的路径（例如<code>WORKDIR /app</code>）。</li>
+<li><strong>配置启动命令</strong>：设置容器启动时执行的命令（例如<code>CMD [&quot;nginx&quot;, &quot;-g&quot;, &quot;daemon off;&quot;]</code>）。</li>
+<li><strong>端口暴露</strong>：声明容器运行时监听的端口（例如<code>EXPOSE 80</code>）。</li>
+</ul>
+<h2 id="构建命令"><a href="#构建命令" class="headerlink" title="构建命令"></a>构建命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker build -t [镜像名]:[版本号][Dockerfile所在目录]<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="多阶段构建"><a href="#多阶段构建" class="headerlink" title="多阶段构建"></a>多阶段构建</h2><p>example:</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-comment"># 第一阶段：构建应用</span><br><span class="hljs-keyword">FROM</span> golang:<span class="hljs-number">1.16</span> AS builder<br><span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /app       <span class="hljs-comment">#相当于cd</span></span><br><br><span class="hljs-comment"># 复制源代码到工作目录</span><br><span class="hljs-keyword">COPY</span><span class="language-bash"> . .</span><br><br><span class="hljs-comment"># 选择以下两种方式之一：</span><br><br><span class="hljs-comment"># 方式1: 如果你的项目使用Go模块，请确保你的项目目录中有go.mod和go.sum文件，然后使用此行：</span><br><span class="hljs-comment"># RUN CGO_ENABLED=0 go build -o myapp .</span><br><br><span class="hljs-comment"># 方式2: 如果你的项目不使用Go模块，取消以下行的注释：</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> GO111MODULE=off CGO_ENABLED=0 go build -o myapp .</span><br><br><span class="hljs-comment"># 第二阶段：构建最终镜像</span><br><span class="hljs-keyword">FROM</span> alpine:latest<br><span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /root/</span><br><br><span class="hljs-comment"># 从builder阶段复制构建好的应用</span><br><span class="hljs-keyword">COPY</span><span class="language-bash"> --from=builder /app/myapp .</span><br><br><span class="hljs-comment"># 设置运行时的命令</span><br><span class="hljs-keyword">CMD</span><span class="language-bash"> [<span class="hljs-string">&quot;sh&quot;</span>, <span class="hljs-string">&quot;-c&quot;</span>, <span class="hljs-string">&quot;./myapp || tail -f /dev/null&quot;</span>]</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>创建并启动容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run -d --name mygo-app mygo:1.0<br></code></pre></td></tr></table></figure>
+
+
+
+<p>查看日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker logs mygo-app<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<h1 id="docker-compose（创建容器）"><a href="#docker-compose（创建容器）" class="headerlink" title="docker-compose（创建容器）"></a>docker-compose（创建容器）</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="服务（Services）"><a href="#服务（Services）" class="headerlink" title="服务（Services）"></a>服务（Services）</h3><ul>
+<li><strong>image</strong>：指定服务使用的镜像。</li>
+<li><strong>build</strong>：<strong>指定一个目录的路径，该目录中包含了一个Dockerfile，Docker Compose将用它来构建镜像。</strong></li>
+<li><strong>command</strong>：覆盖容器启动后默认执行的命令。</li>
+<li><strong>environment</strong>：设置环境变量。</li>
+<li><strong>volumes</strong>：挂载卷。</li>
+<li><strong>ports</strong>：端口映射。</li>
+<li><strong>depends_on</strong>：设置服务间的依赖关系。</li>
+<li><strong>networks</strong>：指定网络设置。</li>
+</ul>
+<h3 id="卷（Volumes）"><a href="#卷（Volumes）" class="headerlink" title="卷（Volumes）"></a>卷（Volumes）</h3><ul>
+<li>定义用于数据持久化或共享数据的卷。</li>
+</ul>
+<h3 id="网络（Networks）"><a href="#网络（Networks）" class="headerlink" title="网络（Networks）"></a>网络（Networks）</h3><ul>
+<li>定义容器间如何相互通信的网络。</li>
+</ul>
+<blockquote>
+<p>build  &amp;  image 都是指定镜像</p>
+</blockquote>
+<h2 id="常用命令-1"><a href="#常用命令-1" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="docker-compose命令（Docker-CLI的一部分）"><a href="#docker-compose命令（Docker-CLI的一部分）" class="headerlink" title="docker compose命令（Docker CLI的一部分）"></a><code>docker compose</code>命令（Docker CLI的一部分）</h3><blockquote>
+<p>需要在docker-compose.yml目录下运行</p>
+</blockquote>
+<ul>
+<li><p><strong>启动服务</strong>：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker compose up<br></code></pre></td></tr></table></figure>
+<p>  在后台运行：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker compose up -d<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>停止删除服务</strong>：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker compose down<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>停止服务</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker compose stop<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>构建或重建服务</strong>：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker compose build<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>查看运行中的服务</strong>：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker compose ps<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>查看服务的日志</strong>：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker compose logs<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>执行一个服务容器中的命令</strong>：</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker compose <span class="hljs-built_in">exec</span> service_name <span class="hljs-built_in">command</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">web:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">&quot;nginx:alpine&quot;</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;80:80&quot;</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">./html:/usr/share/nginx/html</span><br>  <span class="hljs-attr">db:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">&quot;postgres:9.6&quot;</span><br>    <span class="hljs-attr">environment:</span><br>      <span class="hljs-attr">POSTGRES_DB:</span> <span class="hljs-string">mydb</span><br>      <span class="hljs-attr">POSTGRES_USER:</span> <span class="hljs-string">user</span><br>      <span class="hljs-attr">POSTGRES_PASSWORD:</span> <span class="hljs-string">password</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">db-data:/var/lib/postgresql/data</span><br><br><span class="hljs-attr">volumes:</span><br>  <span class="hljs-attr">db-data:</span><br><br></code></pre></td></tr></table></figure>
+
+
                 
               </div>
             
@@ -405,7 +511,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>docker服务器</div>
+      <div>docker</div>
       <div>http://example.com/2024/03/19/linux/docker/</div>
     </div>
     <div class="license-meta">
