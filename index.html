@@ -268,8 +268,15 @@
     
       <span class="category-chain">
         
-  <a href="/categories/kong/" class="category-chain-item">kong</a>
+  <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="category-chain-item">微服务</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/kong/" class="category-chain-item">kong</a>
+  
+  
+
   
 
       </span>
@@ -283,7 +290,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/kong/">#kong</a>
+              <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/">#微服务</a>
             
           </div>
         
@@ -297,15 +304,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/03/31/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/CPU/" target="_self">
-          CPU
+        <a href="/2024/03/31/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%B8%AD%E6%96%AD/" target="_self">
+          中断
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/31/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/CPU/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/31/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%B8%AD%E6%96%AD/" target="_self">
         <div>
-          存储器的层次结构 寄存器； CPU Cache； L1-Cache； L2-Cache； L3-Cahce；   内存； SSD&#x2F;HDD 硬盘  每个 CPU 核心都有一块属于自己的 L1 高速缓存，指令和数据在 L1 是分开存放的，所以 L1 高速缓存通常分成指令缓存和数据缓存。 L2 高速缓存同样每个 CPU 核心都有，但是 L2 高速缓存位置比 L1 高速缓存距离 CPU 核心 更
+          中断是什么中断是系统用来响应硬件设备请求的一种机制，操作系统收到硬件的中断请求，会打断正在执行的进程，然后调用内核中的中断处理程序来响应请求。 什么是软中断？中断请求的处理程序应该要短且快，这样才能减少对正常进程运行调度地影响，而且中断处理程序可能会暂时关闭中断，这时如果中断处理程序执行时间过长，可能在还未执行完中断处理程序前，会丢失当前其他设备的中断请求。 那 Linux 系统为了解决中断处理程
         </div>
       </a>
 
@@ -358,15 +365,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/03/31/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%B8%AD%E6%96%AD/" target="_self">
-          中断
+        <a href="/2024/03/31/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/CPU/" target="_self">
+          CPU
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/31/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%B8%AD%E6%96%AD/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/31/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/CPU/" target="_self">
         <div>
-          中断是什么中断是系统用来响应硬件设备请求的一种机制，操作系统收到硬件的中断请求，会打断正在执行的进程，然后调用内核中的中断处理程序来响应请求。 什么是软中断？中断请求的处理程序应该要短且快，这样才能减少对正常进程运行调度地影响，而且中断处理程序可能会暂时关闭中断，这时如果中断处理程序执行时间过长，可能在还未执行完中断处理程序前，会丢失当前其他设备的中断请求。 那 Linux 系统为了解决中断处理程
+          存储器的层次结构 寄存器； CPU Cache； L1-Cache； L2-Cache； L3-Cahce；   内存； SSD&#x2F;HDD 硬盘  每个 CPU 核心都有一块属于自己的 L1 高速缓存，指令和数据在 L1 是分开存放的，所以 L1 高速缓存通常分成指令缓存和数据缓存。 L2 高速缓存同样每个 CPU 核心都有，但是 L2 高速缓存位置比 L1 高速缓存距离 CPU 核心 更
         </div>
       </a>
 
@@ -670,74 +677,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/03/24/go/go%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" target="_self">
-          go语法
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/24/go/go%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" target="_self">
-        <div>
-          文件基本操作创建文件123456789101112131415package mainimport (	&quot;log&quot;	&quot;os&quot;)func main() &#123;	newfile, err := os.Create(&quot;test.txt&quot;)	if err != nil &#123;		log.Fatal(err)	&#125;	log.Pr
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-24 22:40" pubdate>
-              2024-03-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/go/" class="category-chain-item">go</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/go/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" class="category-chain-item">文件操作</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/go/">#go</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
         <a href="/2024/03/24/go/go%E8%AF%AD%E6%B3%95/" target="_self">
           go语法
         </a>
@@ -776,6 +715,74 @@
     <span>></span>
     
   <a href="/categories/go/%E8%AF%AD%E6%B3%95/" class="category-chain-item">语法</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/go/">#go</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/24/go/go%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" target="_self">
+          go语法
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/24/go/go%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" target="_self">
+        <div>
+          文件基本操作创建文件123456789101112131415package mainimport (	&quot;log&quot;	&quot;os&quot;)func main() &#123;	newfile, err := os.Create(&quot;test.txt&quot;)	if err != nil &#123;		log.Fatal(err)	&#125;	log.Pr
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-24 22:40" pubdate>
+              2024-03-24
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/go/" class="category-chain-item">go</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/go/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" class="category-chain-item">文件操作</a>
   
   
 
