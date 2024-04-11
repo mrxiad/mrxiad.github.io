@@ -480,7 +480,7 @@ func main() {
 
 
 
-## 使用缓存写
+## bufferedWriter
 
 ```go
 package main
@@ -729,7 +729,7 @@ func main() {
 
 
 
-## 使用缓存读
+## bufferedReader
 
 ```go
 package main
@@ -839,7 +839,7 @@ func main() {
 
 # 文件压缩
 
-### 打包(zip) 文件
+## 打包(zip) 文件
 
 ```go
 // This example uses zip but standard library
