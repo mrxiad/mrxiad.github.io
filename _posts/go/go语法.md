@@ -168,7 +168,19 @@ func main() {
 
 
 
+# defer 的执行顺序
+
+defer执行顺序和调用顺序相反，类似于栈**后进先出**(LIFO)。
+
+defer在return**之后**执行，但在函数退出之前，defer可以修改返回值。下面是一个例子：
+
+
+
+
+
 # panic
+
+> 先执行defer，在执行panic！！！
 
 `panic`不会叠加的方式存在，而是会被最近的`panic`覆盖，直到遇到`recover`为止。
 
@@ -203,6 +215,10 @@ func main() {
 Recovered in panic1: defer panic in panic1
 Main function continues after panic1.
 ```
+
+
+
+
 
 
 

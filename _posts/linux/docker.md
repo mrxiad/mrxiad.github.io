@@ -439,15 +439,13 @@ docker logs mygo-app
 
 - **启动服务**：
 
-	```bash
-	docker compose up
-	```
-	
-	在后台运行：
-	
-	```bash
-	docker compose up -d
-	```
+  ```bash
+  docker compose up
+  ```
+
+  ```bash
+  docker compose up -d  #
+  ```
 
 - **停止删除服务**：
 
@@ -512,3 +510,30 @@ volumes:
 
 ```
 
+
+
+
+
+
+
+# 技巧
+
+
+
+## 创建一个容器用于调试
+
+```bash
+docker run -it --rm busybox
+```
+
+
+
+
+
+
+
+# 可进行的配置
+
+- 内存限制
+- 网络
+- 数据卷

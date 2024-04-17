@@ -741,26 +741,17 @@ select * from class where cid > all (select classid from student);
 
 ## 各个指令的执行顺序【重要】
 
-1. **FROM**子句
-	- 这是第一步，数据库系统从指定的表中读取数据。如果有多个表，会进行相应的连接操作。
-2. **JOIN**（如果有）
-	- 如果查询涉及多个表，会在这一步根据 JOIN 条件进行表的连接。
-3. **WHERE**子句
-	- 接下来，数据库系统会根据 WHERE 子句中的条件过滤数据。这一步发生在任何分组（GROUP BY）之前，意味着 WHERE 条件是应用于原始数据上的。
-4. **GROUP BY**子句
-	- 如果查询指定了 GROUP BY，那么在 WHERE 过滤之后，下一步就是根据指定的列或表达式对结果集进行分组。
-5. **HAVING**子句
-	- HAVING 子句用于过滤经过 GROUP BY 分组后的数据集。这意味着，与 WHERE 不同，HAVING 是在分组后对组应用的条件。
-6. **SELECT**子句
-	- 这一步选择从上一步结果中需要获取的列。如果有聚合函数（如 SUM、COUNT 等），它们也会在这一步计算。
-7. **DISTINCT**（如果有）
-	- 如果查询指定了 DISTINCT，那么在 SELECT 后，会去除重复的行。
-8. **ORDER BY**子句
-	- 接着，根据 ORDER BY 子句指定的列或表达式对结果集进行排序。注意，这是在所有的选择、聚合和过滤操作完成后进行的。
-9. **LIMIT**子句（或 OFFSET）
-	- 最后，如果指定了 LIMIT 或 OFFSET，数据库系统会根据这些限制来限定或跳过结果集中的一部分行。
-
-
+1. **FROM**：对 FROM 子句中的左表和右表执行笛卡儿积（Cartesianproduct），产生虚拟表 VT1
+2. **ON**：对虚拟表 VT1 应用 ON 筛选，只有那些符合的行才被插入虚拟表 VT2 中
+3. **JOIN**：如果指定了 OUTER JOIN（如 LEFT OUTER JOIN、RIGHT OUTER JOIN），那么保留表中未匹配的行作为外部行添加到虚拟表 VT2 中，产生虚拟表 VT3。如果 FROM 子句包含两个以上表，则对上一个连接生成的结果表 VT3 和下一个表重复执行步骤 1）～步骤 3），直到处理完所有的表为止
+4. **WHERE**：对虚拟表 VT3 应用 WHERE 过滤条件，只有符合的记录才被插入虚拟表 VT4 中
+5. **GROUP BY**：根据 GROUP BY 子句中的列，对 VT4 中的记录进行分组操作，产生 VT5
+6. **CUBE|ROLLUP**：对表 VT5 进行 CUBE 或 ROLLUP 操作，产生表 VT6
+7. **HAVING**：对虚拟表 VT6 应用 HAVING 过滤器，只有符合的记录才被插入虚拟表 VT7 中。
+8. **SELECT**：第二次执行 SELECT 操作，选择指定的列，插入到虚拟表 VT8 中
+9. **DISTINCT**：去除重复数据，产生虚拟表 VT9
+10. **ORDER BY**：将虚拟表 VT9 中的记录按照进行排序操作，产生虚拟表 VT10。11）
+11. **LIMIT**：取出指定行的记录，产生虚拟表 VT11，并返回给查询用户
 
 
 
