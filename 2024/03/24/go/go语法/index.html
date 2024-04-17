@@ -24,7 +24,7 @@
 <meta property="og:description" content="go类型引用类型 切片（Slice） 映射（Map） 通道（Channel） 指针（Pointer） 接口（Interface）  这些类型的变量实际上存储的是对数据的引用，而不是数据本身。 非引用类型 基本类型：整型（Integers）、浮点型（Floats）、布尔型（Booleans） 复合类型：数组（Arrays）、结构体（Structs） 字符串（String）  空结构体空结构体大小为0">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-03-24T14:40:40.000Z">
-<meta property="article:modified_time" content="2024-04-07T06:13:01.314Z">
+<meta property="article:modified_time" content="2024-04-16T06:37:00.658Z">
 <meta property="article:author" content="Mrxiad">
 <meta property="article:tag" content="go">
 <meta name="twitter:card" content="summary_large_image">
@@ -243,7 +243,7 @@
         
         
         
-          126 分钟
+          127 分钟
         
       </span>
     
@@ -330,7 +330,12 @@
 
 
 
-<h1 id="panic"><a href="#panic" class="headerlink" title="panic"></a>panic</h1><p><code>panic</code>不会叠加的方式存在，而是会被最近的<code>panic</code>覆盖，直到遇到<code>recover</code>为止。</p>
+<h1 id="defer-的执行顺序"><a href="#defer-的执行顺序" class="headerlink" title="defer 的执行顺序"></a>defer 的执行顺序</h1><p>defer执行顺序和调用顺序相反，类似于栈<strong>后进先出</strong>(LIFO)。</p>
+<p>defer在return<strong>之后</strong>执行，但在函数退出之前，defer可以修改返回值。下面是一个例子：</p>
+<h1 id="panic"><a href="#panic" class="headerlink" title="panic"></a>panic</h1><blockquote>
+<p>先执行defer，在执行panic！！！</p>
+</blockquote>
+<p><code>panic</code>不会叠加的方式存在，而是会被最近的<code>panic</code>覆盖，直到遇到<code>recover</code>为止。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">panic1</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>		<span class="hljs-keyword">if</span> err := <span class="hljs-built_in">recover</span>(); err != <span class="hljs-literal">nil</span> &#123;<br>			fmt.Println(<span class="hljs-string">&quot;Recovered in panic1:&quot;</span>, err)<br>		&#125;<br>	&#125;()<br>	<span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>		<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;defer panic in panic1&quot;</span>)<br>	&#125;()<br>	<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;panic in panic1&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	panic1()<br>	fmt.Println(<span class="hljs-string">&quot;Main function continues after panic1.&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
 
 
@@ -339,6 +344,10 @@
 <p> 输出</p>
 </blockquote>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">Recovered in panic1: defer panic in panic1<br>Main function continues after panic1.<br></code></pre></td></tr></table></figure>
+
+
+
+
 
 
 
@@ -606,7 +615,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/03/24/go/tcp/" title="go语法">
+                      <a href="/2024/03/24/go/go%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" title="go语法">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">go语法</span>
                         <span class="visible-mobile">上一篇</span>
@@ -616,8 +625,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/03/19/linux/docker/" title="docker">
-                        <span class="hidden-mobile">docker</span>
+                      <a href="/2024/03/24/go/go%E5%AE%9A%E6%97%B6%E5%99%A8/" title="go语法">
+                        <span class="hidden-mobile">go语法</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

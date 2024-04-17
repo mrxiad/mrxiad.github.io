@@ -24,7 +24,7 @@
 <meta property="og:description" content="登录1mysql -uroot -p123456    重置密码步骤(linux)1.停止 MySQL 服务首先，你需要停止正在运行的 MySQL 服务。这个步骤根据你的操作系统会有所不同。  对于 Linux 系统，可以使用以下命令之一，具体取决于你的系统管理工具：   123bashCopy codesudo systemctl stop mysql# 或者sudo &#x2F;etc&#x2F;init.d&#x2F;m">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-02-27T04:33:12.000Z">
-<meta property="article:modified_time" content="2024-03-25T16:26:51.234Z">
+<meta property="article:modified_time" content="2024-04-16T09:07:27.293Z">
 <meta property="article:author" content="Mrxiad">
 <meta property="article:tag" content="数据库">
 <meta name="twitter:card" content="summary_large_image">
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          9.4k 字
+          9.5k 字
         
       </span>
     
@@ -633,42 +633,17 @@
 </li>
 </ol>
 <h2 id="各个指令的执行顺序【重要】"><a href="#各个指令的执行顺序【重要】" class="headerlink" title="各个指令的执行顺序【重要】"></a>各个指令的执行顺序【重要】</h2><ol>
-<li><strong>FROM</strong>子句<ul>
-<li>这是第一步，数据库系统从指定的表中读取数据。如果有多个表，会进行相应的连接操作。</li>
-</ul>
-</li>
-<li><strong>JOIN</strong>（如果有）<ul>
-<li>如果查询涉及多个表，会在这一步根据 JOIN 条件进行表的连接。</li>
-</ul>
-</li>
-<li><strong>WHERE</strong>子句<ul>
-<li>接下来，数据库系统会根据 WHERE 子句中的条件过滤数据。这一步发生在任何分组（GROUP BY）之前，意味着 WHERE 条件是应用于原始数据上的。</li>
-</ul>
-</li>
-<li><strong>GROUP BY</strong>子句<ul>
-<li>如果查询指定了 GROUP BY，那么在 WHERE 过滤之后，下一步就是根据指定的列或表达式对结果集进行分组。</li>
-</ul>
-</li>
-<li><strong>HAVING</strong>子句<ul>
-<li>HAVING 子句用于过滤经过 GROUP BY 分组后的数据集。这意味着，与 WHERE 不同，HAVING 是在分组后对组应用的条件。</li>
-</ul>
-</li>
-<li><strong>SELECT</strong>子句<ul>
-<li>这一步选择从上一步结果中需要获取的列。如果有聚合函数（如 SUM、COUNT 等），它们也会在这一步计算。</li>
-</ul>
-</li>
-<li><strong>DISTINCT</strong>（如果有）<ul>
-<li>如果查询指定了 DISTINCT，那么在 SELECT 后，会去除重复的行。</li>
-</ul>
-</li>
-<li><strong>ORDER BY</strong>子句<ul>
-<li>接着，根据 ORDER BY 子句指定的列或表达式对结果集进行排序。注意，这是在所有的选择、聚合和过滤操作完成后进行的。</li>
-</ul>
-</li>
-<li><strong>LIMIT</strong>子句（或 OFFSET）<ul>
-<li>最后，如果指定了 LIMIT 或 OFFSET，数据库系统会根据这些限制来限定或跳过结果集中的一部分行。</li>
-</ul>
-</li>
+<li><strong>FROM</strong>：对 FROM 子句中的左表和右表执行笛卡儿积（Cartesianproduct），产生虚拟表 VT1</li>
+<li><strong>ON</strong>：对虚拟表 VT1 应用 ON 筛选，只有那些符合的行才被插入虚拟表 VT2 中</li>
+<li><strong>JOIN</strong>：如果指定了 OUTER JOIN（如 LEFT OUTER JOIN、RIGHT OUTER JOIN），那么保留表中未匹配的行作为外部行添加到虚拟表 VT2 中，产生虚拟表 VT3。如果 FROM 子句包含两个以上表，则对上一个连接生成的结果表 VT3 和下一个表重复执行步骤 1）～步骤 3），直到处理完所有的表为止</li>
+<li><strong>WHERE</strong>：对虚拟表 VT3 应用 WHERE 过滤条件，只有符合的记录才被插入虚拟表 VT4 中</li>
+<li><strong>GROUP BY</strong>：根据 GROUP BY 子句中的列，对 VT4 中的记录进行分组操作，产生 VT5</li>
+<li><strong>CUBE|ROLLUP</strong>：对表 VT5 进行 CUBE 或 ROLLUP 操作，产生表 VT6</li>
+<li><strong>HAVING</strong>：对虚拟表 VT6 应用 HAVING 过滤器，只有符合的记录才被插入虚拟表 VT7 中。</li>
+<li><strong>SELECT</strong>：第二次执行 SELECT 操作，选择指定的列，插入到虚拟表 VT8 中</li>
+<li><strong>DISTINCT</strong>：去除重复数据，产生虚拟表 VT9</li>
+<li><strong>ORDER BY</strong>：将虚拟表 VT9 中的记录按照进行排序操作，产生虚拟表 VT10。11）</li>
+<li><strong>LIMIT</strong>：取出指定行的记录，产生虚拟表 VT11，并返回给查询用户</li>
 </ol>
 <h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_56880706/article/details/122653735?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522170900723016800182152977%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=170900723016800182152977&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-2-122653735-null-null.142%5Ev99%5Epc_search_result_base3&utm_term=mysql%E4%BA%8B%E5%8A%A1&spm=1018.2226.3001.4187">参考文章</a></p>
 <ul>
@@ -786,9 +761,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E6%9E%B6%E6%9E%84%E7%AF%87/" title="mysql架构篇">
+                      <a href="/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E4%BA%8B%E5%8A%A1%E7%AF%87/" title="mysql事务篇">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">mysql架构篇</span>
+                        <span class="hidden-mobile">mysql事务篇</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -796,8 +771,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/02/22/%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7/" title="常用工具汇总">
-                        <span class="hidden-mobile">常用工具汇总</span>
+                      <a href="/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E6%9E%B6%E6%9E%84%E7%AF%87/" title="mysql架构篇">
+                        <span class="hidden-mobile">mysql架构篇</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

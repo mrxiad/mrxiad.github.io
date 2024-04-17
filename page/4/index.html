@@ -236,15 +236,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E5%9F%BA%E7%A1%80%E7%AF%87/" target="_self">
-          mysql基础篇
+        <a href="/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E6%9E%B6%E6%9E%84%E7%AF%87/" target="_self">
+          mysql架构篇
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E5%9F%BA%E7%A1%80%E7%AF%87/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E6%9E%B6%E6%9E%84%E7%AF%87/" target="_self">
         <div>
-          登录1mysql -uroot -p123456    重置密码步骤(linux)1.停止 MySQL 服务首先，你需要停止正在运行的 MySQL 服务。这个步骤根据你的操作系统会有所不同。  对于 Linux 系统，可以使用以下命令之一，具体取决于你的系统管理工具：   123bashCopy codesudo systemctl stop mysql# 或者sudo /etc/init.d/m
+          参考文章 mysql日志系统[等待完成]错误日志二进制日志通用查询日志慢查询日志mysql分层MySQL分为两层：Server层 和 存储引擎层  server 层  负责建立和维护客户端连接、SQL分析、权限校验、SQL执行等功能。 主要功能模块: 连接器—&gt;查询缓存—&gt;分析器—&gt;预处理器—&gt;优化器—&gt;执行器等。  还包括其他跨存储引擎的功能，比如函数、存储过程、触
         </div>
       </a>
 
@@ -365,74 +365,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/22/%E9%9D%A2%E8%AF%95%E9%A2%98/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" target="_self">
-          多线程面试题
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/22/%E9%9D%A2%E8%AF%95%E9%A2%98/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" target="_self">
-        <div>
-          细颗粒度读写锁题目：给定一个长度为N(N&#x3D;100,000)的整数数组S，有M(M&gt;&#x3D;2)个工人并发访问和更新S。每个工人重复以下操作10,000次:生成随机数i和j，0&lt;&#x3D;i,j&lt;100,000。更新S使得S(j)=S(1)+S(i+1)+S(i+2)。如果i+1或i+2越界，则使用(i+1)%N或(i+2)%N。 提示:(a)请考虑并发保护，即读取
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-22 00:11" pubdate>
-              2024-02-22
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="category-chain-item">面试题</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="category-chain-item">多线程</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/">#面试题</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
         <a href="/2024/02/22/%E9%9D%A2%E8%AF%95%E9%A2%98/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" target="_self">
           多线程面试题
         </a>
@@ -471,6 +403,74 @@
     <span>></span>
     
   <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="category-chain-item">操作系统</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/">#面试题</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/02/22/%E9%9D%A2%E8%AF%95%E9%A2%98/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" target="_self">
+          多线程面试题
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/22/%E9%9D%A2%E8%AF%95%E9%A2%98/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" target="_self">
+        <div>
+          细颗粒度读写锁题目：给定一个长度为N(N&#x3D;100,000)的整数数组S，有M(M&gt;&#x3D;2)个工人并发访问和更新S。每个工人重复以下操作10,000次:生成随机数i和j，0&lt;&#x3D;i,j&lt;100,000。更新S使得S(j)=S(1)+S(i+1)+S(i+2)。如果i+1或i+2越界，则使用(i+1)%N或(i+2)%N。 提示:(a)请考虑并发保护，即读取
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-02-22 00:11" pubdate>
+              2024-02-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="category-chain-item">面试题</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E9%9D%A2%E8%AF%95%E9%A2%98/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" class="category-chain-item">多线程</a>
   
   
 
