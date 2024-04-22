@@ -24,7 +24,7 @@
 <meta property="og:description" content="登录1mysql -uroot -p123456    重置密码步骤(linux)1.停止 MySQL 服务首先，你需要停止正在运行的 MySQL 服务。这个步骤根据你的操作系统会有所不同。  对于 Linux 系统，可以使用以下命令之一，具体取决于你的系统管理工具：   123bashCopy codesudo systemctl stop mysql# 或者sudo &#x2F;etc&#x2F;init.d&#x2F;m">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-02-27T04:33:12.000Z">
-<meta property="article:modified_time" content="2024-04-16T09:07:27.293Z">
+<meta property="article:modified_time" content="2024-04-22T14:16:25.409Z">
 <meta property="article:author" content="Mrxiad">
 <meta property="article:tag" content="数据库">
 <meta name="twitter:card" content="summary_large_image">
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          9.5k 字
+          9.4k 字
         
       </span>
     
@@ -638,7 +638,7 @@
 <li><strong>JOIN</strong>：如果指定了 OUTER JOIN（如 LEFT OUTER JOIN、RIGHT OUTER JOIN），那么保留表中未匹配的行作为外部行添加到虚拟表 VT2 中，产生虚拟表 VT3。如果 FROM 子句包含两个以上表，则对上一个连接生成的结果表 VT3 和下一个表重复执行步骤 1）～步骤 3），直到处理完所有的表为止</li>
 <li><strong>WHERE</strong>：对虚拟表 VT3 应用 WHERE 过滤条件，只有符合的记录才被插入虚拟表 VT4 中</li>
 <li><strong>GROUP BY</strong>：根据 GROUP BY 子句中的列，对 VT4 中的记录进行分组操作，产生 VT5</li>
-<li><strong>CUBE|ROLLUP</strong>：对表 VT5 进行 CUBE 或 ROLLUP 操作，产生表 VT6</li>
+<li><strong>聚合函数</strong>: 对分组之后进行聚合</li>
 <li><strong>HAVING</strong>：对虚拟表 VT6 应用 HAVING 过滤器，只有符合的记录才被插入虚拟表 VT7 中。</li>
 <li><strong>SELECT</strong>：第二次执行 SELECT 操作，选择指定的列，插入到虚拟表 VT8 中</li>
 <li><strong>DISTINCT</strong>：去除重复数据，产生虚拟表 VT9</li>
@@ -761,9 +761,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E4%BA%8B%E5%8A%A1%E7%AF%87/" title="mysql事务篇">
+                      <a href="/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E6%9E%B6%E6%9E%84%E7%AF%87/" title="mysql架构篇">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">mysql事务篇</span>
+                        <span class="hidden-mobile">mysql架构篇</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -771,8 +771,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E6%9E%B6%E6%9E%84%E7%AF%87/" title="mysql架构篇">
-                        <span class="hidden-mobile">mysql架构篇</span>
+                      <a href="/2024/02/22/%E5%B7%A5%E5%85%B7/%E5%B7%A5%E5%85%B7/" title="常用工具汇总">
+                        <span class="hidden-mobile">常用工具汇总</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
