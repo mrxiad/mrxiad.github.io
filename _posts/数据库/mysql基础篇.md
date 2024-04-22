@@ -746,7 +746,7 @@ select * from class where cid > all (select classid from student);
 3. **JOIN**：如果指定了 OUTER JOIN（如 LEFT OUTER JOIN、RIGHT OUTER JOIN），那么保留表中未匹配的行作为外部行添加到虚拟表 VT2 中，产生虚拟表 VT3。如果 FROM 子句包含两个以上表，则对上一个连接生成的结果表 VT3 和下一个表重复执行步骤 1）～步骤 3），直到处理完所有的表为止
 4. **WHERE**：对虚拟表 VT3 应用 WHERE 过滤条件，只有符合的记录才被插入虚拟表 VT4 中
 5. **GROUP BY**：根据 GROUP BY 子句中的列，对 VT4 中的记录进行分组操作，产生 VT5
-6. **CUBE|ROLLUP**：对表 VT5 进行 CUBE 或 ROLLUP 操作，产生表 VT6
+6. **聚合函数**: 对分组之后进行聚合
 7. **HAVING**：对虚拟表 VT6 应用 HAVING 过滤器，只有符合的记录才被插入虚拟表 VT7 中。
 8. **SELECT**：第二次执行 SELECT 操作，选择指定的列，插入到虚拟表 VT8 中
 9. **DISTINCT**：去除重复数据，产生虚拟表 VT9
