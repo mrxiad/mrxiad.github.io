@@ -1,5 +1,5 @@
 ---
-title: vscode配置
+title: go-micro开启grpc
 date: 2023-12-05 23:01:45
 tags: 微服务
 categories: 
@@ -78,12 +78,13 @@ go install github.com/go-micro/generator/cmd/protoc-gen-micro@latest
 ```
 
 # 生成micro文件
+
 ```bash
 protoc --proto_path=. --go_out=. --micro_out=. *.proto
 ```
-:::info
-example
-:::
+
+
+**example**
 
 1.准备greeter.proto文件
 ```
@@ -109,6 +110,7 @@ message Response {
 ```
 protoc --proto_path=. --micro_out=. --go_out=. greeter.proto
 ```
+
 
 
 ## Plugins注册到consul
