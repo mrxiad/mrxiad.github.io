@@ -18,20 +18,20 @@
   
     <meta name="description" content="开启go mod1234go env -w GO111MODULE&#x3D;on#阿里云go env -w GOPROXY&#x3D;https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;goproxy&#x2F;,direct  安装protobuf编译器官网教程  必须保证proto的版本&gt;&#x3D;3  123sudo apt updatesudo apt install protobuf-compilerpr">
 <meta property="og:type" content="article">
-<meta property="og:title" content="vscode配置">
+<meta property="og:title" content="go-micro开启grpc">
 <meta property="og:url" content="http://example.com/2023/12/05/grpc/go%E8%AF%AD%E8%A8%80%E5%BC%80%E5%90%AFgrpc/index.html">
 <meta property="og:site_name" content="Mrxiad">
 <meta property="og:description" content="开启go mod1234go env -w GO111MODULE&#x3D;on#阿里云go env -w GOPROXY&#x3D;https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;goproxy&#x2F;,direct  安装protobuf编译器官网教程  必须保证proto的版本&gt;&#x3D;3  123sudo apt updatesudo apt install protobuf-compilerpr">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-12-05T15:01:45.000Z">
-<meta property="article:modified_time" content="2024-04-07T14:51:26.992Z">
+<meta property="article:modified_time" content="2024-05-10T06:47:01.664Z">
 <meta property="article:author" content="Mrxiad">
 <meta property="article:tag" content="微服务">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>vscode配置 - Mrxiad</title>
+  <title>go-micro开启grpc - Mrxiad</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -209,7 +209,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="vscode配置"></span>
+            <span id="subtitle" data-typed-text="go-micro开启grpc"></span>
           
         </div>
 
@@ -280,7 +280,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">vscode配置</h1>
+            <h1 id="seo-header">go-micro开启grpc</h1>
             
             
               <div class="markdown-body">
@@ -315,12 +315,15 @@
 <h2 id="安装proto-micro插件"><a href="#安装proto-micro插件" class="headerlink" title="安装proto-micro插件"></a>安装proto-micro插件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">go install google.golang.org/protobuf/cmd/protoc-gen-go@latest<br>go install github.com/go-micro/generator/cmd/protoc-gen-micro@latest<br></code></pre></td></tr></table></figure>
 
 <h1 id="生成micro文件"><a href="#生成micro文件" class="headerlink" title="生成micro文件"></a>生成micro文件</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">protoc --proto_path=. --go_out=. --micro_out=. *.proto<br></code></pre></td></tr></table></figure>
-<p>:::info<br>example<br>:::</p>
+
+
+<p><strong>example</strong></p>
 <p>1.准备greeter.proto文件</p>
 <figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">syntax</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;proto3&quot;</span><span class="hljs-comment">;</span><br><br>package greeter<span class="hljs-comment">;</span><br>option go_package <span class="hljs-operator">=</span> <span class="hljs-string">&quot;/proto;greeter&quot;</span><span class="hljs-comment">;</span><br><br>service Greeter &#123;<br>	rpc Hello(Request) returns (Response) &#123;&#125;<br>&#125;<br><br>message Request &#123;<br>	string name <span class="hljs-operator">=</span> <span class="hljs-number">1</span><span class="hljs-comment">;</span><br>&#125;<br><br>message Response &#123;<br>	string msg <span class="hljs-operator">=</span> <span class="hljs-number">1</span><span class="hljs-comment">;</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>2.生成code</p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">protoc <span class="hljs-attribute">--proto_path</span>=. <span class="hljs-attribute">--micro_out</span>=. <span class="hljs-attribute">--go_out</span>=. greeter.proto<br></code></pre></td></tr></table></figure>
+
 
 
 <h2 id="Plugins注册到consul"><a href="#Plugins注册到consul" class="headerlink" title="Plugins注册到consul"></a>Plugins注册到consul</h2><p>(1)查看文件<a target="_blank" rel="noopener" href="https://github.com/go-micro/plugins/blob/main/v4/registry/consul/go.mod">https://github.com/go-micro/plugins/blob/main/v4/registry/consul/go.mod</a><br>(2)导入包名<code>github.com/go-micro/plugins/v4/registry/consul</code><br>(3)代码示例</p>
@@ -380,7 +383,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>vscode配置</div>
+      <div>go-micro开启grpc</div>
       <div>http://example.com/2023/12/05/grpc/go语言开启grpc/</div>
     </div>
     <div class="license-meta">

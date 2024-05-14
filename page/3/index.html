@@ -236,6 +236,74 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" target="_self">
+          mysql主从复制
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" target="_self">
+        <div>
+          环境准备 主服务器IP: 假设为 43.138.20.23（公网IP或局域网IP） 从服务器IP: 假设为从服务器的IP地址 MySQL版本: 保证主从服务器的MySQL版本相同或兼容  主服务器配置 配置MySQL:  编辑MySQL配置文件（通常位于/etc/mysql/mysql.conf.d/mysqld.cnf或/etc/my.cnf）。 确保设置了唯一的server-id。 启用二进制
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-19 12:33" pubdate>
+              2024-03-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql/" class="category-chain-item">mysql</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/03/19/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E5%91%BD%E4%BB%A4/" target="_self">
           mysql命令
         </a>
@@ -775,74 +843,6 @@
       <a class="index-excerpt index-excerpt__noimg" href="/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E4%BA%8B%E5%8A%A1%E7%AF%87/" target="_self">
         <div>
           事务有哪些特性？事务是由 MySQL 的引擎来实现的，我们常见的 InnoDB 引擎它是支持事务的。 不过并不是所有的引擎都能支持事务，比如 MySQL 原生的 MyISAM 引擎就不支持事务，也正是这样，所以大多数 MySQL 的引擎都是用 InnoDB。 事务看起来感觉简单，但是要实现事务必须要遵守 4 个特性，分别如下：  原子性（Atomicity）：一个事务中的所有操作，要么全部完成，要
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-27 12:33" pubdate>
-              2024-02-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql/" class="category-chain-item">mysql</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E6%9E%B6%E6%9E%84%E7%AF%87/" target="_self">
-          mysql架构篇
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/27/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql%E6%9E%B6%E6%9E%84%E7%AF%87/" target="_self">
-        <div>
-          参考文章 mysql日志系统[等待完成]错误日志二进制日志通用查询日志慢查询日志mysql分层MySQL分为两层：Server层 和 存储引擎层  server 层  负责建立和维护客户端连接、SQL分析、权限校验、SQL执行等功能。 主要功能模块: 连接器—&gt;查询缓存—&gt;分析器—&gt;预处理器—&gt;优化器—&gt;执行器等。  还包括其他跨存储引擎的功能，比如函数、存储过程、触
         </div>
       </a>
 
