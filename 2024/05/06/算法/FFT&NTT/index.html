@@ -24,7 +24,7 @@
 <meta property="og:description" content="FFT板子 构造两个vector，答案存储到第三个vector中  1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-05-06T14:34:50.000Z">
-<meta property="article:modified_time" content="2024-05-08T02:08:27.182Z">
+<meta property="article:modified_time" content="2024-05-21T02:35:17.016Z">
 <meta property="article:author" content="Mrxiad">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary_large_image">
@@ -232,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          14k 字
+          15k 字
         
       </span>
     
@@ -243,7 +243,7 @@
         
         
         
-          120 分钟
+          127 分钟
         
       </span>
     
@@ -357,7 +357,25 @@
 
 
 
-<h1 id="原根映射"><a href="#原根映射" class="headerlink" title="原根映射"></a><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3321">原根映射</a></h1>
+<h1 id="原根映射"><a href="#原根映射" class="headerlink" title="原根映射"></a><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3321">原根映射</a></h1><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>小C有一个集合 $S$，里面的元素都是小于 $m$ 的非负整数。他用程序编写了一个数列生成器，可以生成一个长度为 $n$ 的数列，数列中的每个数都属于集合 $S$。  </p>
+<p>小C用这个生成器生成了许多这样的数列。但是小C有一个问题需要你的帮助：给定整数 $x$，求所有可以生成出的，且满足数列中所有数的乘积 $\bmod \ m$ 的值等于 $x$ 的不同的数列的有多少个。  </p>
+<p>小C认为，两个数列 $A$ 和 $B$ 不同，当且仅当 $\exists i \text{ s.t. } A_i \neq B_i$。另外，小C认为这个问题的答案可能很大，因此他只需要你帮助他求出答案对 $1004535809$ 取模的值就可以了。</p>
+<h2 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h2><p>一行，四个整数，$n,m,x,|S|$，其中 $|S|$ 为集合 $S$ 中元素个数。<br>第二行，$|S|$ 个整数，表示集合 $S$ 中的所有元素。</p>
+<h2 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h2><p>一行一个整数</p>
+<h3 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h3><figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">4 </span><span class="hljs-number">3</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span><br><span class="hljs-symbol">1 </span><span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">8<br></code></pre></td></tr></table></figure>
+
+<p>可以生成的满足要求的不同的数列有(1,1,1,1)、(1,1,2,2)、(1,2,1,2)、(1,2,2,1)、(2,1,1,2)、(2,1,2,1)、(2,2,1,1)、(2,2,2,2)。</p>
+<p>$1 \le n \le 10^9$，$3 \le m \le 8000$，$1\le x &lt; m$。<br>$m$ 为质数，输入数据保证集合 $S$ 中元素不重复。</p>
+<h2 id="思路-2"><a href="#思路-2" class="headerlink" title="思路"></a>思路</h2><ol>
+<li>求出𝑚的原根，并把集合𝑆中的数𝑥转化为$log_gx$</li>
+<li>对现在的x做卷积即可</li>
+<li>注意：这里没有包含$a^0$，这是因为在 mod  𝑚意义下不存在一个数$x$使得$a*x&#x3D;0$( mod  𝑚)，因此实际上只有𝑚−1个可对应位置，在本题中$𝑆$集合中的0对答案无贡献，故忽略$a^0$。</li>
+</ol>
+<h2 id="代码-3"><a href="#代码-3" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">git log --author=<span class="hljs-string">&quot;mrxiad&quot;</span> --pretty=tformat: --numstat | awk <span class="hljs-string">&#x27;&#123; add += $1; subs += $2; loc += $1 - $2 &#125; END &#123; printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc &#125;&#x27;</span>;git shortlog --all --numbered --summary --no-merges<br></code></pre></td></tr></table></figure>
+
+
                 
               </div>
             
